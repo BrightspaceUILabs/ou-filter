@@ -10,13 +10,18 @@ A Lit-element component that renders org unit structure tree. It supports load m
 > - [ ] [design.d2l entry](http://design.d2l/)
 > - [ ] [Architectural sign-off](https://github.com/BrightspaceUI/guide/wiki/Before-you-build#web-component-architecture)
 > - [x] [Continuous integration](https://github.com/BrightspaceUI/guide/wiki/Testing#testing-continuously-with-travis-ci)
-> - [ ] [Cross-browser testing](https://github.com/BrightspaceUI/guide/wiki/Testing#cross-browser-testing-with-sauce-labs)
+> - [x] [Cross-browser testing](https://github.com/BrightspaceUI/guide/wiki/Testing#cross-browser-testing-with-sauce-labs)
 > - [x] [Unit tests](https://github.com/BrightspaceUI/guide/wiki/Testing#testing-with-polymer-test) (if applicable)
 > - [x] [Accessibility tests](https://github.com/BrightspaceUI/guide/wiki/Testing#automated-accessibility-testing-with-axe)
 > - [x] [Visual diff tests](https://github.com/BrightspaceUI/visual-diff)
 > - [x] [Localization](https://github.com/BrightspaceUI/guide/wiki/Localization) with Serge (if applicable)
 > - [x] Demo page
 > - [x] README documentation
+
+
+## Screenshot
+
+![Org unit filter component](./test/visual-diff/screenshots/ci/golden/ou-filter/ou-filter-Desktop.png?raw=true)
 
 ## Usage
 
