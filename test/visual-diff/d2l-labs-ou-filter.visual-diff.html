@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en" data-timezone='{"name":"Canada - Toronto","identifier":"America/Chicago"}'>
+<head>
+		<link rel="stylesheet" href="/node_modules/@brightspace-ui/core/components/demo/styles.css" type="text/css">
+		<script src="/node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
+		<script type="module" src="/node_modules/@brightspace-ui/core/components/demo/demo-page.js"></script>
+		<script type="module">
+			/**
+			 *  Slightly improved copy of /demo/index.html
+			 */
+
+			/* eslint-disable no-console */
+			import { action, decorate, observable } from 'mobx';
+			import { COURSE_OFFERING, Tree } from '../../tree-filter';
+			import { css, html } from 'lit-element/lit-element.js';
+			import { MobxLitElement } from '@adobe/lit-mobx';
+			import { OuFilterDataManager } from '../../ou-filter';
+
+			function fetchCachedChildren() {
+				return new Map();
+			}
+
+			class DemoDataManager extends OuFilterDataManager {
+
+				constructor() {
+					super();
+					this._orgUnitTree = new Tree({});
+				}
+
+				loadData() {
+					const lastSearchResults = null;
+					const semesterTypeId = 25;
+					const orgUnits = [
+						[1, 'Course 1', 3, [3, 4], false],
+						[2, 'Course 2', 3, [3, 10], true],
+						[6, 'Course 3 has a surprisingly long name, but nonetheless this kind of thing is bound to happen sometimes and we do need to design for it. Is that not so?', 3, [7, 4], true],
+						[8, 'ZCourse 4', 3, [5], false],
+						[3, 'Department 1', 2, [5], false],
+						[7, 'Department 2 has a longer name', 2, [5], false],
+						[4, 'Semester 1', 25, [6606], false],
+						[10, 'Semester 2', 25, [6606], false],
+						[5, 'Faculty 1', 7, [6606], false],
+						[9, 'Faculty 2', 7, [6606, 10], false],
+						[6606, 'Dev', 1, [0], false]
+					];
+					const isOrgUnitsTruncated = false;
+
+					this._orgUnitTree = new Tree({
+						// add in any nodes from the most recent search; otherwise
+						// the search will blink out and come back, and also drop any "load more" results
+						nodes: lastSearchResults ? [...orgUnits, ...lastSearchResults] : orgUnits,
+						leafTypes: [COURSE_OFFERING],
+						invisibleTypes: [semesterTypeId],
+						selectedIds: [1],
+						ancestorIds: [],
+						oldTree: this.orgUnitTree,
+						isDynamic: isOrgUnitsTruncated,
+						// preload the tree with any children queries we've already run: otherwise parts of the
+						// tree blink out and then come back as they are loaded again
+						extraChildren: isOrgUnitsTruncated ?
+							fetchCachedChildren() || new Map() :
+							null
+					});
+				}
+
+				get orgUnitTree() {
+					return this._orgUnitTree;
+				}
+			}
+
+			decorate(DemoDataManager, {
+				_orgUnitTree: observable,
+				loadData: action
+			});
+
+			class DemoPage extends MobxLitElement {
+
+				static get styles() {
+					return [
+						css`
+							:host {
+								display: inline-block;
+							}
+							div {
+								padding: 30px;
+							}
+						`
+					];
+				}
+
+				constructor() {
+					super();
+					this.dataManager = new DemoDataManager();
+				}
+
+				firstUpdated() {
+					this.dataManager.loadData();
+				}
+
+				render() {
+					return html`
+						<div>
+							<d2l-labs-ou-filter
+								.dataManager=${this.dataManager}
+								@d2l-labs-ou-filter-change="${this._orgUnitFilterChange}"
+							></d2l-labs-ou-filter>
+						</div>
+					`;
+				}
+
+				_orgUnitFilterChange(event) {
+					event.stopPropagation();
+					console.log(event.target.selected);
+				}
+			}
+
+			customElements.define('d2l-labs-demo-page', DemoPage);
+		</script>
+		<title>d2l-labs-ou-filter</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta http-equiv="X-UA-Compatible" content="ie=edge">
+		<meta charset="UTF-8">
+	</head>
+	<style>
+		html, body {
+			min-height: 100%;
+			height: 100%;
+		}
+		body {
+			background-color: white;
+		}
+	</style>
+	<body>
+		<d2l-labs-demo-page></d2l-labs-demo-page>
+	</body>
+</html>

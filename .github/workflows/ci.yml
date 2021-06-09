@@ -1,36 +1,45 @@
-# This is a basic workflow to help you get started with Actions
-
 name: ci
+on: pull_request
 
-# Controls when the action will run. 
-on:
-  # Triggers the workflow on push or pull request events but only for the master branch
-  push:
-    branches: [ master ]
-  pull_request:
-    branches: [ master ]
-
-  # Allows you to run this workflow manually from the Actions tab
-  workflow_dispatch:
-
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "build"
-  build:
-    # The type of runner that the job will run on
+  vis-diff:
+    timeout-minutes: 5
     runs-on: ubuntu-latest
-
-    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v2
-
-      # Runs a single command using the runners shell
-      - name: Run a one-line script
-        run: echo Hello, world!
-
-      # Runs a set of commands using the runners shell
-      - name: Run a multi-line script
-        run: |
-          echo Add other actions to build,
-          echo test, and deploy your project.
+      - uses: Brightspace/third-party-actions@actions/checkout
+      - uses: Brightspace/third-party-actions@actions/setup-node
+      - name: Install dependencies
+        run: npm install
+      - name: Visual Diff Tests
+        uses: BrightspaceUI/actions/visual-diff@master
+        with:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_SESSION_TOKEN: ${{ secrets.AWS_SESSION_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TEST_PATH: ./test/visual-diff/**/*.visual-diff.js
+  lint:
+    timeout-minutes: 5
+    runs-on: ubuntu-latest
+    steps:
+      - uses: Brightspace/third-party-actions@actions/checkout
+      - uses: Brightspace/third-party-actions@actions/setup-node
+      - name: Install dependencies
+        run: npm install
+      - name: Linting
+        run: npm run lint
+  sauce:
+    timeout-minutes: 15
+    runs-on: ubuntu-latest
+    steps:
+      - uses: Brightspace/third-party-actions@actions/checkout
+      - uses: Brightspace/third-party-actions@actions/setup-node
+        with:
+          node-version: 14.x
+      - name: Install dependencies
+        run: npm install
+      - name: SauceLabs Tests
+        run: npm run test:sauce
+        env:
+          SAUCE_USERNAME: Desire2Learn
+          SAUCE_ACCESS_KEY: ${{ secrets.SAUCE_ACCESS_KEY_DESIRE2LEARN }}
