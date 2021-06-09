@@ -32,8 +32,8 @@ describe('d2l-labs-ou-filter', () => {
 	const data = {
 		orgUnitTree: new Tree({
 			nodes: [
-				[1, 'root', 0, [0]],
-				[2, 'node', 3, [1]],
+				{	Id: 1, Name: 'root', Type: 0, Parents: [0] },
+				{	Id: 2, Name: 'node', Type: 3, Parents: [1] }
 			],
 			selectedIds: [2]
 		}),

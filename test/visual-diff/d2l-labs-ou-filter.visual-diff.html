@@ -31,17 +31,17 @@
 					const lastSearchResults = null;
 					const semesterTypeId = 25;
 					const orgUnits = [
-						[1, 'Course 1', 3, [3, 4], false],
-						[2, 'Course 2', 3, [3, 10], true],
-						[6, 'Course 3 has a surprisingly long name, but nonetheless this kind of thing is bound to happen sometimes and we do need to design for it. Is that not so?', 3, [7, 4], true],
-						[8, 'ZCourse 4', 3, [5], false],
-						[3, 'Department 1', 2, [5], false],
-						[7, 'Department 2 has a longer name', 2, [5], false],
-						[4, 'Semester 1', 25, [6606], false],
-						[10, 'Semester 2', 25, [6606], false],
-						[5, 'Faculty 1', 7, [6606], false],
-						[9, 'Faculty 2', 7, [6606, 10], false],
-						[6606, 'Dev', 1, [0], false]
+						{ Id: 1, Name: 'Course 1', Type: 3, Parents: [3, 4], IsActive: false },
+						{ Id: 2, Name: 'Course 2', Type: 3, Parents: [3, 10], IsActive: true },
+						{ Id: 6, Name: 'Course 3 has a surprisingly long name, but nonetheless this kind of thing is bound to happen sometimes and we do need to design for it. Is that not so?', Type: 3, Parents: [7, 4], IsActive: true },
+						{ Id: 8, Name: 'ZCourse 4', Type: 3, Parents: [5], IsActive: false },
+						{ Id: 3, Name: 'Department 1', Type: 2, Parents: [5], IsActive: false },
+						{ Id: 7, Name: 'Department 2 has a longer name', Type: 2, Parents: [5], IsActive: false },
+						{ Id: 4, Name: 'Semester 1', Type: 25, Parents: [6606], IsActive: false },
+						{ Id: 10, Name: 'Semester 2', Type: 25, Parents: [6606], IsActive: false },
+						{ Id: 5, Name: 'Faculty 1', Type: 7, Parents: [6606], IsActive: false },
+						{ Id: 9, Name: 'Faculty 2', Type: 7, Parents: [6606, 10], IsActive: false },
+						{ Id: 6606, Name: 'Dev', Type: 1, Parents: [0], IsActive: false }
 					];
 					const isOrgUnitsTruncated = false;
 
