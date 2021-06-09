@@ -18,6 +18,11 @@ A Lit-element component that renders org unit structure tree. It supports load m
 > - [x] Demo page
 > - [x] README documentation
 
+
+## Screenshot
+
+![Org unit filter component](./test/visual-diff/screenshots/ci/golden/ou-filter/ou-filter-Desktop.png?raw=true)
+
 ## Usage
 
 ```js
