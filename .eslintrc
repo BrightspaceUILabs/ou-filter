@@ -1,0 +1,31 @@
+{
+    "env": {
+        "es6": true,
+        "browser": true,
+        "mocha": true
+    },
+    "extends": [
+      "plugin:json/recommended",
+      "brightspace/lit-config",
+      "plugin:lit-a11y/recommended"
+    ],
+    "parserOptions": {
+        "ecmaVersion": 2018,
+        "sourceType": "module",
+        "babelOptions": {
+            "plugins": [
+                  "@babel/plugin-proposal-class-properties"
+            ]
+        }
+    },
+    "plugins": [
+      "json",
+      "html",
+      "lit-a11y"
+    ],
+    "rules": {
+        "no-console": ["warn"],
+        "sort-class-members/sort-class-members": ["off"],
+        "indent": ["warn"]
+    }
+}
