@@ -12,7 +12,7 @@ export const Localizer = superclass => class extends LocalizeMixin(superclass) {
 	static async getLocalizeResources(langs) {
 		function getCollectionName() {
 			// must be "name" from package.json, then backslash, then "name" from *.serge.json
-			return 'd2l-labs-ou-filter\\ou-filter';
+			return '@brightspace-ui-labs/ou-filter\\ou-filter';
 		}
 
 		let translations;
