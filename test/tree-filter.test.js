@@ -17,25 +17,25 @@ function assertSetsAreEqual(setA, setB) {
 describe('Tree', () => {
 
 	const nodes = [
-		[-100, 'edge case', null, null],
-		[6606, 'Org', mockOuTypes.organization, [0]],
-		[1001, 'Department 1', mockOuTypes.department, [6606]],
-		[1002, 'Department 2', mockOuTypes.department, [6606]],
-		[1003, 'Department 3', mockOuTypes.department, [6606]],
+		{ Id: -100, Name: 'edge case', Type: null, Parents: null },
+		{ Id: 6606, Name: 'Org', Type: mockOuTypes.organization, Parents: [0] },
+		{ Id: 1001, Name: 'Department 1', Type: mockOuTypes.department, Parents: [6606] },
+		{ Id: 1002, Name: 'Department 2', Type: mockOuTypes.department, Parents: [6606] },
+		{ Id: 1003, Name: 'Department 3', Type: mockOuTypes.department, Parents: [6606] },
 
-		[2, 'Course 2', mockOuTypes.course, [1001]],
-		[1, 'Course 1', mockOuTypes.course, [1001]],
-		[3, 'Course 3', mockOuTypes.course, [1001, 1002]], // part of 2 departments
-		[4, null, mockOuTypes.course, [1003]],
+		{ Id: 2, Name: 'Course 2', Type: mockOuTypes.course, Parents: [1001] },
+		{ Id: 1, Name: 'Course 1', Type: mockOuTypes.course, Parents: [1001] },
+		{ Id: 3, Name: 'Course 3', Type: mockOuTypes.course, Parents: [1001, 1002] }, // part of 2 departments
+		{ Id: 4, Name: null, Type: mockOuTypes.course, Parents: [1003] },
 
-		[11, 'Semester 1', mockOuTypes.semester, [6606]],
-		[12, 'Semester 2', mockOuTypes.semester, [6606]],
-		[13, 'Semester 3', mockOuTypes.semester, [6606]],
+		{ Id: 11, Name: 'Semester 1', Type: mockOuTypes.semester, Parents: [6606] },
+		{ Id: 12, Name: 'Semester 2', Type: mockOuTypes.semester, Parents: [6606] },
+		{ Id: 13, Name: 'Semester 3', Type: mockOuTypes.semester, Parents: [6606] },
 
-		[111, 'Course 1 / Semester 1', mockOuTypes.courseOffering, [1, 11]],
-		[112, 'Course 1 / Semester 2', mockOuTypes.courseOffering, [1, 12]],
-		[211, 'Course 2 / Semester 1', mockOuTypes.courseOffering, [2, 11]],
-		[312, 'Course 3 / Semester 2', mockOuTypes.courseOffering, [3, 12]]
+		{ Id: 111, Name: 'Course 1 / Semester 1', Type: mockOuTypes.courseOffering, Parents: [1, 11] },
+		{ Id: 112, Name: 'Course 1 / Semester 2', Type: mockOuTypes.courseOffering, Parents: [1, 12] },
+		{ Id: 211, Name: 'Course 2 / Semester 1', Type: mockOuTypes.courseOffering, Parents: [2, 11] },
+		{ Id: 312, Name: 'Course 3 / Semester 2', Type: mockOuTypes.courseOffering, Parents: [3, 12] }
 	];
 	const selectedIds = [111, 1003];
 	const leafTypes = [mockOuTypes.courseOffering];
@@ -50,7 +50,7 @@ describe('Tree', () => {
 
 	describe('constructor', () => {
 		it('should accept missing selectedIds and oldTree', () => {
-			new Tree({ nodes: [[10, 'Faculty 2', 7, [6607]]], leafTypes: [3] });
+			new Tree({ nodes: [{ Id: 10, Name: 'Faculty 2', Type: 7, Parents: [6607] }], leafTypes: [3] });
 		});
 
 		it('should build a default tree', () => {
@@ -60,7 +60,7 @@ describe('Tree', () => {
 
 	describe('ids', () => {
 		it('should return all node ids', () => {
-			expect(dynamicTree.ids.sort()).to.deep.equal(nodes.map(x => x[0]).sort());
+			expect(dynamicTree.ids.sort()).to.deep.equal(nodes.map(x => x.Id).sort());
 		});
 	});
 
@@ -197,7 +197,10 @@ describe('Tree', () => {
 			it(`should add the given nodes ${hasBookmark ? 'with a bookmark' : ''}`, () => {
 				dynamicTree.addNodes(
 					1001,
-					[[991, 'new1', mockOuTypes.course], [992, 'new2', mockOuTypes.courseOffering]],
+					[
+						{ Id: 991, Name: 'new1', Type: mockOuTypes.course },
+						{ Id: 992, Name: 'new2', Type: mockOuTypes.courseOffering }
+					],
 					hasBookmark,
 					'bookmark'
 				);
@@ -217,7 +220,7 @@ describe('Tree', () => {
 				const tree = new Tree({ nodes, selectedIds, leafTypes, invisibleTypes, isDynamic: true,
 					extraChildren: new Map([
 						[1001, {
-							Items: [[991, 'new1', mockOuTypes.course], [992, 'new2', mockOuTypes.courseOffering]],
+							Items: [{ Id: 991, Name: 'new1', Type: mockOuTypes.course }, { Id: 992, Name: 'new2', Type: mockOuTypes.courseOffering }],
 							PagingInfo: { HasMoreItems: hasBookmark, Bookmark: 'bookmark' }
 						}]
 					])
@@ -245,19 +248,19 @@ describe('Tree', () => {
 		});
 
 		it('should add the nodes to a previously childless parent', () => {
-			dynamicTree.addNodes(4, [[991, 'new1', mockOuTypes.course], [992, 'new2', mockOuTypes.courseOffering]]);
+			dynamicTree.addNodes(4, [{ Id: 991, Name: 'new1', Type: mockOuTypes.course }, { Id: 992, Name: 'new2', Type: mockOuTypes.courseOffering }]);
 			expect([...dynamicTree.getChildIds(4)].sort()).to.deep.equal([991, 992]);
 			expect(dynamicTree.isPopulated(4)).to.be.true;
 		});
 
 		it('should add the nodes to root (possible corner case)', () => {
-			dynamicTree.addNodes(6606, [[991, 'new1', mockOuTypes.course], [992, 'new2', mockOuTypes.courseOffering]]);
+			dynamicTree.addNodes(6606, [{ Id: 991, Name: 'new1', Type: mockOuTypes.course }, { Id: 992, Name: 'new2', Type: mockOuTypes.courseOffering }]);
 			expect([...dynamicTree.getChildIds(6606)].sort()).to.deep.equal([1001, 1002, 1003, 11, 12, 13, 991, 992]);
 			expect(dynamicTree.isPopulated(6606)).to.be.true;
 		});
 
 		it('should merge with existing children', () => {
-			dynamicTree.addNodes(1001, [[991, 'new1', mockOuTypes.course], [2 /* already a child */, 'new2', mockOuTypes.courseOffering]]);
+			dynamicTree.addNodes(1001, [{ Id: 991, Name: 'new1', Type: mockOuTypes.course }, { Id: 2 /* already a child */, Name: 'new2', Type: mockOuTypes.courseOffering }]);
 			expect([...dynamicTree.getChildIds(1001)].sort()).to.deep.equal([1, 2, 3, 991]);
 			expect(dynamicTree.isPopulated(1001)).to.be.true;
 		});
@@ -269,12 +272,12 @@ describe('Tree', () => {
 		});
 
 		it('should make new children visible', () => {
-			dynamicTree.addNodes(1001, [[991, 'bnew1', mockOuTypes.course], [992, 'anew2', mockOuTypes.courseOffering]]);
+			dynamicTree.addNodes(1001, [{ Id: 991, Name: 'bnew1', Type: mockOuTypes.course }, { Id: 992, Name: 'anew2', Type: mockOuTypes.courseOffering }]);
 			expect(dynamicTree.getChildIdsForDisplay(1001)).to.deep.equal([992, 991, 1, 2, 3]);
 		});
 
 		it('should select new nodes if the parent is selected', () => {
-			dynamicTree.addNodes(1003, [[991, 'new1', mockOuTypes.course], [992, 'new2', mockOuTypes.courseOffering]]);
+			dynamicTree.addNodes(1003, [{ Id: 991, Name: 'new1', Type: mockOuTypes.course }, { Id: 992, Name: 'new2', Type: mockOuTypes.courseOffering }]);
 			expect(dynamicTree.getState(991)).to.equal('explicit');
 			expect(dynamicTree.getState(992)).to.equal('explicit');
 		});
@@ -283,7 +286,7 @@ describe('Tree', () => {
 			const tree = new Tree({ nodes, selectedIds, leafTypes, invisibleTypes, isDynamic: true,
 				extraChildren: new Map([
 					[1003, {
-						Items: [[991, 'new1', mockOuTypes.course], [992, 'new2', mockOuTypes.courseOffering]],
+						Items: [{ Id: 991, Name: 'new1', Type: mockOuTypes.course }, { Id: 992, Name: 'new2', Type: mockOuTypes.courseOffering }],
 						PagingInfo: { HasMoreItems: true, Bookmark: '992' }
 					}]
 				])
@@ -293,36 +296,36 @@ describe('Tree', () => {
 		});
 
 		it('should not select new nodes if the parent is partially selected', () => {
-			dynamicTree.addNodes(1001, [[991, 'new1', mockOuTypes.course], [992, 'new2', mockOuTypes.courseOffering]]);
+			dynamicTree.addNodes(1001, [{ Id: 991, Name: 'new1', Type: mockOuTypes.course }, { Id: 992, Name: 'new2', Type: mockOuTypes.courseOffering }]);
 			expect(dynamicTree.getState(991)).to.equal('none');
 			expect(dynamicTree.getState(992)).to.equal('none');
 		});
 
 		it('should not select new nodes if the parent is not selected', () => {
-			dynamicTree.addNodes(1002, [[991, 'new1', mockOuTypes.course], [992, 'new2', mockOuTypes.courseOffering]]);
+			dynamicTree.addNodes(1002, [{ Id: 991, Name: 'new1', Type: mockOuTypes.course }, { Id: 992, Name: 'new2', Type: mockOuTypes.courseOffering }]);
 			expect(dynamicTree.getState(991)).to.equal('none');
 			expect(dynamicTree.getState(992)).to.equal('none');
 		});
 
 		it('should set the parent of new nodes', () => {
-			dynamicTree.addNodes(1001, [[991, 'new1', mockOuTypes.course], [992, 'new2', mockOuTypes.courseOffering]]);
+			dynamicTree.addNodes(1001, [{ Id: 991, Name: 'new1', Type: mockOuTypes.course }, { Id: 992, Name: 'new2', Type: mockOuTypes.courseOffering }]);
 			expect(dynamicTree.getParentIds(991)).to.deep.equal([1001]);
 			expect(dynamicTree.getParentIds(992)).to.deep.equal([1001]);
 		});
 
 		it('should add the new parent to existing nodes', () => {
-			dynamicTree.addNodes(1001, [[4, 'already a child of 1003', mockOuTypes.course], [992, 'new2', mockOuTypes.courseOffering]]);
+			dynamicTree.addNodes(1001, [{ Id: 4, Name: 'already a child of 1003', Type: mockOuTypes.course }, { Id: 992, Name: 'new2', Type: mockOuTypes.courseOffering }]);
 			expect([...dynamicTree.getParentIds(4)].sort()).to.deep.equal([1001, 1003]);
 			expect(dynamicTree.getParentIds(992)).to.deep.equal([1001]);
 		});
 
 		it('should report the correct ancestors for a new node', () => {
-			dynamicTree.addNodes(3, [[991, 'new1', mockOuTypes.course], [992, 'new2', mockOuTypes.courseOffering]]);
+			dynamicTree.addNodes(3, [{ Id: 991, Name: 'new1', Type: mockOuTypes.course }, { Id: 992, Name: 'new2', Type: mockOuTypes.courseOffering }]);
 			assertSetsAreEqual(dynamicTree.getAncestorIds(991), new Set([1001, 1002, 3, 6606, 991]));
 		});
 
 		it('should report the correct ancestors for descendants of a node with a new parent', () => {
-			dynamicTree.addNodes(1003, [[1, 'already a child of 1001', mockOuTypes.course], [992, 'new2', mockOuTypes.courseOffering]]);
+			dynamicTree.addNodes(1003, [{ Id: 1, Name: 'already a child of 1001', Type: mockOuTypes.courseOffering }, { Id: 992, Name: 'new2', Type: mockOuTypes.courseOffering }]);
 			assertSetsAreEqual(dynamicTree.getAncestorIds(1), new Set([1, 1001, 1003, 6606]));
 			assertSetsAreEqual(dynamicTree.getAncestorIds(112), new Set([112, 1, 1001, 1003, 12, 6606]));
 		});
@@ -330,17 +333,17 @@ describe('Tree', () => {
 
 	describe('addTree', () => {
 		const searchResults = [
-			[6606, 'Org', mockOuTypes.organization, [0]],
-			[1002, 'Department 2', mockOuTypes.department, [6606]],
-			[1003, 'Department 3', mockOuTypes.department, [6606]],
+			{ Id: 6606, Name: 'Org', Type: mockOuTypes.organization, Parents: [0] },
+			{ Id: 1002, Name: 'Department 2', Type: mockOuTypes.department, Parents: [6606] },
+			{ Id: 1003, Name: 'Department 3', Type: mockOuTypes.department, Parents: [6606] },
 
-			[3, 'Course 3', mockOuTypes.course, [1001, 1002]], // already present
-			[94, 'Course 5', mockOuTypes.course, [1003, 1002]], // new
+			{ Id: 3, Name: 'Course 3', Type: mockOuTypes.course, Parents: [1001, 1002] }, // already present
+			{ Id: 94, Name: 'Course 5', Type: mockOuTypes.course, Parents: [1003, 1002] }, // new
 
-			[11, 'Semester 1', mockOuTypes.semester, [6606]],
+			{ Id: 11, Name: 'Semester 1', Type: mockOuTypes.semester, Parents: [6606] },
 
-			[511, 'Course 5 / Semester 1', mockOuTypes.courseOffering, [94, 11]], // new
-			[113, 'Course 1 / Semester 3', mockOuTypes.courseOffering, [1, 13]] // new, not selected
+			{ Id: 511, Name: 'Course 5 / Semester 1', Type: mockOuTypes.courseOffering, Parents: [94, 11] }, // new
+			{ Id: 113, Name: 'Course 1 / Semester 3', Type: mockOuTypes.courseOffering, Parents: [1, 13] } // new, not selected
 		];
 		it('should add the given nodes', () => {
 			dynamicTree.addTree(searchResults);
@@ -411,9 +414,9 @@ describe('Tree', () => {
 
 		it('should not throw if an org unit has no parents', () => {
 			new Tree({ nodes: [
-				[6606, 'Org', mockOuTypes.organization, [0]],
-				[1001, 'Department 1', mockOuTypes.department, null],
-				[1002, 'Department 2', mockOuTypes.department, [6606]]
+				{ Id: 6606, Name: 'Org', Type: mockOuTypes.organization, Parents: [0] },
+				{ Id: 1001, Name: 'Department 1', Type: mockOuTypes.department, Parents: null },
+				{ Id: 1002, Name: 'Department 2', Type: mockOuTypes.department, Parents: [6606] }
 			] });
 		});
 
@@ -552,42 +555,42 @@ describe('Tree', () => {
 
 	describe('pruning', () => {
 		const singleDepartmentNodes = [
-			[6606, 'Org', mockOuTypes.organization, [0]],
-			[1001, 'Department 1', mockOuTypes.department, [6606]],
+			{ Id: 6606, Name: 'Org', Type: mockOuTypes.organization, Parents: [0] },
+			{ Id: 1001, Name: 'Department 1', Type: mockOuTypes.department, Parents: [6606] },
 
-			[2, 'Course 2', mockOuTypes.course, [1001]],
-			[1, 'Course 1', mockOuTypes.course, [1001]],
+			{ Id: 2, Name: 'Course 2', Type: mockOuTypes.course, Parents: [1001] },
+			{ Id: 1, Name: 'Course 1', Type: mockOuTypes.course, Parents: [1001] },
 
-			[11, 'Semester 1', mockOuTypes.semester, [6606]],
-			[12, 'Semester 2', mockOuTypes.semester, [6606]],
+			{ Id: 11, Name: 'Semester 1', Type: mockOuTypes.semester, Parents: [6606] },
+			{ Id: 12, Name: 'Semester 2', Type: mockOuTypes.semester, Parents: [6606] },
 
-			[111, 'Course 1 / Semester 1', mockOuTypes.courseOffering, [1, 11]],
-			[211, 'Course 2 / Semester 1', mockOuTypes.courseOffering, [2, 12]]
+			{ Id: 111, Name: 'Course 1 / Semester 1', Type: mockOuTypes.courseOffering, Parents: [1, 11] },
+			{ Id: 211, Name: 'Course 2 / Semester 1', Type: mockOuTypes.courseOffering, Parents: [2, 12] }
 		];
 
 		const singleCourseNodes = [
-			[6606, 'Org', mockOuTypes.organization, [0]],
-			[1001, 'Department 1', mockOuTypes.department, [6606]],
+			{ Id: 6606, Name: 'Org', Type: mockOuTypes.organization, Parents: [0] },
+			{ Id: 1001, Name: 'Department 1', Type: mockOuTypes.department, Parents: [6606] },
 
-			[1, 'Course 1', mockOuTypes.course, [1001]],
+			{ Id: 1, Name: 'Course 1', Type: mockOuTypes.course, Parents: [1001] },
 
-			[11, 'Semester 1', mockOuTypes.semester, [6606]],
-			[12, 'Semester 2', mockOuTypes.semester, [6606]],
+			{ Id: 11, Name: 'Semester 1', Type: mockOuTypes.semester, Parents: [6606] },
+			{ Id: 12, Name: 'Semester 2', Type: mockOuTypes.semester, Parents: [6606] },
 
-			[111, 'Course 1 / Semester 1', mockOuTypes.courseOffering, [1, 11]],
-			[112, 'Course 1 / Semester 2', mockOuTypes.courseOffering, [1, 12]]
+			{ Id: 111, Name: 'Course 1 / Semester 1', Type: mockOuTypes.courseOffering, Parents: [1, 11] },
+			{ Id: 112, Name: 'Course 1 / Semester 2', Type: mockOuTypes.courseOffering, Parents: [1, 12] }
 		];
 
 		const singleCourseOfferingNodes = [
-			[6606, 'Org', mockOuTypes.organization, [0]],
-			[1001, 'Department 1', mockOuTypes.department, [6606]],
+			{ Id: 6606, Name: 'Org', Type: mockOuTypes.organization, Parents: [0] },
+			{ Id: 1001, Name: 'Department 1', Type: mockOuTypes.department, Parents: [6606] },
 
-			[1, 'Course 1', mockOuTypes.course, [1001]],
+			{ Id: 1, Name: 'Course 1', Type: mockOuTypes.course, Parents: [1001] },
 
-			[11, 'Semester 1', mockOuTypes.semester, [6606]],
-			[12, 'Semester 2', mockOuTypes.semester, [6606]],
+			{ Id: 11, Name: 'Semester 1', Type: mockOuTypes.semester, Parents: [6606] },
+			{ Id: 12, Name: 'Semester 2', Type: mockOuTypes.semester, Parents: [6606] },
 
-			[111, 'Course 1 / Semester 1', mockOuTypes.courseOffering, [1, 11]]
+			{ Id: 111, Name: 'Course 1 / Semester 1', Type: mockOuTypes.courseOffering, Parents: [1, 11] }
 		];
 
 		describe('getChildIdsForDisplay', () => {
@@ -634,16 +637,16 @@ describe('d2l-labs-tree-filter', () => {
 	async function buildElementUnderTest(isDynamic, childHandler) {
 		const tree = new Tree({
 			nodes: [
-				[1, 'Course 1', 3, [3, 4]],
-				[2, 'Course 2', 3, [3, 4]],
-				[3, 'Department 1', 2, [5]],
-				[5, 'Faculty 1', 7, [6607]],
-				[6, 'Course 3', 3, [7, 4]],
-				[7, 'Department 2', 2, [5]],
-				[8, 'Course 4', 3, [5]],
-				[9, 'Course 5', 3, [5]],
-				[10, 'Faculty 2', 7, [6607]],
-				[6607, 'Dev', 1, [0]]
+				{ Id: 1, Name: 'Course 1', Type: 3, Parents: [3, 4] },
+				{ Id: 2, Name: 'Course 2', Type: 3, Parents: [3, 4] },
+				{ Id: 3, Name: 'Department 1', Type: 2, Parents: [5] },
+				{ Id: 5, Name: 'Faculty 1', Type: 7, Parents: [6607] },
+				{ Id: 6, Name: 'Course 3', Type: 3, Parents: [7, 4] },
+				{ Id: 7, Name: 'Department 2', Type: 2, Parents: [5] },
+				{ Id: 8, Name: 'Course 4', Type: 3, Parents: [5] },
+				{ Id: 9, Name: 'Course 5', Type: 3, Parents: [5] },
+				{ Id: 10, Name: 'Faculty 2', Type: 7, Parents: [6607] },
+				{ Id: 6607, Name: 'Dev', Type: 1, Parents: [0] }
 			],
 			selectedIds: [1, 2, 7],
 			leafTypes: [3],
@@ -859,7 +862,7 @@ describe('d2l-labs-tree-filter', () => {
 
 		it('should add dynamic search results', async() => {
 			el.searchString = 'asdf'; // get into search mode
-			el.addSearchResults([[9876, 'asdf', mockOuTypes.courseOffering, [6606]]], false);
+			el.addSearchResults([{ Id: 9876, Name: 'asdf', Type: mockOuTypes.courseOffering, Parents: [6606] }], false);
 			await el.treeUpdateComplete;
 
 			const resultNodes = el.shadowRoot.querySelectorAll('d2l-labs-tree-selector-node[slot="search-results"]');
@@ -938,7 +941,7 @@ describe('d2l-labs-tree-filter', () => {
 
 		it('should fire d2l-labs-tree-filter-search on click of load more button', async() => {
 			el.searchString = 'asdf'; // get into search mode
-			el.addSearchResults([[9876, 'asdf', mockOuTypes.courseOffering, [6606]]], true, 'bookmark');
+			el.addSearchResults([{ Id: 9876, Name: 'asdf', Type: mockOuTypes.courseOffering, Parents: [6606] }], true, 'bookmark');
 			await el.treeUpdateComplete;
 
 			const resultNodes = el.shadowRoot.querySelectorAll('d2l-button[slot="search-results"]');

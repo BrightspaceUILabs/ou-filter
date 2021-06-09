@@ -7,11 +7,6 @@ import { Localizer } from './locales/localizer';
 import { MobxLitElement } from '@adobe/lit-mobx';
 
 // node array indices
-export const ID = 0; // unique node identifier (Number)
-export const NAME = 1; // node name (String)
-export const TYPE = 2; // Number
-export const PARENTS = 3; // array of parent ids (Number); a node with parent 0 is the root
-export const ACTIVE_STATUS = 4; // boolean to represent whether the course is active or not
 export const COURSE_OFFERING = 3;
 
 export class Tree {
@@ -44,7 +39,7 @@ export class Tree {
 		this.leafTypes = leafTypes;
 		this.invisibleTypes = invisibleTypes;
 		this.initialSelectedIds = selectedIds;
-		this._nodes = new Map(nodes.map(x => [x[ID], x]));
+		this._nodes = new Map(nodes.map(x => [x.Id, x]));
 		this._children = new Map();
 		this._ancestors = new Map();
 		this._state = new Map();
@@ -143,21 +138,21 @@ export class Tree {
 
 		// add parentId to any existing parents of these nodes (before replacing the nodes and losing this info)
 		newChildren.forEach(x => {
-			const existingParents = this.getParentIds(x[ID]);
+			const existingParents = this.getParentIds(x.Id);
 			const allParents = new Set([parentId, ...existingParents]);
-			x[PARENTS] = [...allParents];
+			x.Parents = [...allParents];
 		});
-		newChildren.forEach(x => this._nodes.set(x[ID], x));
+		newChildren.forEach(x => this._nodes.set(x.Id, x));
 
 		// merge the new children in to the parent
-		this._children.set(parentId, new Set([...newChildren.map(x => x[ID]), ...this.getChildIds(parentId)]));
+		this._children.set(parentId, new Set([...newChildren.map(x => x.Id), ...this.getChildIds(parentId)]));
 
 		// caller should only provide visible nodes
 		if (this._visible) {
-			newChildren.forEach(x => this._visible.add(x[ID]));
+			newChildren.forEach(x => this._visible.add(x.Id));
 		}
 		if (this.getState(parentId) === 'explicit') {
-			newChildren.forEach(x => this._state.set(x[ID], 'explicit'));
+			newChildren.forEach(x => this._state.set(x.Id, 'explicit'));
 		}
 
 		// Ancestors may need updating: if one or more of newChildren was already present (due to
@@ -177,25 +172,25 @@ export class Tree {
 	 * @param {[][]} [nodes=[]] - Array of arrays, including all ancestors up to root, in the same format as for the constructor
 	 */
 	addTree(nodes) {
-		nodes.forEach(x => this._nodes.set(x[ID], x));
+		nodes.forEach(x => this._nodes.set(x.Id, x));
 
 		// invariant: the tree must always contain all ancestors of all nodes.
 		// This means existing nodes cannot be new children of any node: we only need to update children for parents of new nodes.
-		this._updateChildren(nodes.map(x => x[ID]));
+		this._updateChildren(nodes.map(x => x.Id));
 
 		// Set selected state for ancestors and descendants if a new node should be selected because its
 		// parent is.
 		// This could perform poorly if the tree being merged in is large and deep, but in the expected use case
 		// (search with load more), we should only be adding a handful of nodes at a time.
 		nodes.forEach(node => {
-			if (node[PARENTS].some(parentId => this.getState(parentId) === 'explicit')) {
-				this.setSelected(node[ID], true);
+			if (node.Parents.some(parentId => this.getState(parentId) === 'explicit')) {
+				this.setSelected(node.Id, true);
 			}
 		});
 
 		// caller should only provide visible nodes
 		if (this._visible) {
-			nodes.forEach(x => this._visible.add(x[ID]));
+			nodes.forEach(x => this._visible.add(x.Id));
 		}
 
 		// refresh ancestors
@@ -253,12 +248,12 @@ export class Tree {
 
 	getName(id) {
 		const node = this._nodes.get(id);
-		return (node && node[NAME]) || '';
+		return (node && node.Name) || '';
 	}
 
 	getParentIds(id) {
 		const node = this._nodes.get(id);
-		return (node && node[PARENTS]) || [];
+		return (node && node.Parents) || [];
 	}
 
 	getState(id) {
@@ -267,12 +262,12 @@ export class Tree {
 
 	getType(id) {
 		const node = this._nodes.get(id);
-		return (node && node[TYPE]) || 0;
+		return (node && node.Type) || 0;
 	}
 
 	isActive(id) {
 		const node = this._nodes.get(id);
-		return (node && node[ACTIVE_STATUS]) || false;
+		return (node && node.IsActive) || false;
 	}
 
 	/**

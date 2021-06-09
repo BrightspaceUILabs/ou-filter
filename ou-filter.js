@@ -12,7 +12,7 @@ export class OuFilterDataManager {
 	 * Fetches children of specified org unit
 	 * @param {string} id - org unit id
 	 * @param {string} bookmark
-	 * @returns {Object} - { PagingInfo:{ HasMoreItems: boolean, Bookmark: string }, Items: [ [ID, NAME, TYPE, PARENTS, ACTIVE_STATUS]] }. Fields indices are defined in tree-filter.js
+	 * @returns {Object} - { PagingInfo:{ HasMoreItems: boolean, Bookmark: string }, Items: [{Id: integer, Name: string, Type: integer, Parents: [integer, ...], IsActive: boolean}] }. Fields indices are defined in tree-filter.js
 	 */
 	// eslint-disable-next-line no-unused-vars
 	async fetchRelevantChildren(id, bookmark) {
@@ -23,7 +23,7 @@ export class OuFilterDataManager {
 	 * Returns org units for the provided search string
 	 * @param {string} searchString
 	 * @param {string} bookmark
-	 * @returns {Object} - { PagingInfo:{ HasMoreItems: boolean, Bookmark: string }, Items: [ [ID, NAME, TYPE, PARENTS, ACTIVE_STATUS]] }. Fields indices are defined in tree-filter.js
+	 * @returns {Object} - { PagingInfo:{ HasMoreItems: boolean, Bookmark: string }, Items: [{Id: integer, Name: string, Type: integer, Parents: [integer, ...], IsActive: boolean}] }. Fields indices are defined in tree-filter.js
 	 */
 	// eslint-disable-next-line no-unused-vars
 	async orgUnitSearch(searchString, bookmark) {
