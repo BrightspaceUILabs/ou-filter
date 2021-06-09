@@ -625,10 +625,10 @@ describe('Tree', () => {
 	});
 });
 
-describe('d2l-insights-tree-filter', () => {
+describe('d2l-labs-tree-filter', () => {
 	let el;
 	function node(id, element = el) {
-		return element.shadowRoot.querySelector(`d2l-insights-tree-selector-node[data-id="${id}"]`);
+		return element.shadowRoot.querySelector(`d2l-labs-tree-selector-node[data-id="${id}"]`);
 	}
 
 	async function buildElementUnderTest(isDynamic, childHandler) {
@@ -651,12 +651,12 @@ describe('d2l-insights-tree-filter', () => {
 		});
 
 		const el = await fixture(
-			html`<d2l-insights-tree-filter
+			html`<d2l-labs-tree-filter
 				opener-text="filter"
 				opener-text-selected="filter with selections"
-				@d2l-insights-tree-filter-request-children="${childHandler}"
+				@d2l-labs-tree-filter-request-children="${childHandler}"
 				.tree="${tree}"
-			></d2l-insights-tree-filter>`
+			></d2l-labs-tree-filter>`
 		);
 		await el.treeUpdateComplete;
 
@@ -672,7 +672,7 @@ describe('d2l-insights-tree-filter', () => {
 
 	describe('constructor', () => {
 		it('should construct', () => {
-			runConstructor('d2l-insights-tree-selector-node');
+			runConstructor('d2l-labs-tree-selector-node');
 		});
 	});
 
@@ -692,25 +692,25 @@ describe('d2l-insights-tree-filter', () => {
 			], selectedIds: [], leafTypes: [3] });
 
 			el = await fixture(
-				html`<d2l-insights-tree-filter
+				html`<d2l-labs-tree-filter
 				opener-text="filter"
 				opener-text-selected="filter with selections"
 				.tree="${treeWithNoSelections}"
-			></d2l-insights-tree-filter>`
+			></d2l-labs-tree-filter>`
 			);
 			await el.treeUpdateComplete;
 
-			const treeSelector = el.shadowRoot.querySelector('d2l-insights-tree-selector');
+			const treeSelector = el.shadowRoot.querySelector('d2l-labs-tree-selector');
 			expect(treeSelector.name).to.equal('filter');
 		});
 
 		it('should render with opener-text-selected if any items are selected', () => {
-			const treeSelector = el.shadowRoot.querySelector('d2l-insights-tree-selector');
+			const treeSelector = el.shadowRoot.querySelector('d2l-labs-tree-selector');
 			expect(treeSelector.name).to.equal('filter with selections');
 		});
 
 		it('should render with opener-text-selected if all items are deselected but initial selections are not reset', async() => {
-			const treeSelector = el.shadowRoot.querySelector('d2l-insights-tree-selector');
+			const treeSelector = el.shadowRoot.querySelector('d2l-labs-tree-selector');
 			node(3).simulateCheckboxClick();
 			await el.treeUpdateComplete;
 
@@ -731,13 +731,13 @@ describe('d2l-insights-tree-filter', () => {
 		});
 
 		it('should render as selected: children of selected nodes and nodes with all children selected', async() => {
-			const selectedNodes = el.shadowRoot.querySelectorAll('d2l-insights-tree-selector-node[selected-state="explicit"]');
+			const selectedNodes = el.shadowRoot.querySelectorAll('d2l-labs-tree-selector-node[selected-state="explicit"]');
 			// NB: 1 and 2 are dot rendered at all because their parent is closed
 			expect([...selectedNodes].map(x => x.dataId).sort()).to.deep.equal([3, 6, 7]);
 		});
 
 		it('should render as indeterminate nodes with some but not all children selected', async() => {
-			const indeterminateNodes = el.shadowRoot.querySelectorAll('d2l-insights-tree-selector-node[selected-state="indeterminate"]');
+			const indeterminateNodes = el.shadowRoot.querySelectorAll('d2l-labs-tree-selector-node[selected-state="indeterminate"]');
 			expect([...indeterminateNodes].map(x => x.dataId).sort()).to.deep.equal([5]);
 		});
 
@@ -829,10 +829,10 @@ describe('d2l-insights-tree-filter', () => {
 		it('should render search results', async() => {
 			el.searchString = '1'; // matches Course 1, Department 1, and Faculty 1 - as well as Faculty 2 (Id: 10)
 			await el.treeUpdateComplete;
-			const selector = el.shadowRoot.querySelector('d2l-insights-tree-selector');
+			const selector = el.shadowRoot.querySelector('d2l-labs-tree-selector');
 			expect(selector.isSearch).to.be.true;
 
-			const resultNodes = el.shadowRoot.querySelectorAll('d2l-insights-tree-selector-node[slot="search-results"]');
+			const resultNodes = el.shadowRoot.querySelectorAll('d2l-labs-tree-selector-node[slot="search-results"]');
 			expect(resultNodes.length).to.equal(4);
 			expect([...resultNodes].map(x => x.dataId).sort()).to.deep.equal([1, 10, 3, 5]);
 		});
@@ -843,15 +843,15 @@ describe('d2l-insights-tree-filter', () => {
 			el.searchString = '';
 			await el.treeUpdateComplete;
 
-			const selector = el.shadowRoot.querySelector('d2l-insights-tree-selector');
+			const selector = el.shadowRoot.querySelector('d2l-labs-tree-selector');
 			expect(selector.isSearch).to.be.false;
 
-			const resultNodes = el.shadowRoot.querySelectorAll('d2l-insights-tree-selector-node[slot="search-results"]');
+			const resultNodes = el.shadowRoot.querySelectorAll('d2l-labs-tree-selector-node[slot="search-results"]');
 			expect(resultNodes.length).to.equal(0);
 		});
 
 		it('should handle a search event', async() => {
-			const selector = el.shadowRoot.querySelector('d2l-insights-tree-selector');
+			const selector = el.shadowRoot.querySelector('d2l-labs-tree-selector');
 			selector.simulateSearch('forastring');
 			await el.treeUpdateComplete;
 			expect(el.searchString).to.equal('forastring');
@@ -862,7 +862,7 @@ describe('d2l-insights-tree-filter', () => {
 			el.addSearchResults([[9876, 'asdf', mockOuTypes.courseOffering, [6606]]], false);
 			await el.treeUpdateComplete;
 
-			const resultNodes = el.shadowRoot.querySelectorAll('d2l-insights-tree-selector-node[slot="search-results"]');
+			const resultNodes = el.shadowRoot.querySelectorAll('d2l-labs-tree-selector-node[slot="search-results"]');
 			expect(resultNodes.length).to.equal(1);
 			expect([...resultNodes].map(x => x.dataId).sort()).to.deep.equal([9876]);
 		});
@@ -870,37 +870,37 @@ describe('d2l-insights-tree-filter', () => {
 
 	describe('events', () => {
 		async function expectEvent(id) {
-			const listener = oneEvent(el, 'd2l-insights-tree-filter-select');
+			const listener = oneEvent(el, 'd2l-labs-tree-filter-select');
 			node(id).simulateCheckboxClick();
 			const event = await listener;
-			expect(event.type).to.equal('d2l-insights-tree-filter-select');
+			expect(event.type).to.equal('d2l-labs-tree-filter-select');
 			expect(event.target).to.equal(el);
 		}
 
-		it('should fire d2l-insights-tree-filter-select on selection', async() => {
+		it('should fire d2l-labs-tree-filter-select on selection', async() => {
 			await expectEvent(9);
 		});
 
-		it('should fire d2l-insights-tree-filter-select on selection from indeterminate', async() => {
+		it('should fire d2l-labs-tree-filter-select on selection from indeterminate', async() => {
 			await expectEvent(5);
 		});
 
-		it('should fire d2l-insights-tree-selector-change on deselection', async() => {
+		it('should fire d2l-labs-tree-selector-change on deselection', async() => {
 			await expectEvent(3);
 		});
 
-		it('should clear and fire d2l-insights-tree-filter-select on clear', async() => {
-			const listener = oneEvent(el, 'd2l-insights-tree-filter-select');
-			const selector = el.shadowRoot.querySelector('d2l-insights-tree-selector');
+		it('should clear and fire d2l-labs-tree-filter-select on clear', async() => {
+			const listener = oneEvent(el, 'd2l-labs-tree-filter-select');
+			const selector = el.shadowRoot.querySelector('d2l-labs-tree-selector');
 			const button = selector.shadowRoot.querySelector('d2l-dropdown-content d2l-button-subtle');
 			button.click();
 			const event = await listener;
-			expect(event.type).to.equal('d2l-insights-tree-filter-select');
+			expect(event.type).to.equal('d2l-labs-tree-filter-select');
 			expect(event.target).to.equal(el);
 			expect(el.tree.selected).to.be.empty;
 		});
 
-		it('should immediately fire d2l-insights-tree-filter-request-children for root of dynamic tree', async() => {
+		it('should immediately fire d2l-labs-tree-filter-request-children for root of dynamic tree', async() => {
 			let isCalled = false;
 			let calledWithId = -1;
 			await buildElementUnderTest(true, event => {
@@ -911,32 +911,32 @@ describe('d2l-insights-tree-filter', () => {
 			expect(calledWithId).to.equal(6607);
 		});
 
-		it('should fire d2l-insights-tree-filter-request-children on open in dynamic tree', async() => {
+		it('should fire d2l-labs-tree-filter-request-children on open in dynamic tree', async() => {
 			const el = await buildElementUnderTest(true, event => {
 				// fill in some children so opening node 5 doesn't trigger another call for root
 				event.target.tree.addNodes(event.detail.id, [[event.detail.id === 6607 ? 5 : 123, 'dynamic child', 2, []]]);
 			});
-			const listener = oneEvent(el, 'd2l-insights-tree-filter-request-children');
+			const listener = oneEvent(el, 'd2l-labs-tree-filter-request-children');
 			node(5, el).simulateArrowClick();
 			const event = await listener;
-			expect(event.type).to.equal('d2l-insights-tree-filter-request-children');
+			expect(event.type).to.equal('d2l-labs-tree-filter-request-children');
 			expect(event.target).to.equal(el);
 			expect(event.detail.id).to.equal(5);
 		});
 
-		it('should fire d2l-insights-tree-filter-search on search in dynamic tree', async() => {
+		it('should fire d2l-labs-tree-filter-search on search in dynamic tree', async() => {
 			el.tree._populated = new Set(); // shortcut to make tree dynamic
-			const listener = oneEvent(el, 'd2l-insights-tree-filter-search');
-			const filter = el.shadowRoot.querySelector('d2l-insights-tree-selector');
+			const listener = oneEvent(el, 'd2l-labs-tree-filter-search');
+			const filter = el.shadowRoot.querySelector('d2l-labs-tree-selector');
 			filter.simulateSearch('asdf');
 			const event = await listener;
-			expect(event.type).to.equal('d2l-insights-tree-filter-search');
+			expect(event.type).to.equal('d2l-labs-tree-filter-search');
 			expect(event.target).to.equal(el);
 			expect(event.detail.searchString).to.equal('asdf');
 			expect(event.detail.bookmark).to.not.exist;
 		});
 
-		it('should fire d2l-insights-tree-filter-search on click of load more button', async() => {
+		it('should fire d2l-labs-tree-filter-search on click of load more button', async() => {
 			el.searchString = 'asdf'; // get into search mode
 			el.addSearchResults([[9876, 'asdf', mockOuTypes.courseOffering, [6606]]], true, 'bookmark');
 			await el.treeUpdateComplete;
@@ -944,10 +944,10 @@ describe('d2l-insights-tree-filter', () => {
 			const resultNodes = el.shadowRoot.querySelectorAll('d2l-button[slot="search-results"]');
 			expect(resultNodes.length).to.equal(1);
 
-			const listener = oneEvent(el, 'd2l-insights-tree-filter-search');
+			const listener = oneEvent(el, 'd2l-labs-tree-filter-search');
 			resultNodes[0].click();
 			const event = await listener;
-			expect(event.type).to.equal('d2l-insights-tree-filter-search');
+			expect(event.type).to.equal('d2l-labs-tree-filter-search');
 			expect(event.target).to.equal(el);
 			expect(event.detail.searchString).to.equal('asdf');
 			expect(event.detail.bookmark).to.equal('bookmark');

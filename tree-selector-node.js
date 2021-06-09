@@ -10,8 +10,8 @@ import { RtlMixin } from '@brightspace-ui/core/mixins/rtl-mixin.js';
  * @property {Number} dataId - returned in event.detail; caller should use this to update its model
  * @property {boolean} isOpen - whether the node is expanded (i.e. children are hidden unless true)
  * @property {string} selectedState - checkbox state: may be "explicit", "indeterminate", or "none"
- * @fires d2l-insights-tree-selector-node-select - user is requesting that this node be selected or deselected
- * @fires d2l-insights-tree-selector-node-open - user has requested that this node be expanded or collapsed
+ * @fires d2l-labs-tree-selector-node-select - user is requesting that this node be selected or deselected
+ * @fires d2l-labs-tree-selector-node-open - user has requested that this node be expanded or collapsed
  *
  */
 class TreeSelectorNode extends Localizer(RtlMixin(LitElement)) {
@@ -41,7 +41,7 @@ class TreeSelectorNode extends Localizer(RtlMixin(LitElement)) {
 				display: none;
 			}
 
-			.d2l-insights-tree-selector-node-node {
+			.d2l-labs-tree-selector-node-node {
 				display: flex;
 				flex-wrap: nowrap;
 				margin-bottom: 16px;
@@ -51,33 +51,33 @@ class TreeSelectorNode extends Localizer(RtlMixin(LitElement)) {
 				display: inline-block;
 			}
 
-			.d2l-insights-tree-selector-node-open-control {
+			.d2l-labs-tree-selector-node-open-control {
 				cursor: default;
 				margin-top: -3px;
 			}
-			.d2l-insights-tree-selector-node-open-control .d2l-insights-tree-selector-node-open {
+			.d2l-labs-tree-selector-node-open-control .d2l-labs-tree-selector-node-open {
 				display: none;
 			}
-			.d2l-insights-tree-selector-node-open-control[open] .d2l-insights-tree-selector-node-open {
+			.d2l-labs-tree-selector-node-open-control[open] .d2l-labs-tree-selector-node-open {
 				display: inline-block;
 			}
-			.d2l-insights-tree-selector-node-open-control[open] .d2l-insights-tree-selector-node-closed {
+			.d2l-labs-tree-selector-node-open-control[open] .d2l-labs-tree-selector-node-closed {
 				display: none;
 			}
 
-			.d2l-insights-tree-selector-node-subtree {
+			.d2l-labs-tree-selector-node-subtree {
 				margin-left: 34px;
 				margin-right: 0;
 			}
-			:host([dir="rtl"]) .d2l-insights-tree-selector-node-subtree {
+			:host([dir="rtl"]) .d2l-labs-tree-selector-node-subtree {
 				margin-left: 0;
 				margin-right: 34px;
 			}
-			.d2l-insights-tree-selector-node-subtree[hidden] {
+			.d2l-labs-tree-selector-node-subtree[hidden] {
 				display: none;
 			}
 
-			.d2l-insights-tree-selector-node-text {
+			.d2l-labs-tree-selector-node-text {
 				cursor: default;
 				display: inline-block;
 				margin-left: 0.5rem;
@@ -123,14 +123,14 @@ class TreeSelectorNode extends Localizer(RtlMixin(LitElement)) {
 			this.name;
 
 		return html`
-			<div class="d2l-insights-tree-selector-node-node" ?search="${this.isSearch}" ?search-result="${this.isSearchResult}">
+			<div class="d2l-labs-tree-selector-node-node" ?search="${this.isSearch}" ?search-result="${this.isSearchResult}">
 				<d2l-input-checkbox
 					?checked="${this._showSelected}"
 					?indeterminate="${this._showIndeterminate}"
 					aria-label="${label}"
 					@change="${this._onChange}"
 				></d2l-input-checkbox>
-				<span class="d2l-insights-tree-selector-node-text" @click="${this._onArrowClick}" aria-hidden="true">${this.name}</span>
+				<span class="d2l-labs-tree-selector-node-text" @click="${this._onArrowClick}" aria-hidden="true">${this.name}</span>
 				${this._renderOpenControl()}
 			</div>
 		`;
@@ -139,14 +139,14 @@ class TreeSelectorNode extends Localizer(RtlMixin(LitElement)) {
 	_renderOpenControl() {
 		if (this.isOpenable) {
 			return html`
-				<a href="#" class="d2l-insights-tree-selector-node-open-control"
+				<a href="#" class="d2l-labs-tree-selector-node-open-control"
 					?open="${this.isOpen}"
 				 	@click="${this._onArrowClick}"
 				 	aria-label="${this._arrowLabel}"
 				 	aria-expanded="${this.isOpen}"
 				 >
-					<d2l-icon class="d2l-insights-tree-selector-node-closed" icon="tier1:arrow-expand"></d2l-icon>
-					<d2l-icon class="d2l-insights-tree-selector-node-open" icon="tier1:arrow-collapse"></d2l-icon>
+					<d2l-icon class="d2l-labs-tree-selector-node-closed" icon="tier1:arrow-expand"></d2l-icon>
+					<d2l-icon class="d2l-labs-tree-selector-node-open" icon="tier1:arrow-collapse"></d2l-icon>
 				</a>
 			`;
 		} else {
@@ -156,7 +156,7 @@ class TreeSelectorNode extends Localizer(RtlMixin(LitElement)) {
 
 	_renderSubtree() {
 		if (this.isOpenable) {
-			return html`<div class="d2l-insights-tree-selector-node-subtree"
+			return html`<div class="d2l-labs-tree-selector-node-subtree"
 				?hidden="${!this.isOpen}"
 				id="subtree"
 			>
@@ -180,10 +180,10 @@ class TreeSelectorNode extends Localizer(RtlMixin(LitElement)) {
 		if (!this.isOpenable) return;
 
 		/**
-		 * @event d2l-insights-tree-selector-node-open
+		 * @event d2l-labs-tree-selector-node-open
 		 */
 		this.dispatchEvent(new CustomEvent(
-			'd2l-insights-tree-selector-node-open',
+			'd2l-labs-tree-selector-node-open',
 			{
 				bubbles: true,
 				composed: false,
@@ -197,10 +197,10 @@ class TreeSelectorNode extends Localizer(RtlMixin(LitElement)) {
 
 	_onChange(e) {
 		/**
-		 * @event d2l-insights-tree-selector-node-select
+		 * @event d2l-labs-tree-selector-node-select
 		 */
 		this.dispatchEvent(new CustomEvent(
-			'd2l-insights-tree-selector-node-select',
+			'd2l-labs-tree-selector-node-select',
 			{
 				bubbles: true,
 				composed: false,
@@ -231,4 +231,4 @@ class TreeSelectorNode extends Localizer(RtlMixin(LitElement)) {
 		}
 	}
 }
-customElements.define('d2l-insights-tree-selector-node', TreeSelectorNode);
+customElements.define('d2l-labs-tree-selector-node', TreeSelectorNode);

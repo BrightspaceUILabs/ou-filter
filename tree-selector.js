@@ -13,8 +13,8 @@ import { selectStyles } from '@brightspace-ui/core/components/inputs/input-selec
  * @property {String} name
  * @property {Boolean} isSearch - if true, show "search-results" slot instead of "tree" slot
  * @property {Boolean} isSelected - if true, show a "Clear" button in the header
- * @fires d2l-insights-tree-selector-search - user requested or cleared a search; search string is event.detail.value
- * @fires d2l-insights-tree-selector-clear - user requested that all selections be cleared
+ * @fires d2l-labs-tree-selector-search - user requested or cleared a search; search string is event.detail.value
+ * @fires d2l-labs-tree-selector-clear - user requested that all selections be cleared
  */
 class TreeSelector extends Localizer(LitElement) {
 
@@ -45,7 +45,7 @@ class TreeSelector extends Localizer(LitElement) {
 					align-self: center;
 				}
 
-				.d2l-insights-tree-selector-search {
+				.d2l-labs-tree-selector-search {
 					display: flex;
 					flex-wrap: nowrap;
 					padding-bottom: 26px;
@@ -53,18 +53,18 @@ class TreeSelector extends Localizer(LitElement) {
 					width: 334px;
 				}
 				@media screen and (max-width: 400px) {
-					.d2l-insights-tree-selector-search {
+					.d2l-labs-tree-selector-search {
 						width: 100%;
 					}
 				}
-				:host([search]) d2l-dropdown d2l-dropdown-content .d2l-insights-tree-selector-tree {
+				:host([search]) d2l-dropdown d2l-dropdown-content .d2l-labs-tree-selector-tree {
 					display: none;
 				}
 
-				.d2l-insights-tree-selector-search-results {
+				.d2l-labs-tree-selector-search-results {
 					display: none;
 				}
-				:host([search]) d2l-dropdown d2l-dropdown-content .d2l-insights-tree-selector-search-results {
+				:host([search]) d2l-dropdown d2l-dropdown-content .d2l-labs-tree-selector-search-results {
 					display: block;
 				}
 			`
@@ -101,17 +101,17 @@ class TreeSelector extends Localizer(LitElement) {
 							 	@click="${this._onClear}"
 							></d2l-button-subtle>
 						</div>
-						<div class="d2l-insights-tree-selector-search">
+						<div class="d2l-labs-tree-selector-search">
 							<d2l-input-search
 								label="${this.localize('treeSelector:searchLabel')}"
 								placeholder="${this.localize('treeSelector:searchPlaceholder')}"
 								@d2l-input-search-searched="${this._onSearch}"
 							></d2l-input-search>
 						</div>
-						<div class="d2l-insights-tree-selector-search-results">
+						<div class="d2l-labs-tree-selector-search-results">
 							<slot name="search-results"></slot>
 						</div>
-						<div class="d2l-insights-tree-selector-tree">
+						<div class="d2l-labs-tree-selector-tree">
 							<slot name="tree"></slot>
 						</div>
 					</d2l-dropdown-content>
@@ -136,10 +136,10 @@ class TreeSelector extends Localizer(LitElement) {
 
 	_onClear() {
 		/**
-		 * @event d2l-insights-tree-selector-clear
+		 * @event d2l-labs-tree-selector-clear
 		 */
 		this.dispatchEvent(new CustomEvent(
-			'd2l-insights-tree-selector-clear',
+			'd2l-labs-tree-selector-clear',
 			{
 				bubbles: true,
 				composed: false
@@ -149,10 +149,10 @@ class TreeSelector extends Localizer(LitElement) {
 
 	_onSearch(event) {
 		/**
-		 * @event d2l-insights-tree-selector-search
+		 * @event d2l-labs-tree-selector-search
 		 */
 		this.dispatchEvent(new CustomEvent(
-			'd2l-insights-tree-selector-search',
+			'd2l-labs-tree-selector-search',
 			{
 				bubbles: true,
 				composed: false,
@@ -172,4 +172,4 @@ class TreeSelector extends Localizer(LitElement) {
 		}));
 	}
 }
-customElements.define('d2l-insights-tree-selector', TreeSelector);
+customElements.define('d2l-labs-tree-selector', TreeSelector);

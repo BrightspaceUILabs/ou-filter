@@ -77,19 +77,19 @@ class OuFilter extends Localizer(MobxLitElement) {
 	render() {
 		this.dataManager.orgUnitTree.setAncestorFilter(this.dataManager.selectedSemesterIds);
 		return html`
-			<d2l-insights-tree-filter
+			<d2l-labs-tree-filter
 				.tree="${this.dataManager.orgUnitTree}"
 				opener-text="${this.localize('orgUnitFilter:nameAllSelected')}"
 				opener-text-selected="${this.localize('orgUnitFilter:nameSomeSelected')}"
-				@d2l-insights-tree-filter-select="${this._onChange}"
-				@d2l-insights-tree-filter-request-children="${this._onRequestChildren}"
-				@d2l-insights-tree-filter-search="${this._onSearch}"
+				@d2l-labs-tree-filter-select="${this._onChange}"
+				@d2l-labs-tree-filter-request-children="${this._onRequestChildren}"
+				@d2l-labs-tree-filter-search="${this._onSearch}"
 			>
-			</d2l-insights-tree-filter>`;
+			</d2l-labs-tree-filter>`;
 	}
 
 	get selected() {
-		return this.shadowRoot.querySelector('d2l-insights-tree-filter').selected;
+		return this.shadowRoot.querySelector('d2l-labs-tree-filter').selected;
 	}
 
 	_onChange() {

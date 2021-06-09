@@ -16,7 +16,7 @@ export const COURSE_OFFERING = 3;
 
 export class Tree {
 	/**
-	 * Type to use as the .tree property of a d2l-insights-tree-filter. Mutator methods will
+	 * Type to use as the .tree property of a d2l-labs-tree-filter. Mutator methods will
 	 * trigger re-rendering as needed. Call as new Tree({}) for a default empty tree.
 	 * NB: this is actually a DAG, not a tree. :)
 	 * @param {[][]} [nodes=[]] - Array of arrays, each with elements for each of the above constants
@@ -460,14 +460,14 @@ decorate(Tree, {
 });
 
 /**
- * This is an opinionated wrapper around d2l-insights-tree-selector which maintains state
+ * This is an opinionated wrapper around d2l-labs-tree-selector which maintains state
  * in the above Tree class.
  * @property {Object} tree - a Tree (defined above)
  * @property {String} openerText - appears on the dropdown opener if no items are selected
  * @property {String} openerTextSelected - appears on the dropdown opener if one or more items are selected
- * @fires d2l-insights-tree-filter-select - selection has changed; selected property of this element is the list of selected ids
- * @fires d2l-insights-tree-filter-request-children - (dynamic tree only) owner should call tree.addNodes with children of event.detail.id
- * @fires d2l-insights-tree-filter-search - (dynamic tree only) owner may call this.addSearchResults with nodes and ancestors matching
+ * @fires d2l-labs-tree-filter-select - selection has changed; selected property of this element is the list of selected ids
+ * @fires d2l-labs-tree-filter-request-children - (dynamic tree only) owner should call tree.addNodes with children of event.detail.id
+ * @fires d2l-labs-tree-filter-search - (dynamic tree only) owner may call this.addSearchResults with nodes and ancestors matching
  * event.detail.searchString and event.detail.bookmark (arbitrary data previously passed to this.addSearchResults)
  */
 class TreeFilter extends Localizer(MobxLitElement) {
@@ -518,7 +518,7 @@ class TreeFilter extends Localizer(MobxLitElement) {
 	 * @returns {Promise} - resolves when all tree-selector-nodes, recursively, have finished updating
 	 */
 	get treeUpdateComplete() {
-		return this.updateComplete.then(() => this.shadowRoot.querySelector('d2l-insights-tree-selector').treeUpdateComplete);
+		return this.updateComplete.then(() => this.shadowRoot.querySelector('d2l-labs-tree-selector').treeUpdateComplete);
 	}
 
 	/**
@@ -555,23 +555,23 @@ class TreeFilter extends Localizer(MobxLitElement) {
 			? this.openerTextSelected
 			: this.openerText;
 
-		return html`<d2l-insights-tree-selector
+		return html`<d2l-labs-tree-selector
 				name="${openerText}"
 				?search="${this._isSearch}"
 				?selected="${this.tree.selected.length > 0}"
-				@d2l-insights-tree-selector-search="${this._onSearch}"
-				@d2l-insights-tree-selector-clear="${this._onClear}"
+				@d2l-labs-tree-selector-search="${this._onSearch}"
+				@d2l-labs-tree-selector-clear="${this._onClear}"
 			>
 				${this._renderSearchResults()}
 				${this._renderSearchLoadingControls()}
 				${this._renderChildren(this.tree.rootId)}
-			</d2l-insights-tree-selector>
+			</d2l-labs-tree-selector>
 		</div>`;
 	}
 
 	async resize() {
 		await this.updateComplete;
-		const treeSelector = this.shadowRoot.querySelector('d2l-insights-tree-selector');
+		const treeSelector = this.shadowRoot.querySelector('d2l-labs-tree-selector');
 		treeSelector && treeSelector.resize();
 	}
 
@@ -608,7 +608,7 @@ class TreeFilter extends Localizer(MobxLitElement) {
 		const isOpenable = this.tree.isOpenable(id);
 		const orgUnitName = this.tree.getName(id);
 		const state = this.tree.getState(id);
-		return html`<d2l-insights-tree-selector-node slot="tree"
+		return html`<d2l-labs-tree-selector-node slot="tree"
 					name="${this.localize('treeFilter:nodeName', { orgUnitName, id })}"
 					data-id="${id}"
 					?openable="${isOpenable}"
@@ -616,11 +616,11 @@ class TreeFilter extends Localizer(MobxLitElement) {
 					selected-state="${state}"
 					indent-level="${indentLevel}"
 					parent-name="${parentName}"
-					@d2l-insights-tree-selector-node-open="${this._onOpen}"
-					@d2l-insights-tree-selector-node-select="${this._onSelect}"
+					@d2l-labs-tree-selector-node-open="${this._onOpen}"
+					@d2l-labs-tree-selector-node-select="${this._onSelect}"
 				>
 					${isOpen ? this._renderChildren(id, orgUnitName, indentLevel) : ''}
-				</d2l-insights-tree-selector-node>`;
+				</d2l-labs-tree-selector-node>`;
 	}
 
 	_renderParentLoadingControls(id) {
@@ -663,13 +663,13 @@ class TreeFilter extends Localizer(MobxLitElement) {
 			.map(id => {
 				const orgUnitName = this.tree.getName(id);
 				const state = this.tree.getState(id);
-				return html`<d2l-insights-tree-selector-node slot="search-results"
+				return html`<d2l-labs-tree-selector-node slot="search-results"
 					name="${this.localize('treeFilter:nodeName', { orgUnitName, id })}"
 					data-id="${id}"
 					selected-state="${state}"
-					@d2l-insights-tree-selector-node-select="${this._onSelect}"
+					@d2l-labs-tree-selector-node-select="${this._onSelect}"
 				>
-				</d2l-insights-tree-selector-node>`;
+				</d2l-labs-tree-selector-node>`;
 			});
 	}
 
@@ -706,10 +706,10 @@ class TreeFilter extends Localizer(MobxLitElement) {
 		this._isLoadingSearch = true;
 
 		/**
-		 * @event d2l-insights-tree-filter-search
+		 * @event d2l-labs-tree-filter-search
 		 */
 		this.dispatchEvent(new CustomEvent(
-			'd2l-insights-tree-filter-search',
+			'd2l-labs-tree-filter-search',
 			{
 				bubbles: true,
 				composed: false,
@@ -726,10 +726,10 @@ class TreeFilter extends Localizer(MobxLitElement) {
 
 	_fireSelectEvent() {
 		/**
-		 * @event d2l-insights-tree-filter-select
+		 * @event d2l-labs-tree-filter-select
 		 */
 		this.dispatchEvent(new CustomEvent(
-			'd2l-insights-tree-filter-select',
+			'd2l-labs-tree-filter-select',
 			{ bubbles: true, composed: false }
 		));
 	}
@@ -744,10 +744,10 @@ class TreeFilter extends Localizer(MobxLitElement) {
 		this.tree.setLoading(id);
 
 		/**
-		 * @event d2l-insights-tree-filter-request-children
+		 * @event d2l-labs-tree-filter-request-children
 		 */
 		this.dispatchEvent(new CustomEvent(
-			'd2l-insights-tree-filter-request-children',
+			'd2l-labs-tree-filter-request-children',
 			{
 				bubbles: true,
 				composed: false,
@@ -757,4 +757,4 @@ class TreeFilter extends Localizer(MobxLitElement) {
 	}
 }
 
-customElements.define('d2l-insights-tree-filter', TreeFilter);
+customElements.define('d2l-labs-tree-filter', TreeFilter);

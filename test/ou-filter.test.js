@@ -5,7 +5,7 @@ import sinon from 'sinon/pkg/sinon-esm.js';
 import { Tree } from '../tree-filter';
 
 async function waitForTree(el) {
-	const selector = el.shadowRoot.querySelector('d2l-insights-tree-filter');
+	const selector = el.shadowRoot.querySelector('d2l-labs-tree-filter');
 	await selector.treeUpdateComplete;
 }
 
@@ -65,7 +65,7 @@ describe('d2l-labs-ou-filter', () => {
 	describe('render', () => {
 		it('should render a tree-filter with the org-unit tree', async() => {
 			const el = await fixture(html`<d2l-labs-ou-filter .dataManager="${dataManager}"></d2l-labs-ou-filter>`);
-			const selector = el.shadowRoot.querySelector('d2l-insights-tree-filter');
+			const selector = el.shadowRoot.querySelector('d2l-labs-tree-filter');
 			expect(selector.tree).to.equal(data.orgUnitTree);
 			sinon.assert.calledOnce(data.orgUnitTree.setAncestorFilter);
 			sinon.assert.calledWith(data.orgUnitTree.setAncestorFilter, data.selectedSemesterIds);
@@ -86,8 +86,8 @@ describe('d2l-labs-ou-filter', () => {
 			await waitForTree(el);
 
 			const listener = oneEvent(el, 'd2l-labs-ou-filter-change');
-			const childCheckbox = el.shadowRoot.querySelector('d2l-insights-tree-filter')
-				.shadowRoot.querySelectorAll('d2l-insights-tree-selector-node')[0] // a child node
+			const childCheckbox = el.shadowRoot.querySelector('d2l-labs-tree-filter')
+				.shadowRoot.querySelectorAll('d2l-labs-tree-selector-node')[0] // a child node
 				.shadowRoot.querySelector('d2l-input-checkbox');
 
 			childCheckbox.simulateClick();
