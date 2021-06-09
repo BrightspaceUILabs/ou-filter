@@ -10,7 +10,7 @@
       "plugin:lit-a11y/recommended"
     ],
     "parserOptions": {
-        "ecmaVersion": 2020,
+        "ecmaVersion": 2018,
         "sourceType": "module",
         "babelOptions": {
             "plugins": [
