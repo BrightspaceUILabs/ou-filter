@@ -20,7 +20,7 @@ export class OuFilterDataManager {
 	}
 
 	/**
-	 * Returns org units for the provided search string
+	 * Returns org units for the provided search string. It's called only when Tree.isDynamic == true.
 	 * @param {string} searchString
 	 * @param {string} bookmark
 	 * @returns {Object} - { PagingInfo:{ HasMoreItems: boolean, Bookmark: string }, Items: OrgUnitNode[] }. Fields indices are defined in tree-filter.js

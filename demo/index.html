@@ -40,7 +40,7 @@
 						{ Id: 9, Name: 'Faculty 2', Type: 7, Parents: [6606, 10], IsActive: false },
 						{ Id: 6606, Name: 'Dev', Type: 1, Parents: [0], IsActive: false }
 					];
-					const isOrgUnitsTruncated = true;
+					const isOrgUnitsTruncated = false;
 
 					this._orgUnitTree = new Tree({
 						// add in any nodes from the most recent search; otherwise
@@ -89,6 +89,13 @@
 
 					// return result in 2 sec to show loading spinner
 					return await new Promise(resolve => setTimeout(() => resolve(results), 2000));
+				}
+
+				// the method called only when Tree.isDynamic === true
+				async orgUnitSearch(searchString, bookmark) {
+					console.log(`orgUnitSearch ${searchString}, ${bookmark}`);
+
+					return await super.orgUnitSearch(searchString, bookmark);
 				}
 			}
 
