@@ -12,8 +12,9 @@
 			import { MobxLitElement } from '@adobe/lit-mobx';
 			import { OuFilterDataManager } from '../ou-filter';
 
+			const orgUnitChildrenCache = new Map();
 			function fetchCachedChildren() {
-				return new Map();
+				return orgUnitChildrenCache;
 			}
 
 			class DemoDataManager extends OuFilterDataManager {
@@ -39,7 +40,7 @@
 						{ Id: 9, Name: 'Faculty 2', Type: 7, Parents: [6606, 10], IsActive: false },
 						{ Id: 6606, Name: 'Dev', Type: 1, Parents: [0], IsActive: false }
 					];
-					const isOrgUnitsTruncated = false;
+					const isOrgUnitsTruncated = true;
 
 					this._orgUnitTree = new Tree({
 						// add in any nodes from the most recent search; otherwise
@@ -61,6 +62,33 @@
 
 				get orgUnitTree() {
 					return this._orgUnitTree;
+				}
+
+				// the method called only when Tree.isDynamic === true
+				async fetchRelevantChildren(id, bookmark) {
+					console.log(`fetchRelevantChildren ${id}, ${bookmark}`);
+
+					if (id !== 9 || bookmark === 'orgUnit-9') {
+						// returns no children responce
+						return await super.fetchRelevantChildren(id, bookmark);
+					}
+
+					// imitatate more children for node 9: Faculty 2
+					const results = { PagingInfo: { HasMoreItems: false, Bookmark: 'orgUnit-9' }, Items: [
+						{ Id: 20, Name: 'Department 3', Type: 2, Parents: [9], IsActive: false }
+					] };
+
+					// example of handling cache
+					if (!orgUnitChildrenCache.has(id)) {
+						orgUnitChildrenCache.set(id, results);
+					} else {
+						const cached = orgUnitChildrenCache.get(id);
+						cached.PagingInfo = results.PagingInfo;
+						cached.Items.push(...results.Items);
+					}
+
+					// return result in 2 sec to show loading spinner
+					return await new Promise(resolve => setTimeout(() => resolve(results), 2000));
 				}
 			}
 
