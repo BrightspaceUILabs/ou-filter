@@ -9,25 +9,25 @@ import { Tree } from './tree-filter';
 export class OuFilterDataManager {
 
 	/**
-	 * Fetches children of specified org unit
+	 * Fetches children of specified org unit. It's called only when Tree.isDynamic == true.
 	 * @param {string} id - org unit id
 	 * @param {string} bookmark
-	 * @returns {Object} - { PagingInfo:{ HasMoreItems: boolean, Bookmark: string }, Items: [{Id: integer, Name: string, Type: integer, Parents: [integer, ...], IsActive: boolean}] }. Fields indices are defined in tree-filter.js
+	 * @returns {Object} - { PagingInfo: { HasMoreItems: boolean, Bookmark: string }, Items: OrgUnitNode[] }. Fields indices are defined in tree-filter.js
 	 */
 	// eslint-disable-next-line no-unused-vars
 	async fetchRelevantChildren(id, bookmark) {
-		return null;
+		return { PagingInfo: {}, Items: [] };
 	}
 
 	/**
-	 * Returns org units for the provided search string
+	 * Returns org units for the provided search string. It's called only when Tree.isDynamic == true.
 	 * @param {string} searchString
 	 * @param {string} bookmark
-	 * @returns {Object} - { PagingInfo:{ HasMoreItems: boolean, Bookmark: string }, Items: [{Id: integer, Name: string, Type: integer, Parents: [integer, ...], IsActive: boolean}] }. Fields indices are defined in tree-filter.js
+	 * @returns {Object} - { PagingInfo:{ HasMoreItems: boolean, Bookmark: string }, Items: OrgUnitNode[] }. Fields indices are defined in tree-filter.js
 	 */
 	// eslint-disable-next-line no-unused-vars
 	async orgUnitSearch(searchString, bookmark) {
-		return null;
+		return { PagingInfo: {}, Items: [] };
 	}
 
 	/**

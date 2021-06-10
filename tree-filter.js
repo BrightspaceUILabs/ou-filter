@@ -1,3 +1,4 @@
+import '@brightspace-ui/core/components/loading-spinner/loading-spinner.js';
 import './tree-selector.js';
 
 import 'array-flat-polyfill';
@@ -9,12 +10,22 @@ import { MobxLitElement } from '@adobe/lit-mobx';
 // node array indices
 export const COURSE_OFFERING = 3;
 
+/**
+ * An object that represents org unit node
+ * @typedef {Object} OrgUnitNode
+ * @property {number} Id
+ * @property {string} Name
+ * @property {number} Type
+ * @property {number[]} Parents - array of org unit ids
+ * @property {boolean} IsActive - optional, should be populated if accessed via Tree.isActive property
+*/
+
 export class Tree {
 	/**
 	 * Type to use as the .tree property of a d2l-labs-tree-filter. Mutator methods will
 	 * trigger re-rendering as needed. Call as new Tree({}) for a default empty tree.
 	 * NB: this is actually a DAG, not a tree. :)
-	 * @param {[][]} [nodes=[]] - Array of arrays, each with elements for each of the above constants
+	 * @param {OrgUnitNode[]} [nodes=[]] - Array of OrgUnitNode
 	 * @param {Number[]} [leafTypes=[]] - TYPE values that cannot be opened
 	 * @param {Number[]} [invisibleTypes=[]] - TYPE values that should not be rendered
 	 * @param {Number[]} [selectedIds] - ids to mark selected. Ancestors and descendants will be marked accordingly.
@@ -23,7 +34,7 @@ export class Tree {
 	 * @param {Boolean} isDynamic - if true, the tree is assumed to be incomplete, and tree-filter will fire events as needed
 	 * to request children
 	 * @param {Map}[extraChildren] - Map from parent node ids to arrays of
-	 * {Items: <nodes>, PagingInfo: {HasMoreItems: boolean, Bookmark}}; these will be added to the tree before
+	 * {Items: OrgUnitNode[], PagingInfo: {HasMoreItems: boolean, Bookmark}}; these will be added to the tree before
 	 * any selections are applied and the parents marked as populated. Useful for adding cached lookups to a dynamic tree.
 	 */
 	constructor({
