@@ -49,6 +49,8 @@ describe('d2l-labs-tree-selector', () => {
 		it('should show tree and hide search results when searching', async() => {
 			const el = await fixture(html`<d2l-labs-tree-selector name="choose!" search></d2l-labs-tree-selector>`);
 			const searchResults = el.shadowRoot.querySelector('.d2l-labs-tree-selector-search-results');
+			console.log(searchResults);
+			console.log(isVisible(searchResults));
 			expect(isVisible(searchResults)).to.be.true;
 			const tree = el.shadowRoot.querySelector('.d2l-labs-tree-selector-tree');
 			expect(isVisible(tree)).to.be.false;
