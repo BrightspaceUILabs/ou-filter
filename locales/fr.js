@@ -17,5 +17,5 @@ export default {
 	"treeSelector:dropdownAction": "Ouvrir le filtre {name}",
 	"treeSelector:arrowLabel:closed": "Développer {name} au niveau {level}, enfant de {parentName}",
 	"treeSelector:arrowLabel:open": "Réduire {name} au niveau {level}, enfant de {parentName}",
-	"treeSelector:node:ariaLabel": "{name}, enfant de {parentName},",
+	"treeSelector:node:ariaLabel": "{name}, enfant de {parentName},"
 };
