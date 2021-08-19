@@ -53,6 +53,7 @@ describe('d2l-labs-tree-selector', () => {
 			console.log(isVisible(searchResults));
 			console.log('display property:');
 			console.log(window.getComputedStyle(searchResults).getPropertyValue('display'));
+			await new Promise(res => setTimeout(res, 30));
 			expect(isVisible(searchResults)).to.be.true;
 			const tree = el.shadowRoot.querySelector('.d2l-labs-tree-selector-tree');
 			expect(isVisible(tree)).to.be.false;
