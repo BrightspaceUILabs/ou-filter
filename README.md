@@ -159,6 +159,7 @@ The next version number will be determined from the commit messages since the pr
 
 To revert a change, add the `revert:` prefix to the original commit message. This will cause the reverted change to be omitted from the release notes. Example: `revert: fix: validate input before using`.
 
+
 ### Releases
 
 When a release is triggered, it will:
