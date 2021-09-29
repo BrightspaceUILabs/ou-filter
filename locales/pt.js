@@ -1,11 +1,11 @@
 /* eslint quotes: 0 */
 
 export default {
-	"orgUnitFilter:nameAllSelected": "Unidade organizacional: Todas",
-	"orgUnitFilter:nameSomeSelected": "Unidade organizacional: Seleções aplicadas",
+	"orgUnitFilter:nameAllSelected": "Unidade organizacional: todas",
+	"orgUnitFilter:nameSomeSelected": "Unidade organizacional: seleções aplicadas",
 	"orgUnitFilter:name": "Unidade organizacional",
 
-	"treeFilter:nodeName": "{orgUnitName} (ID: {id})",
+	"treeFilter:nodeName": "{orgUnitName} (Id: {id})",
 	"treeFilter:nodeName:root": "raiz",
 	"treeSelector:filterBy": "Filtrar por",
 	"treeSelector:clearLabel": "Limpar",

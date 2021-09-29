@@ -13,7 +13,7 @@ export default {
 	"treeSelector:loadMoreLabel": "Llwytho Mwy",
 	"treeSelector:parentLoadMore:ariaLabel": "Llwytho mwy o unedau sefydliad plant",
 	"treeSelector:searchLoadMore:ariaLabel": "Llwytho mwy o ganlyniadau chwilio",
-	"treeSelector:searchPlaceholder": "Chwilio...",
+	"treeSelector:searchPlaceholder": "Chwilio…",
 	"treeSelector:dropdownAction": "Agor yr hidlydd {name}",
 	"treeSelector:arrowLabel:closed": "Ehangu {name} ar lefel {level}, plentyn {parentName}",
 	"treeSelector:arrowLabel:open": "Crebachu {name} ar lefel {level}, plentyn {parentName}",

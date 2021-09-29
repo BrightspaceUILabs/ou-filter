@@ -11,7 +11,7 @@ export default {
 	"treeSelector:clearLabel": "清除",
 	"treeSelector:searchLabel": "搜尋",
 	"treeSelector:loadMoreLabel": "載入更多",
-	"treeSelector:parentLoadMore:ariaLabel": "載入組織子單位",
+	"treeSelector:parentLoadMore:ariaLabel": "載入更多子組織單位",
 	"treeSelector:searchLoadMore:ariaLabel": "載入更多搜尋結果",
 	"treeSelector:searchPlaceholder": "搜尋...",
 	"treeSelector:dropdownAction": "開啟 {name} 篩選器",

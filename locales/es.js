@@ -1,8 +1,8 @@
 /* eslint quotes: 0 */
 
 export default {
-	"orgUnitFilter:nameAllSelected": "Unidad de organización: Todos",
-	"orgUnitFilter:nameSomeSelected": "Unidad de organización: Selecciones aplicadas",
+	"orgUnitFilter:nameAllSelected": "Unidad de organización: todos",
+	"orgUnitFilter:nameSomeSelected": "Unidad de organización: selecciones aplicadas",
 	"orgUnitFilter:name": "Unidad de organización",
 
 	"treeFilter:nodeName": "{orgUnitName} (Id: {id})",
