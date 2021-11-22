@@ -705,11 +705,36 @@ describe('d2l-labs-tree-filter', () => {
 
 			const treeSelector = el.shadowRoot.querySelector('d2l-labs-tree-selector');
 			expect(treeSelector.name).to.equal('filter');
+			expect(!!treeSelector.isSelected).to.be.false;
+		});
+
+		it('should render with opener-text-selected if any items outside the tree are selected', async() => {
+			const forbiddenOrgUnitId = 707;
+			const treeWithNoSelections = new Tree({ nodes: [
+				[1, 'Course 1', 3, [3], [], 'none', false],
+				[3, 'Department 1', 2, [5], [1], 'none', false],
+				[5, 'Faculty 1', 7, [6607], [3], 'none', false],
+				[6607, 'Dev', 1, [0], [5], 'none', false]
+			], selectedIds: [forbiddenOrgUnitId], leafTypes: [3] });
+
+			el = await fixture(
+				html`<d2l-labs-tree-filter
+				opener-text="filter"
+				opener-text-selected="filter with selections"
+				.tree="${treeWithNoSelections}"
+			></d2l-labs-tree-filter>`
+			);
+			await el.treeUpdateComplete;
+
+			const treeSelector = el.shadowRoot.querySelector('d2l-labs-tree-selector');
+			expect(treeSelector.name).to.equal('filter with selections');
+			expect(!!treeSelector.isSelected).to.be.true;
 		});
 
 		it('should render with opener-text-selected if any items are selected', () => {
 			const treeSelector = el.shadowRoot.querySelector('d2l-labs-tree-selector');
 			expect(treeSelector.name).to.equal('filter with selections');
+			expect(treeSelector.isSelected).to.be.true;
 		});
 
 		it('should render with opener-text-selected if all items are deselected but initial selections are not reset', async() => {
