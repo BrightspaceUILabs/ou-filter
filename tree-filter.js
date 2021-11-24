@@ -557,14 +557,13 @@ class TreeFilter extends Localizer(MobxLitElement) {
 		// if selections are applied when loading from server but the selected ids were truncated out of the results,
 		// the visible selections in the UI (this.tree.selected) could be empty even though selections are applied.
 		// In that case, we should indicate to the user that selections are applied, even if they can't see them.
-		const openerText = (this.tree.selected.length || (this.tree.initialSelectedIds && this.tree.initialSelectedIds.length))
-			? this.openerTextSelected
-			: this.openerText;
+		const isSelected = (this.tree.selected.length || (this.tree.initialSelectedIds && this.tree.initialSelectedIds.length));
+		const openerText = isSelected ? this.openerTextSelected : this.openerText;
 
 		return html`<d2l-labs-tree-selector
 				name="${openerText}"
 				?search="${this._isSearch}"
-				?selected="${this.tree.selected.length > 0}"
+				?selected="${isSelected}"
 				@d2l-labs-tree-selector-search="${this._onSearch}"
 				@d2l-labs-tree-selector-clear="${this._onClear}"
 			>
