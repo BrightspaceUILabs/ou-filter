@@ -162,6 +162,7 @@ To revert a change, add the `revert:` prefix to the original commit message. Thi
 
 ### Releases
 
+
 When a release is triggered, it will:
 * Update the version in `package.json`
 * Tag the commit
