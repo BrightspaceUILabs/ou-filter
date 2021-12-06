@@ -1,10 +1,10 @@
 
-const puppeteer = require('puppeteer');
-const VisualDiff = require('@brightspace-ui/visual-diff');
+import puppeteer from 'puppeteer';
+import { VisualDiff } from '@brightspace-ui/visual-diff';
 
 describe('ou-filter', () => {
 
-	const visualDiff = new VisualDiff('ou-filter', __dirname, { tolerance: 0.1 });
+	const visualDiff = new VisualDiff('ou-filter', import.meta.url, { tolerance: 0.1 });
 
 	let browser, page;
 
