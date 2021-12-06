@@ -13,7 +13,7 @@ jobs:
       - name: Install dependencies
         run: npm install
       - name: Visual Diff Tests
-        uses: BrightspaceUI/actions/visual-diff@master
+        uses: BrightspaceUI/actions/visual-diff@main
         with:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
@@ -41,7 +41,7 @@ jobs:
       - name: Install dependencies
         run: npm install
       - name: SauceLabs Tests
-        run: npm run test:sauce
+        run: npx web-test-runner --config web-test-runner.sauce.config.js
         env:
           SAUCE_USERNAME: Desire2Learn
           SAUCE_ACCESS_KEY: ${{ secrets.SAUCE_ACCESS_KEY_DESIRE2LEARN }}

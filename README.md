@@ -1,6 +1,6 @@
 # d2l-labs-ou-filter
 
-[![ci](https://github.com/BrightspaceUILabs/ou-filter/actions/workflows/ci.yml/badge.svg?branch=master)](https://github.com/BrightspaceUILabs/ou-filter/actions/workflows/ci.yml)
+[![ci](https://github.com/BrightspaceUILabs/ou-filter/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/BrightspaceUILabs/ou-filter/actions/workflows/ci.yml)
 
 A Lit-element component that renders org unit structure tree. It supports load more and searching functionality.
 
@@ -82,7 +82,7 @@ After cloning the repo, run `npm install` to install dependencies.
 
 ### Running the demos
 
-To start an [web-dev-server](https://modern-web.dev/docs/dev-server/overview/) that hosts the demo page and tests:
+To start a [@web/dev-server](https://modern-web.dev/docs/dev-server/overview/) that hosts the demo page and tests:
 
 ```shell
 npm start
@@ -127,22 +127,32 @@ see https://wiki.saucelabs.com/pages/viewpage.action?pageId=70072943.
 
 This repo uses the [@brightspace-ui/visual-diff utility](https://github.com/BrightspaceUI/visual-diff/) to compare current snapshots against a set of golden snapshots stored in source control.
 
+The golden snapshots in source control must be updated by the [visual-diff GitHub Action](https://github.com/BrightspaceUI/actions/tree/main/visual-diff).  If a pull request results in visual differences, a draft pull request with the new goldens will automatically be opened against its branch.
+
+To run the tests locally to help troubleshoot or develop new tests, first install these dependencies:
+
+```shell
+npm install @brightspace-ui/visual-diff@X mocha@Y puppeteer@Z  --no-save
+```
+
+Replace `X`, `Y` and `Z` with [the current versions](https://github.com/BrightspaceUI/actions/tree/main/visual-diff#current-dependency-versions) the action is using.
+
+Then run the tests:
+
 ```shell
 # run visual-diff tests
-npm run test:diff
-
+npx mocha './test/**/*.visual-diff.js' -t 10000
 # subset of visual-diff tests:
-npm run test:diff -- -g some-pattern
-
+npx mocha './test/**/*.visual-diff.js' -t 10000 -g some-pattern
 # update visual-diff goldens
-npm run test:diff:golden
+npx mocha './test/**/*.visual-diff.js' -t 10000 --golden
 ```
 
 ## Versioning & Releasing
 
-> TL;DR: Commits prefixed with `fix:` and `feat:` will trigger patch and minor releases when merged to `master`. Read on for more details...
+> TL;DR: Commits prefixed with `fix:` and `feat:` will trigger patch and minor releases when merged to `main`. Read on for more details...
 
-The [sematic-release GitHub Action](https://github.com/BrightspaceUI/actions/tree/master/semantic-release) is called from the `release.yml` GitHub Action workflow to handle version changes and releasing.
+The [semantic-release GitHub Action](https://github.com/BrightspaceUI/actions/tree/main/semantic-release) is called from the `release.yml` GitHub Action workflow to handle version changes and releasing.
 
 ### Version Changes
 
