@@ -524,7 +524,7 @@ class TreeFilter extends Localizer(MobxLitElement) {
 	 * @returns {Promise} - resolves when all tree-selector-nodes, recursively, have finished updating
 	 */
 	get treeUpdateComplete() {
-		return this.updateComplete.then(() => this.shadowRoot.querySelector('d2l-labs-tree-selector').treeUpdateComplete);
+		return this.updateComplete.then(() => this.shadowRoot?.querySelector('d2l-labs-tree-selector').treeUpdateComplete || false);
 	}
 
 	/**
@@ -576,7 +576,7 @@ class TreeFilter extends Localizer(MobxLitElement) {
 
 	async resize() {
 		await this.updateComplete;
-		const treeSelector = this.shadowRoot.querySelector('d2l-labs-tree-selector');
+		const treeSelector = this.shadowRoot?.querySelector('d2l-labs-tree-selector');
 		treeSelector && treeSelector.resize();
 	}
 
