@@ -114,7 +114,7 @@ class TreeSelectorNode extends Localizer(RtlMixin(LitElement)) {
 	}
 
 	simulateCheckboxClick() {
-		this.shadowRoot.querySelector('d2l-input-checkbox').simulateClick();
+		this.shadowRoot?.querySelector('d2l-input-checkbox').simulateClick();
 	}
 
 	_renderNode() {
@@ -222,7 +222,7 @@ class TreeSelectorNode extends Localizer(RtlMixin(LitElement)) {
 
 	async _waitForTreeUpdateComplete() {
 		await this.updateComplete;
-		const slot = this.shadowRoot.querySelector('slot');
+		const slot = this.shadowRoot?.querySelector('slot');
 		// to be sure all child nodes have been added, instead of using flatten,
 		// we recursively walk down the tree, waiting for each node's update to complete
 		if (slot) {

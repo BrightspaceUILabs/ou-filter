@@ -130,7 +130,7 @@ class TreeSelector extends Localizer(LitElement) {
 
 	async resize() {
 		await this.treeUpdateComplete;
-		const content = this.shadowRoot.querySelector('d2l-dropdown-content');
+		const content = this.shadowRoot?.querySelector('d2l-dropdown-content');
 		content && await content.resize();
 	}
 
@@ -163,7 +163,7 @@ class TreeSelector extends Localizer(LitElement) {
 
 	async _waitForTreeUpdateComplete() {
 		await this.updateComplete;
-		const slots = [...this.shadowRoot.querySelectorAll('slot')];
+		const slots = [...(this.shadowRoot?.querySelectorAll('slot') || [])];
 		// to be sure all child nodes have been added, instead of using flatten,
 		// we recursively walk down the tree, waiting for each node's update to complete
 		return Promise.all(slots.map(slot => {
