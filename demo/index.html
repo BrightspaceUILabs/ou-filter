@@ -24,6 +24,15 @@
 				}
 
 				loadData() {
+
+					const visibilityModifiers = [
+						function(id) {
+							// in tree's "this" context
+							// eslint-disable-next-line no-invalid-this
+							return this.hasDescendantsInList(id, [6]);
+						}
+					];
+
 					const lastSearchResults = null;
 					const semesterTypeId = 25;
 					const orgUnits = [
@@ -55,7 +64,8 @@
 						// tree blink out and then come back as they are loaded again
 						extraChildren: isOrgUnitsTruncated ?
 							fetchCachedChildren() || new Map() :
-							null
+							null,
+						visibilityModifiers
 					});
 				}
 

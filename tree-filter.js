@@ -36,6 +36,7 @@ export class Tree {
 	 * @param {Map}[extraChildren] - Map from parent node ids to arrays of
 	 * {Items: OrgUnitNode[], PagingInfo: {HasMoreItems: boolean, Bookmark}}; these will be added to the tree before
 	 * any selections are applied and the parents marked as populated. Useful for adding cached lookups to a dynamic tree.
+	 * @param {Function[]}[visibilityModifiers] - optional array of filters that can be used to hide certain org units
 	 */
 	constructor({
 		nodes = [],
@@ -45,7 +46,8 @@ export class Tree {
 		ancestorIds,
 		oldTree,
 		isDynamic = false,
-		extraChildren
+		extraChildren,
+		visibilityModifiers = []
 	}) {
 		this.leafTypes = leafTypes;
 		this.invisibleTypes = invisibleTypes;
@@ -63,6 +65,8 @@ export class Tree {
 		this._loading = new Set();
 		this._hasMore = new Set();
 		this._bookmarks = new Map();
+
+		this._visibilityModifiers = visibilityModifiers;
 
 		// fill in children (parents are provided by the caller, and ancestors will be generated on demand)
 		this._updateChildren(this.ids);
@@ -294,6 +298,25 @@ export class Tree {
 		return listToCheck.some(potentialAncestor => ancestorsSet.has(potentialAncestor));
 	}
 
+	getDescendantIds(id) {
+		const children = this._children.get(id);
+		if (!children || !children.size) {
+			return new Set([id]);
+		}
+
+		const descendants = new Set([...children].flatMap(child => [...this.getDescendantIds(child)]));
+		console.log(`descendants of ${id}: ${[...descendants]}`);
+		return descendants;
+	}
+
+	// TODO check this, but an item should be its own descendant
+	hasDescendantsInList(id, listToCheck) {
+		const descendants = this.getDescendantIds(id);
+		const hasDescendants = listToCheck.some(potentialDescendant => descendants.has(potentialDescendant));
+		console.log(`id: ${id}, hasDescendants: ${hasDescendants}`);
+		return hasDescendants;
+	}
+
 	hasMore(id) {
 		return this._hasMore.has(id);
 	}
@@ -386,8 +409,18 @@ export class Tree {
 	}
 
 	_isVisible(id) {
-		return (this._visible === null || this._visible.has(id))
+		const visible = (this._visible === null || this._visible.has(id))
 			&& !this.invisibleTypes.includes(this.getType(id));
+
+		if (!visible) {
+			return false;
+		}
+
+		if (!this._visibilityModifiers.length) {
+			return visible;
+		}
+
+		return this._visibilityModifiers.every(modifier => modifier.apply(this, [id]));
 	}
 
 	_nameForSort(id) {
