@@ -63,13 +63,11 @@ class OuFilterDemoPage extends MobxLitElement {
 
 		// expect CSV of org unit ids
 		const searchedOrgUnitIds = searchInput.split(',').map(orgUnitIdStr => Number(orgUnitIdStr));
-		this.dataManager.orgUnitTree.visibilityModifiers = [
+		const tree = this.dataManager.orgUnitTree;
+
+		tree.visibilityModifiers = [
 			// example: only load branches that contain any of the searched orgUnitIds
-			function(id) {
-				// in tree's "this" context
-				// eslint-disable-next-line no-invalid-this
-				return this.hasAncestorsInList(id, searchedOrgUnitIds) || this.hasDescendantsInList(id, searchedOrgUnitIds);
-			}
+			(id) => tree.hasDescendantsInList(id, searchedOrgUnitIds)
 		];
 	}
 }

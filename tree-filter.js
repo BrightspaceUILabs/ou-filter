@@ -322,7 +322,8 @@ export class Tree {
 	 */
 	hasDescendantsInList(id, listToCheck) {
 		const descendants = this.getDescendantIds(id);
-		return listToCheck.some(potentialDescendant => descendants.has(potentialDescendant));
+		const listToCheckUnique = [...new Set(listToCheck)];
+		return listToCheckUnique.some(potentialDescendant => descendants.has(potentialDescendant));
 	}
 
 	hasMore(id) {
@@ -428,7 +429,7 @@ export class Tree {
 			return visible;
 		}
 
-		return this._visibilityModifiers.every(modifier => modifier.apply(this, [id]));
+		return this._visibilityModifiers.every(modifier => modifier(id));
 	}
 
 	set visibilityModifiers(visibilityModifiers) {
