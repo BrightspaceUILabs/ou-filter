@@ -429,6 +429,45 @@ describe('Tree', () => {
 		});
 	});
 
+	describe('getDescendantIds', () => {
+		const expectedDescendantsMap = {
+			6606: [6606, 1001, 1002, 1003, 11, 12, 13, 1, 2, 3, 4, 111, 112, 211, 312],
+			1001: [1001, 1, 111, 112, 2, 211, 3, 312],
+			1002: [1002, 3, 312],
+			1003: [1003, 4],
+			1: [1, 111, 112],
+			2: [2, 211],
+			3: [3, 312],
+			4: [4],
+			11: [11, 111, 211],
+			12: [12, 112, 312],
+			13: [13],
+			111: [111],
+			112: [112],
+			211: [211],
+			312: [312]
+		};
+
+		it('determines descendants correctly for a tree', () => {
+			Object.entries(expectedDescendantsMap).forEach(([id, expectedDescendantsArr]) => {
+				const expectedDescendants = new Set(expectedDescendantsArr);
+				const actualDescendants = dynamicTree.getDescendantIds(Number(id));
+				assertSetsAreEqual(expectedDescendants, actualDescendants);
+			});
+		});
+
+		it('determines descendants correctly after more nodes are added ', () => {
+			dynamicTree.addNodes(1003, [
+				{ Id: 1, Name: 'already a child of 1001', Type: mockOuTypes.courseOffering },
+				{ Id: 992, Name: 'new2', Type: mockOuTypes.courseOffering }
+			]);
+			assertSetsAreEqual(dynamicTree.getDescendantIds(6606), new Set([6606, 1001, 1002, 1003, 11, 12, 13, 1, 2, 3, 4, 111, 112, 211, 312, 992]));
+			assertSetsAreEqual(dynamicTree.getDescendantIds(1003), new Set([1003, 4, 1, 111, 112, 992]));
+			assertSetsAreEqual(dynamicTree.getDescendantIds(1), new Set([1, 111, 112]));
+			assertSetsAreEqual(dynamicTree.getDescendantIds(992), new Set([992]));
+		});
+	});
+
 	describe('getChildIdsForDisplay and setAncestorFilter', () => {
 		it('returns sorted children', () => {
 			expect(dynamicTree.getChildIdsForDisplay(1001)).to.deep.equal([1, 2, 3]);
@@ -539,6 +578,36 @@ describe('Tree', () => {
 		});
 	});
 
+	describe('hasDescendantsInList', () => {
+		it('returns true if an org unit is in the list to check', () => {
+			expect(dynamicTree.hasDescendantsInList(1, [1, 2])).to.be.true;
+		});
+
+		it('returns true if list to check contains a direct child of the given id', () => {
+			expect(dynamicTree.hasDescendantsInList(1, [111, 211])).to.be.true;
+			expect(dynamicTree.hasDescendantsInList(11, [111, 211])).to.be.true;
+		});
+
+		it('returns true if list to check contains a distant descendant of the given id', () => {
+			expect(dynamicTree.hasDescendantsInList(1002, [312])).to.be.true;
+		});
+
+		it('returns false if list to check does not contain a descendant of the given id', () => {
+			expect(dynamicTree.hasDescendantsInList(2, [111, 112])).to.be.false;
+			expect(dynamicTree.hasDescendantsInList(13, [111, 112])).to.be.false;
+		});
+
+		it('returns true if tree is dynamic and gains additional org unit hierarchy information', () => {
+			dynamicTree.addNodes(4, [
+				{ Id: 992, Name: 'new2', Type: mockOuTypes.courseOffering }
+			]);
+			expect(dynamicTree.hasDescendantsInList(6606, [992])).to.be.true;
+			expect(dynamicTree.hasDescendantsInList(1003, [992])).to.be.true;
+			expect(dynamicTree.hasDescendantsInList(4, [992])).to.be.true;
+			expect(dynamicTree.hasDescendantsInList(992, [992])).to.be.true;
+		});
+	});
+
 	describe('isOpenable', () => {
 		it('should return true for a node that is not a leaf type', () => {
 			expect(dynamicTree.isOpenable(1)).to.be.true;
@@ -623,6 +692,32 @@ describe('Tree', () => {
 			it('should return pruned nodes as well', async() => {
 				const tree = new Tree({ nodes: singleCourseOfferingNodes, selectedIds, leafTypes, invisibleTypes, isDynamic: false });
 				expect(tree.getMatchingIds('1')).to.deep.equal([1001, 111, 1]);
+			});
+		});
+
+		describe('visibility modifiers', () => {
+			it('should only show nodes matching all visibility modifiers', () => {
+				dynamicTree.visibilityModifiers = [
+					function(id) {
+						return this.hasDescendantsInList(id, [211, 4]);
+					}
+				];
+				const expectedVisibleNodes = new Set([6606, 1001, 2, 211, 1003, 4]); // semester nodes are in the "invisible node types" list
+				assertSetsAreEqual(expectedVisibleNodes, new Set(dynamicTree.ids.filter((id) => dynamicTree._isVisible(id))));
+			});
+
+			it('should apply both visibility modifiers and search', () => {
+				dynamicTree.visibilityModifiers = [
+					function(id) {
+						return this.hasDescendantsInList(id, [211]);
+					}
+				];
+
+				assertSetsAreEqual(new Set(dynamicTree.getMatchingIds('course')), new Set([2, 211]));
+				assertSetsAreEqual(new Set(dynamicTree.getMatchingIds('dep')), new Set([1001]));
+				assertSetsAreEqual(new Set(dynamicTree.getMatchingIds('sem')), new Set([211])); // semester nodes are invisible
+				assertSetsAreEqual(new Set(dynamicTree.getMatchingIds('2')), new Set([2, 211]));
+				assertSetsAreEqual(new Set(dynamicTree.getMatchingIds('3')), new Set([]));
 			});
 		});
 	});

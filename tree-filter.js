@@ -287,7 +287,7 @@ export class Tree {
 
 	/**
 	 * Checks if a node has ancestors in a given list.
-	 * NOTE: returns true if the node itself is in the list.
+	 * NB: returns true if an id is itself is in the list to check
 	 * @param {Number} id - the node whose ancestors we want to check
 	 * @param {[Number]} listToCheck - an array of node ids which potentially has ancestors in it
 	 * @returns {boolean}
@@ -298,6 +298,11 @@ export class Tree {
 		return listToCheck.some(potentialAncestor => ancestorsSet.has(potentialAncestor));
 	}
 
+	/**
+	 * NB: for the purposes of this function, a node is its own descendant
+	 * @param {Number} id
+	 * @returns {Set<Number>}
+	 */
 	getDescendantIds(id) {
 		const children = this._children.get(id);
 		if (!children || !children.size) {
@@ -305,16 +310,19 @@ export class Tree {
 		}
 
 		const descendants = new Set([...children].flatMap(child => [...this.getDescendantIds(child)]));
-		console.log(`descendants of ${id}: ${[...descendants]}`);
+		descendants.add(id);
 		return descendants;
 	}
 
-	// TODO check this, but an item should be its own descendant
+	/**
+	 * NB: returns true if an id is itself is in the list to check
+	 * @param {Number} id
+	 * @param {[Number]} listToCheck
+	 * @returns {boolean}
+	 */
 	hasDescendantsInList(id, listToCheck) {
 		const descendants = this.getDescendantIds(id);
-		const hasDescendants = listToCheck.some(potentialDescendant => descendants.has(potentialDescendant));
-		console.log(`id: ${id}, hasDescendants: ${hasDescendants}`);
-		return hasDescendants;
+		return listToCheck.some(potentialDescendant => descendants.has(potentialDescendant));
 	}
 
 	hasMore(id) {
@@ -423,6 +431,10 @@ export class Tree {
 		return this._visibilityModifiers.every(modifier => modifier.apply(this, [id]));
 	}
 
+	set visibilityModifiers(visibilityModifiers) {
+		this._visibilityModifiers = visibilityModifiers;
+	}
+
 	_nameForSort(id) {
 		return this.getName(id) + id;
 	}
@@ -487,6 +499,7 @@ decorate(Tree, {
 	_loading: observable,
 	_bookmarks: observable,
 	_hasMore: observable,
+	_visibilityModifiers: observable,
 	selected: computed,
 	allSelectedCourses: computed,
 	addNodes: action,

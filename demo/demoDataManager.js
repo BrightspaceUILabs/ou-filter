@@ -24,17 +24,7 @@ export class DemoDataManager extends OuFilterDataManager {
 	}
 
 	loadData() {
-
-		const visibilityModifiers = [
-			// function(id) {
-			// 	// in tree's "this" context
-			// 	// eslint-disable-next-line no-invalid-this
-			// 	return this.hasDescendantsInList(id, [6]);
-			// }
-		];
-
 		const lastSearchResults = null;
-		const semesterTypeId = 25;
 		const orgUnits = [
 			{ Id: 1, Name: 'Course 1', Type: OU_TYPES.COURSE, Parents: [3, 4], IsActive: false },
 			{ Id: 2, Name: 'Course 2', Type: OU_TYPES.COURSE, Parents: [3, 10], IsActive: true },
@@ -55,7 +45,7 @@ export class DemoDataManager extends OuFilterDataManager {
 			// the search will blink out and come back, and also drop any "load more" results
 			nodes: lastSearchResults ? [...orgUnits, ...lastSearchResults] : orgUnits,
 			leafTypes: [COURSE_OFFERING],
-			invisibleTypes: [semesterTypeId],
+			invisibleTypes: [OU_TYPES.SEM],
 			selectedIds: [1],
 			ancestorIds: [],
 			oldTree: this.orgUnitTree,
@@ -64,8 +54,7 @@ export class DemoDataManager extends OuFilterDataManager {
 			// tree blink out and then come back as they are loaded again
 			extraChildren: isOrgUnitsTruncated ?
 				fetchCachedChildren() || new Map() :
-				null,
-			visibilityModifiers
+				null
 		});
 	}
 
