@@ -31,7 +31,6 @@ class OuFilterDemoPage extends MobxLitElement {
 
 	firstUpdated() {
 		this.dataManager.loadData();
-		this.dataManager.orgUnitTree.ids.forEach(id => this.dataManager.orgUnitTree.setOpen(id, true));
 	}
 
 	render() {
@@ -57,8 +56,9 @@ class OuFilterDemoPage extends MobxLitElement {
 
 	_handleInputSearchChange(event) {
 		const searchInput = event.detail.value;
+		const visibilityModifierKey = 'searchInputFilter';
 		if (!searchInput) {
-			this.dataManager.orgUnitTree.visibilityModifiers = [];
+			this.dataManager.orgUnitTree.removeVisibilityModifier(visibilityModifierKey);
 			return;
 		}
 
@@ -66,10 +66,11 @@ class OuFilterDemoPage extends MobxLitElement {
 		const searchedOrgUnitIds = searchInput.split(',').map(orgUnitIdStr => Number(orgUnitIdStr));
 		const tree = this.dataManager.orgUnitTree;
 
-		tree.visibilityModifiers = [
-			// example: only load branches that contain any of the searched orgUnitIds
+		// example: only load branches that contain any of the searched orgUnitIds
+		tree.addVisibilityModifier(
+			visibilityModifierKey,
 			(id) => tree.hasDescendantsInList(id, searchedOrgUnitIds)
-		];
+		);
 	}
 }
 

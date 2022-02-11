@@ -36,7 +36,7 @@ export class Tree {
 	 * @param {Map}[extraChildren] - Map from parent node ids to arrays of
 	 * {Items: OrgUnitNode[], PagingInfo: {HasMoreItems: boolean, Bookmark}}; these will be added to the tree before
 	 * any selections are applied and the parents marked as populated. Useful for adding cached lookups to a dynamic tree.
-	 * @param {Function[]}[visibilityModifiers] - optional array of filters that can be used to hide certain org units
+	 * @param visibilityModifiers - optional kvp where values are functions that map an orgUnitId to a boolean indicating visibility
 	 */
 	constructor({
 		nodes = [],
@@ -47,7 +47,7 @@ export class Tree {
 		oldTree,
 		isDynamic = false,
 		extraChildren,
-		visibilityModifiers = []
+		visibilityModifiers = {}
 	}) {
 		this.leafTypes = leafTypes;
 		this.invisibleTypes = invisibleTypes;
@@ -421,19 +421,17 @@ export class Tree {
 		const visible = (this._visible === null || this._visible.has(id))
 			&& !this.invisibleTypes.includes(this.getType(id));
 
-		if (!visible) {
-			return false;
-		}
-
-		if (!this._visibilityModifiers.length) {
-			return visible;
-		}
-
-		return this._visibilityModifiers.every(modifier => modifier(id));
+		return visible && Object.values(this._visibilityModifiers).every(modifier => modifier(id)); // every returns true if the array is empty
 	}
 
-	set visibilityModifiers(visibilityModifiers) {
-		this._visibilityModifiers = visibilityModifiers;
+	addVisibilityModifier(key, visibilityModFn) {
+		const modifiersCopy = { ...this._visibilityModifiers };
+		modifiersCopy[key] = visibilityModFn;
+		this._visibilityModifiers = modifiersCopy;
+	}
+
+	removeVisibilityModifier(key) {
+		this._visibilityModifiers = Object.fromEntries(Object.entries(this._visibilityModifiers).filter(kvp => kvp[0] !== key));
 	}
 
 	_nameForSort(id) {

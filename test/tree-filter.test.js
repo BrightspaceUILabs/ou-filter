@@ -697,17 +697,18 @@ describe('Tree', () => {
 
 		describe('visibility modifiers', () => {
 			it('should only show nodes matching all visibility modifiers', () => {
-				dynamicTree.visibilityModifiers = [
-					(id) => dynamicTree.hasDescendantsInList(id, [211, 4])
-				];
-				const expectedVisibleNodes = new Set([6606, 1001, 2, 211, 1003, 4]); // semester nodes are in the "invisible node types" list
+				dynamicTree.addVisibilityModifier('mod', (id) => dynamicTree.hasDescendantsInList(id, [211, 4]));
+				let expectedVisibleNodes = new Set([6606, 1001, 2, 211, 1003, 4]); // semester nodes are in the "invisible node types" list
+				assertSetsAreEqual(expectedVisibleNodes, new Set(dynamicTree.ids.filter((id) => dynamicTree._isVisible(id))));
+
+				dynamicTree.removeVisibilityModifier('mod');
+				console.log(dynamicTree._visibilityModifiers);
+				expectedVisibleNodes = new Set([-100, 6606, 1001, 1002, 1003, 1, 2, 3, 4, 111, 112, 211, 312]); // semester nodes are in the "invisible node types" list
 				assertSetsAreEqual(expectedVisibleNodes, new Set(dynamicTree.ids.filter((id) => dynamicTree._isVisible(id))));
 			});
 
 			it('should apply both visibility modifiers and search', () => {
-				dynamicTree.visibilityModifiers = [
-					(id) => dynamicTree.hasDescendantsInList(id, [211])
-				];
+				dynamicTree.addVisibilityModifier('mod', (id) => dynamicTree.hasDescendantsInList(id, [211]));
 
 				assertSetsAreEqual(new Set(dynamicTree.getMatchingIds('course')), new Set([2, 211]));
 				assertSetsAreEqual(new Set(dynamicTree.getMatchingIds('dep')), new Set([1001]));
