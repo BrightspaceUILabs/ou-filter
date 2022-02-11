@@ -31,6 +31,7 @@ class OuFilterDemoPage extends MobxLitElement {
 
 	firstUpdated() {
 		this.dataManager.loadData();
+		this.dataManager.orgUnitTree.ids.forEach(id => this.dataManager.orgUnitTree.setOpen(id, true));
 	}
 
 	render() {

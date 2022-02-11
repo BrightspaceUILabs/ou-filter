@@ -1,6 +1,7 @@
 import { action, decorate, observable } from 'mobx';
 import { COURSE_OFFERING, Tree } from '../tree-filter';
 import { OuFilterDataManager } from '../ou-filter';
+// import { createNaryTree } from './util.js';
 
 const orgUnitChildrenCache = new Map();
 function fetchCachedChildren() {
@@ -56,6 +57,9 @@ export class DemoDataManager extends OuFilterDataManager {
 				fetchCachedChildren() || new Map() :
 				null
 		});
+
+		// for perf testing
+		// this._orgUnitTree = createNaryTree(5, 5000);
 	}
 
 	get orgUnitTree() {
