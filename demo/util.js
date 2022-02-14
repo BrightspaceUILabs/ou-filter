@@ -1,5 +1,7 @@
 import { Tree } from '../tree-filter.js';
 
+let idCounter = 1;
+
 function createNode(id, parents, type) {
 	return { Id: id, Name: `Node ${id}`, Type: type, Parents: parents, IsActive: true };
 }
@@ -7,14 +9,14 @@ function createNode(id, parents, type) {
 function spawnChildren(node, n) {
 	const newNodes = [];
 	for (let i = 1; i <= n; i++) {
-		const newNodeId = node.Id * 10 + i;
-		newNodes.push(createNode(newNodeId, [node.Id], node.Type + 1));
+		newNodes.push(createNode(++idCounter, [node.Id], node.Type + 1));
 	}
 	return newNodes;
 }
 
-// id function may not work for n > 9
 export function createNaryTree(n, numNodes) {
+
+	idCounter = 1;
 
 	const nodes = [createNode(1, [0], 0)];
 	let newNodes = [...nodes];
