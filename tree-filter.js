@@ -424,7 +424,7 @@ export class Tree {
 		return visible && Object.values(this._visibilityModifiers).every(modifier => modifier(id)); // every returns true if the array is empty
 	}
 
-	addVisibilityModifier(key, visibilityModFn) {
+	setVisibilityModifier(key, visibilityModFn) {
 		const modifiersCopy = { ...this._visibilityModifiers };
 		modifiersCopy[key] = visibilityModFn;
 		this._visibilityModifiers = modifiersCopy;

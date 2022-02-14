@@ -67,7 +67,7 @@ class OuFilterDemoPage extends MobxLitElement {
 		const tree = this.dataManager.orgUnitTree;
 
 		// example: only load branches that contain any of the searched orgUnitIds
-		tree.addVisibilityModifier(
+		tree.setVisibilityModifier(
 			visibilityModifierKey,
 			(id) => tree.hasDescendantsInList(id, searchedOrgUnitIds)
 		);
