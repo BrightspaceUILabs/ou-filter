@@ -7,11 +7,11 @@ export default {
 
 	"treeFilter:nodeName": "{orgUnitName} (ID : {id})",
 	"treeFilter:nodeName:root": "Racine",
-	"treeSelector:filterBy": "Filtrer à l’aide de",
+	"treeSelector:filterBy": "Filtrer à l'aide de",
 	"treeSelector:clearLabel": "Effacer",
 	"treeSelector:searchLabel": "Rechercher",
 	"treeSelector:loadMoreLabel": "En télécharger plus",
-	"treeSelector:parentLoadMore:ariaLabel": "Charger plus d’unités organisationnelles enfants",
+	"treeSelector:parentLoadMore:ariaLabel": "Charger plus d'unités organisationnelles enfants",
 	"treeSelector:searchLoadMore:ariaLabel": "Charger plus de résultats de la recherche",
 	"treeSelector:searchPlaceholder": "Recherche en cours…",
 	"treeSelector:dropdownAction": "Ouvrir le filtre {name}",
