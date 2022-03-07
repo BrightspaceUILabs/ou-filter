@@ -1,4 +1,4 @@
-import { expect, fixture, html, oneEvent } from '@open-wc/testing';
+import { aTimeout, expect, fixture, html, oneEvent } from '@open-wc/testing';
 import { runConstructor } from '@brightspace-ui/core/tools/constructor-test-helper.js';
 import { Tree } from '../tree-filter';
 
@@ -661,6 +661,7 @@ describe('d2l-labs-tree-filter', () => {
 				.tree="${tree}"
 			></d2l-labs-tree-filter>`
 		);
+		await aTimeout(50);
 		await el.treeUpdateComplete;
 
 		return el;
@@ -685,6 +686,7 @@ describe('d2l-labs-tree-filter', () => {
 		});
 	});
 
+
 	describe('render', () => {
 		it('should render with opener-text if no items are selected', async() => {
 			const treeWithNoSelections = new Tree({ nodes: [
@@ -701,6 +703,7 @@ describe('d2l-labs-tree-filter', () => {
 				.tree="${treeWithNoSelections}"
 			></d2l-labs-tree-filter>`
 			);
+			await aTimeout(50);
 			await el.treeUpdateComplete;
 
 			const treeSelector = el.shadowRoot.querySelector('d2l-labs-tree-selector');
@@ -724,6 +727,7 @@ describe('d2l-labs-tree-filter', () => {
 				.tree="${treeWithNoSelections}"
 			></d2l-labs-tree-filter>`
 			);
+			await aTimeout(50);
 			await el.treeUpdateComplete;
 
 			const treeSelector = el.shadowRoot.querySelector('d2l-labs-tree-selector');
@@ -846,6 +850,7 @@ describe('d2l-labs-tree-filter', () => {
 			await el.treeUpdateComplete;
 			// open dept 1 so that course 1 gets rendered - then deselect course 1
 			node(3).simulateArrowClick();
+			await aTimeout(50);
 			await el.treeUpdateComplete;
 			node(1).simulateCheckboxClick();
 			await el.treeUpdateComplete;
