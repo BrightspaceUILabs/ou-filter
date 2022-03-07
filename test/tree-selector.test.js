@@ -1,6 +1,6 @@
 import '../tree-selector';
 
-import { expect, fixture, html, oneEvent } from '@open-wc/testing';
+import { aTimeout, expect, fixture, html, oneEvent } from '@open-wc/testing';
 import { runConstructor } from '@brightspace-ui/core/tools/constructor-test-helper.js';
 
 function isVisible(searchResults) {
@@ -17,6 +17,7 @@ describe('d2l-labs-tree-selector', () => {
 	describe('accessibility', () => {
 		it('should pass all axe tests', async() => {
 			const el = await fixture(html`<d2l-labs-tree-selector name="choose!"></d2l-labs-tree-selector>`);
+			await aTimeout(50);
 			await expect(el).to.be.accessible();
 		});
 	});
@@ -24,6 +25,7 @@ describe('d2l-labs-tree-selector', () => {
 	describe('render', () => {
 		it('should render a dropbdown with the given name', async() => {
 			const el = await fixture(html`<d2l-labs-tree-selector name="choose!"></d2l-labs-tree-selector>`);
+			await aTimeout(50);
 			expect(el.shadowRoot.querySelector('d2l-dropdown-button-subtle').getAttribute('text')).to.equal('choose!');
 		});
 
@@ -32,6 +34,7 @@ describe('d2l-labs-tree-selector', () => {
 					<d2l-labs-tree-selector-node name="shown" slot="tree"></d2l-labs-tree-selector-node>
 					<d2l-labs-tree-selector-node name="found" slot="search-results"></d2l-labs-tree-selector-node>
 				</d2l-labs-tree-selector>`);
+			await aTimeout(50);
 			const treeSlot = el.shadowRoot.querySelector('slot[name=tree]');
 			expect(treeSlot.assignedNodes({ flatten: false }).map(x => x.name)).to.deep.equal(['shown']);
 			const searchSlot = el.shadowRoot.querySelector('slot[name=search-results]');
@@ -40,6 +43,7 @@ describe('d2l-labs-tree-selector', () => {
 
 		it('should show tree and hide search results by default', async() => {
 			const el = await fixture(html`<d2l-labs-tree-selector name="choose!"></d2l-labs-tree-selector>`);
+			await aTimeout(50);
 			const searchResults = el.shadowRoot.querySelector('.d2l-labs-tree-selector-search-results');
 			expect(isVisible(searchResults)).to.be.false;
 			const tree = el.shadowRoot.querySelector('.d2l-labs-tree-selector-tree');
@@ -48,6 +52,7 @@ describe('d2l-labs-tree-selector', () => {
 
 		it('should show tree and hide search results when searching', async() => {
 			const el = await fixture(html`<d2l-labs-tree-selector name="choose!" search></d2l-labs-tree-selector>`);
+			await aTimeout(50);
 			const searchResults = el.shadowRoot.querySelector('.d2l-labs-tree-selector-search-results');
 			await new Promise(res => setTimeout(res, 30));
 			expect(isVisible(searchResults)).to.be.true;
@@ -59,6 +64,7 @@ describe('d2l-labs-tree-selector', () => {
 	describe('events', () => {
 		it('should fire d2l-labs-tree-selector-search on search input', async() => {
 			const el = await fixture(html`<d2l-labs-tree-selector name="choose!"></d2l-labs-tree-selector>`);
+			await aTimeout(50);
 			const listener = oneEvent(el, 'd2l-labs-tree-selector-search');
 			const search = el.shadowRoot.querySelector('d2l-input-search');
 			search.value = 'asdf';
@@ -73,6 +79,7 @@ describe('d2l-labs-tree-selector', () => {
 
 		it('should fire d2l-labs-tree-selector-clear on clear', async() => {
 			const el = await fixture(html`<d2l-labs-tree-selector name="choose!" selected></d2l-labs-tree-selector>`);
+			await aTimeout(50);
 			const listener = oneEvent(el, 'd2l-labs-tree-selector-clear');
 			const button = el.shadowRoot.querySelector('d2l-dropdown-content d2l-button-subtle');
 			button.click();
