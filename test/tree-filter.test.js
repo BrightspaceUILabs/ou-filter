@@ -686,7 +686,6 @@ describe('d2l-labs-tree-filter', () => {
 		});
 	});
 
-
 	describe('render', () => {
 		it('should render with opener-text if no items are selected', async() => {
 			const treeWithNoSelections = new Tree({ nodes: [
