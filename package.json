@@ -51,7 +51,7 @@
   },
   "dependencies": {
     "@adobe/lit-mobx": "0.0.x",
-    "@brightspace-ui/core": "^2",
+    "@brightspace-ui/core": "https://github.com/BrightspaceUI/core#vmisechko/lit-2",
     "@brightspace-ui/intl": "^3.2.0",
     "array-flat-polyfill": "^1.0.1",
     "lit-element": "^3",
