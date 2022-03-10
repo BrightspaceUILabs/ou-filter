@@ -36,6 +36,7 @@ export class Tree {
 	 * @param {Map}[extraChildren] - Map from parent node ids to arrays of
 	 * {Items: OrgUnitNode[], PagingInfo: {HasMoreItems: boolean, Bookmark}}; these will be added to the tree before
 	 * any selections are applied and the parents marked as populated. Useful for adding cached lookups to a dynamic tree.
+	 * @param visibilityModifiers - optional kvp where values are functions that map an orgUnitId to a boolean indicating visibility
 	 */
 	constructor({
 		nodes = [],
@@ -45,7 +46,8 @@ export class Tree {
 		ancestorIds,
 		oldTree,
 		isDynamic = false,
-		extraChildren
+		extraChildren,
+		visibilityModifiers = {}
 	}) {
 		this.leafTypes = leafTypes;
 		this.invisibleTypes = invisibleTypes;
@@ -63,6 +65,8 @@ export class Tree {
 		this._loading = new Set();
 		this._hasMore = new Set();
 		this._bookmarks = new Map();
+
+		this._visibilityModifiers = visibilityModifiers;
 
 		// fill in children (parents are provided by the caller, and ancestors will be generated on demand)
 		this._updateChildren(this.ids);
@@ -283,7 +287,7 @@ export class Tree {
 
 	/**
 	 * Checks if a node has ancestors in a given list.
-	 * NOTE: returns true if the node itself is in the list.
+	 * NB: returns true if an id is itself is in the list to check
 	 * @param {Number} id - the node whose ancestors we want to check
 	 * @param {[Number]} listToCheck - an array of node ids which potentially has ancestors in it
 	 * @returns {boolean}
@@ -292,6 +296,34 @@ export class Tree {
 		const ancestorsSet = this.getAncestorIds(id);
 
 		return listToCheck.some(potentialAncestor => ancestorsSet.has(potentialAncestor));
+	}
+
+	/**
+	 * NB: for the purposes of this function, a node is its own descendant
+	 * @param {Number} id
+	 * @returns {Set<Number>}
+	 */
+	getDescendantIds(id) {
+		const children = this._children.get(id);
+		if (!children || !children.size) {
+			return new Set([id]);
+		}
+
+		const descendants = new Set([...children].flatMap(child => [...this.getDescendantIds(child)]));
+		descendants.add(id);
+		return descendants;
+	}
+
+	/**
+	 * NB: returns true if an id is itself is in the list to check
+	 * @param {Number} id
+	 * @param {[Number]} listToCheck
+	 * @returns {boolean}
+	 */
+	hasDescendantsInList(id, listToCheck) {
+		const descendants = this.getDescendantIds(id);
+		const listToCheckUnique = [...new Set(listToCheck)];
+		return listToCheckUnique.some(potentialDescendant => descendants.has(potentialDescendant));
 	}
 
 	hasMore(id) {
@@ -386,8 +418,20 @@ export class Tree {
 	}
 
 	_isVisible(id) {
-		return (this._visible === null || this._visible.has(id))
+		const visible = (this._visible === null || this._visible.has(id))
 			&& !this.invisibleTypes.includes(this.getType(id));
+
+		return visible && Object.values(this._visibilityModifiers).every(modifier => modifier(id)); // every returns true if the array is empty
+	}
+
+	setVisibilityModifier(key, visibilityModFn) {
+		const modifiersCopy = { ...this._visibilityModifiers };
+		modifiersCopy[key] = visibilityModFn;
+		this._visibilityModifiers = modifiersCopy;
+	}
+
+	removeVisibilityModifier(key) {
+		this._visibilityModifiers = Object.fromEntries(Object.entries(this._visibilityModifiers).filter(kvp => kvp[0] !== key));
 	}
 
 	_nameForSort(id) {
@@ -454,6 +498,7 @@ decorate(Tree, {
 	_loading: observable,
 	_bookmarks: observable,
 	_hasMore: observable,
+	_visibilityModifiers: observable,
 	selected: computed,
 	allSelectedCourses: computed,
 	addNodes: action,
