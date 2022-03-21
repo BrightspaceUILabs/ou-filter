@@ -50,7 +50,7 @@
     "stylelint": "^14"
   },
   "dependencies": {
-    "@adobe/lit-mobx": "0.0.x",
+    "@adobe/lit-mobx": "^1.0.0",
     "@brightspace-ui/core": "^2",
     "@brightspace-ui/intl": "^3.2.0",
     "array-flat-polyfill": "^1.0.1",
