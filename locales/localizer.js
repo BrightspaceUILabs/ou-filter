@@ -55,6 +55,9 @@ export const Localizer = superclass => class extends LocalizeMixin(superclass) {
 					case 'fr-ON':
 						translations = await import('./fr-ON.js');
 						break;
+					case 'hi':
+						translations = await import('./hi.js');
+						break;
 					case 'ja':
 						translations = await import('./ja.js');
 						break;
