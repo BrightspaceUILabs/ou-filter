@@ -3,22 +3,22 @@ import puppeteer from 'puppeteer';
 import { VisualDiff } from '@brightspace-ui/visual-diff';
 
 ['ltr', 'rtl'].forEach(dir => {
-	describe(`ou-filter-select-all ${dir}`, () => {
+	describe.only(`ou-filter-select-all ${dir}`, () => {
 
 		const visualDiff = new VisualDiff(`ou-filter-select-all-${dir}`, import.meta.url, { tolerance: 0.1 });
 
 		let browser, page;
 
 		before(async() => {
-			browser = await puppeteer.launch();
+			browser = await puppeteer.launch({ headless: true }); // { headless: false } - useful for debugging
 			page = await visualDiff.createPage(browser);
 			await page.setViewport({
-				width: 1275,
+				width: 600,
 				height: 700,
-				deviceScaleFactor: 1
+				deviceScaleFactor: 2
 			});
 			await page.goto(
-				`${visualDiff.getBaseUrl()}/test/visual-diff/d2l-labs-ou-filter.visual-diff.html#select-all-ux=1;dir=${dir}`,
+				`${visualDiff.getBaseUrl()}/test/visual-diff/d2l-labs-ou-filter.visual-diff.html#select-all-ui=1;dir=${dir}`,
 				{ waitUntil: ['networkidle0', 'load'] }
 			);
 			await new Promise(res => setTimeout(res, 300));
@@ -56,9 +56,9 @@ import { VisualDiff } from '@brightspace-ui/visual-diff';
 
 		it('Mobile', async function() {
 			await page.setViewport({
-				width: 320,
+				width: 370,
 				height: 700,
-				deviceScaleFactor: 1
+				deviceScaleFactor: 2
 			});
 			const rect = await visualDiff.getRect(page, 'body');
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });

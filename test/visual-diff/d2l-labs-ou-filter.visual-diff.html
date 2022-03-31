@@ -109,7 +109,7 @@
 						document.documentElement.setAttribute('dir', hashMap.get('dir'));
 					}
 
-					this._isSelectAllButton = hashMap.has('select-all-ux');
+					this._isSelectAllButton = hashMap.has('select-all-ui');
 				}
 
 				firstUpdated() {
@@ -121,7 +121,7 @@
 						<div>
 							<d2l-labs-ou-filter
 								.dataManager=${this.dataManager}
-								?select-all-ux="${this._isSelectAllButton}"
+								?select-all-ui="${this._isSelectAllButton}"
 								@d2l-labs-ou-filter-change="${this._orgUnitFilterChange}"
 							></d2l-labs-ou-filter>
 						</div>
