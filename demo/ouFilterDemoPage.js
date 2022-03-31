@@ -38,11 +38,13 @@ class OuFilterDemoPage extends MobxLitElement {
 			<div>
 				<d2l-labs-ou-filter
 					.dataManager=${this.dataManager}
+					select-all-ui
 					@d2l-labs-ou-filter-change="${this._handleOrgUnitFilterChange}"
 				></d2l-labs-ou-filter>
 				<label for="org-unit-id-search">Test visibility modifiers: show only branches containing org unit ids</label>
 				<d2l-input-search
 					id="org-unit-id-search"
+					label="Demo search input"
 					@d2l-input-search-searched="${this._handleInputSearchChange}">
 				</d2l-input-search>
 			</div>

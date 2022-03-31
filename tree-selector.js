@@ -5,7 +5,7 @@ import '@brightspace-ui/core/components/dropdown/dropdown-content.js';
 import '@brightspace-ui/core/components/dropdown/dropdown.js';
 import '@brightspace-ui/core/components/inputs/input-search.js';
 
-import { css, html, LitElement } from 'lit-element/lit-element.js';
+import { css, html, LitElement, nothing } from 'lit-element/lit-element.js';
 import { Localizer } from './locales/localizer';
 import { selectStyles } from '@brightspace-ui/core/components/inputs/input-select-styles';
 
@@ -15,12 +15,14 @@ import { selectStyles } from '@brightspace-ui/core/components/inputs/input-selec
  * @property {Boolean} isSelected - if true, show a "Clear" button in the header
  * @fires d2l-labs-tree-selector-search - user requested or cleared a search; search string is event.detail.value
  * @fires d2l-labs-tree-selector-clear - user requested that all selections be cleared
+ * @fires d2l-labs-tree-selector-select-all - user requested that all nodes be checked
  */
 class TreeSelector extends Localizer(LitElement) {
 
 	static get properties() {
 		return {
 			name: { type: String },
+			isSelectAllVisible: { type: Boolean, attribute: 'select-all-ui', reflect: true },
 			isSearch: { type: Boolean, attribute: 'search', reflect: true },
 			isSelected: { type: Boolean, attribute: 'selected', reflect: true }
 		};
@@ -39,10 +41,18 @@ class TreeSelector extends Localizer(LitElement) {
 
 				.d2l-labs-filter-dropdown-content-header {
 					display: flex;
-					justify-content: space-between;
+					justify-content: end;
 				}
 				.d2l-labs-filter-dropdown-content-header > span {
 					align-self: center;
+				}
+
+				d2l-button-subtle:first-of-type {
+					margin-left: auto;
+				}
+
+				:host([select-all-ui]) .d2l-labs-tree-selector-clear {
+					margin-right: 6px;
 				}
 
 				.d2l-labs-tree-selector-search {
@@ -76,6 +86,7 @@ class TreeSelector extends Localizer(LitElement) {
 
 		this.name = 'SPECIFY NAME ATTRIBUTE';
 		this._isSearch = false;
+		this.isSelectAllVisible = false;
 	}
 
 	/**
@@ -95,11 +106,15 @@ class TreeSelector extends Localizer(LitElement) {
 					<d2l-dropdown-content align="start" no-auto-fit>
 						<div class="d2l-labs-filter-dropdown-content-header" slot="header">
 							<span>${this.localize('treeSelector:filterBy')}</span>
+
 							<d2l-button-subtle
+							 	class="d2l-labs-tree-selector-clear"
 							 	text="${this.localize('treeSelector:clearLabel')}"
 							 	?hidden="${!this.isSelected}"
 							 	@click="${this._onClear}"
 							></d2l-button-subtle>
+
+							${this._selectAllButton}
 						</div>
 						<div class="d2l-labs-tree-selector-search">
 							<d2l-input-search
@@ -118,6 +133,16 @@ class TreeSelector extends Localizer(LitElement) {
 				</d2l-dropdown-button-subtle>
 			</d2l-dropdown>
 		`;
+	}
+
+	get _selectAllButton() {
+		if (!this.isSelectAllVisible) return nothing;
+
+		return html`<d2l-button-subtle
+				class="d2l-labs-tree-selector-select-all"
+				text="${this.localize('treeSelector:selectAllLabel')}"
+				@click="${this._onSelectAll}"
+		></d2l-button-subtle>`;
 	}
 
 	simulateSearch(searchString) {
@@ -140,6 +165,19 @@ class TreeSelector extends Localizer(LitElement) {
 		 */
 		this.dispatchEvent(new CustomEvent(
 			'd2l-labs-tree-selector-clear',
+			{
+				bubbles: true,
+				composed: false
+			}
+		));
+	}
+
+	_onSelectAll() {
+		/**
+		 * @event d2l-labs-tree-selector-select-all
+		 */
+		this.dispatchEvent(new CustomEvent(
+			'd2l-labs-tree-selector-select-all',
 			{
 				bubbles: true,
 				composed: false

@@ -77,7 +77,7 @@ describe('d2l-labs-tree-selector', () => {
 			});
 		});
 
-		it('should fire d2l-labs-tree-selector-clear on clear', async() => {
+		it('should fire d2l-labs-tree-selector-clear on Clear', async() => {
 			const el = await fixture(html`<d2l-labs-tree-selector name="choose!" selected></d2l-labs-tree-selector>`);
 			await aTimeout(50);
 			const listener = oneEvent(el, 'd2l-labs-tree-selector-clear');
@@ -85,6 +85,17 @@ describe('d2l-labs-tree-selector', () => {
 			button.click();
 			const event = await listener;
 			expect(event.type).to.equal('d2l-labs-tree-selector-clear');
+			expect(event.target).to.equal(el);
+		});
+
+		it('should fire d2l-labs-tree-selector-select-all on Select all', async() => {
+			const el = await fixture(html`<d2l-labs-tree-selector name="choose!" selected select-all-ui></d2l-labs-tree-selector>`);
+			await aTimeout(50);
+			const listener = oneEvent(el, 'd2l-labs-tree-selector-select-all');
+			const button = el.shadowRoot.querySelector('.d2l-labs-tree-selector-select-all');
+			button.click();
+			const event = await listener;
+			expect(event.type).to.equal('d2l-labs-tree-selector-select-all');
 			expect(event.target).to.equal(el);
 		});
 	});
