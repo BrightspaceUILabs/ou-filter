@@ -107,12 +107,7 @@ class TreeSelector extends Localizer(LitElement) {
 						<div class="d2l-labs-filter-dropdown-content-header" slot="header">
 							<span>${this.localize('treeSelector:filterBy')}</span>
 
-							<d2l-button-subtle
-							 	class="d2l-labs-tree-selector-clear"
-							 	text="${this.localize('treeSelector:clearLabel')}"
-							 	?hidden="${!this.isSelected}"
-							 	@click="${this._onClear}"
-							></d2l-button-subtle>
+							${this._clearButton}
 
 							${this._selectAllButton}
 						</div>
@@ -135,10 +130,23 @@ class TreeSelector extends Localizer(LitElement) {
 		`;
 	}
 
+	get _clearButton() {
+		if (!this.isSelected) return nothing;
+
+		return html`
+		<d2l-button-subtle
+			 class="d2l-labs-tree-selector-clear"
+			 text="${this.localize('treeSelector:clearLabel')}"
+
+			 @click="${this._onClear}"
+		></d2l-button-subtle>`;
+	}
+
 	get _selectAllButton() {
 		if (!this.isSelectAllVisible) return nothing;
 
-		return html`<d2l-button-subtle
+		return html`
+		<d2l-button-subtle
 				class="d2l-labs-tree-selector-select-all"
 				text="${this.localize('treeSelector:selectAllLabel')}"
 				@click="${this._onSelectAll}"
