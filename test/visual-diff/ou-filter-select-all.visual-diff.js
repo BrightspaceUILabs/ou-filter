@@ -18,7 +18,7 @@ import { VisualDiff } from '@brightspace-ui/visual-diff';
 				deviceScaleFactor: 1
 			});
 			await page.goto(
-				`${visualDiff.getBaseUrl()}/test/visual-diff/d2l-labs-ou-filter.visual-diff.html#select-all-ux=1&dir=${dir}`,
+				`${visualDiff.getBaseUrl()}/test/visual-diff/d2l-labs-ou-filter.visual-diff.html#select-all-ux=1;dir=${dir}`,
 				{ waitUntil: ['networkidle0', 'load'] }
 			);
 			await new Promise(res => setTimeout(res, 300));
