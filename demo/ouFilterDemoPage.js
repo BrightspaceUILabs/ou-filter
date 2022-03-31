@@ -4,6 +4,14 @@ import { css, html } from 'lit-element/lit-element.js';
 import { DemoDataManager } from './demoDataManager.js';
 import { MobxLitElement } from '@adobe/lit-mobx';
 
+function parseHash(hash) {
+	return hash.substring(1).split(';').reduce((acc, curr) => {
+		const [key, val] = curr.split('=');
+		acc.set(key, val);
+		return acc;
+	}, new Map());
+}
+
 /* eslint-disable no-console */
 class OuFilterDemoPage extends MobxLitElement {
 
@@ -27,6 +35,16 @@ class OuFilterDemoPage extends MobxLitElement {
 	constructor() {
 		super();
 		this.dataManager = new DemoDataManager();
+	}
+
+	connectedCallback() {
+		super.connectedCallback();
+
+		const hashMap = parseHash(window.location.hash);
+
+		if (hashMap.has('dir')) {
+			document.documentElement.setAttribute('dir', hashMap.get('dir'));
+		}
 	}
 
 	firstUpdated() {

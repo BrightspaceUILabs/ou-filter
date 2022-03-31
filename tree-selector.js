@@ -6,6 +6,7 @@ import '@brightspace-ui/core/components/dropdown/dropdown.js';
 import '@brightspace-ui/core/components/inputs/input-search.js';
 
 import { css, html, LitElement, nothing } from 'lit-element/lit-element.js';
+import { classMap } from 'lit/directives/class-map.js';
 import { Localizer } from './locales/localizer';
 import { selectStyles } from '@brightspace-ui/core/components/inputs/input-select-styles';
 
@@ -47,12 +48,21 @@ class TreeSelector extends Localizer(LitElement) {
 					align-self: center;
 				}
 
-				d2l-button-subtle:first-of-type {
+				.d2l-labs-tree-selector-margin-button {
+					margin-right: 6px;
+				}
+
+				.d2l-labs-tree-selector-margin-button[dir="rtl"] {
+					margin-left: 6px;
+				}
+
+				.d2l-labs-tree-selector-margin-auto {
 					margin-left: auto;
 				}
 
-				:host([select-all-ui]) .d2l-labs-tree-selector-clear {
-					margin-right: 6px;
+				.d2l-labs-tree-selector-margin-auto[dir="rtl"] {
+					margin-left: unset;
+					margin-right: auto;
 				}
 
 				.d2l-labs-tree-selector-search {
@@ -133,23 +143,33 @@ class TreeSelector extends Localizer(LitElement) {
 	get _clearButton() {
 		if (!this.isSelected) return nothing;
 
+		const styles = {
+			'd2l-labs-tree-selector-select-clear': true,
+			'd2l-labs-tree-selector-margin-button': true,
+			'd2l-labs-tree-selector-margin-auto': true
+		};
+
 		return html`
 		<d2l-button-subtle
-			 class="d2l-labs-tree-selector-clear"
-			 text="${this.localize('treeSelector:clearLabel')}"
-
-			 @click="${this._onClear}"
+			class="${classMap(styles)}"
+			text="${this.localize('treeSelector:clearLabel')}"
+			@click="${this._onClear}"
 		></d2l-button-subtle>`;
 	}
 
 	get _selectAllButton() {
 		if (!this.isSelectAllVisible) return nothing;
 
+		const styles = {
+			'd2l-labs-tree-selector-select-all': true,
+			'd2l-labs-tree-selector-margin-auto': !this.isSelected
+		};
+
 		return html`
 		<d2l-button-subtle
-				class="d2l-labs-tree-selector-select-all"
-				text="${this.localize('treeSelector:selectAllLabel')}"
-				@click="${this._onSelectAll}"
+			class="${classMap(styles)}"
+			text="${this.localize('treeSelector:selectAllLabel')}"
+			@click="${this._onSelectAll}"
 		></d2l-button-subtle>`;
 	}
 
