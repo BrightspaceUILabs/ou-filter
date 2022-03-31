@@ -48,6 +48,7 @@ export class OuFilterDataManager {
 
 /**
  * @property {Object} dataManager - an instance of OuFilterDataManager
+ * @property {Boolean} isSelectAllVisible - shows Select all button if true
  * @fires d2l-labs-ou-filter-change
  */
 class OuFilter extends Localizer(MobxLitElement) {
