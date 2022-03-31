@@ -42,7 +42,7 @@ class TreeSelector extends Localizer(LitElement) {
 
 				.d2l-labs-filter-dropdown-content-header {
 					display: flex;
-					justify-content: end;
+					justify-content: start;
 				}
 				.d2l-labs-filter-dropdown-content-header > span {
 					align-self: center;
