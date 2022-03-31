@@ -52,10 +52,6 @@ class TreeSelector extends Localizer(LitElement) {
 					margin-right: 6px;
 				}
 
-				.d2l-labs-tree-selector-margin-button[dir="rtl"] {
-					margin-left: 6px;
-				}
-
 				.d2l-labs-tree-selector-margin-auto {
 					margin-left: auto;
 				}
@@ -63,6 +59,10 @@ class TreeSelector extends Localizer(LitElement) {
 				.d2l-labs-tree-selector-margin-auto[dir="rtl"] {
 					margin-left: unset;
 					margin-right: auto;
+				}
+
+				.d2l-labs-tree-selector-margin-button[dir="rtl"] {
+					margin-left: 6px;
 				}
 
 				.d2l-labs-tree-selector-search {
