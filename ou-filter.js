@@ -48,13 +48,15 @@ export class OuFilterDataManager {
 
 /**
  * @property {Object} dataManager - an instance of OuFilterDataManager
+ * @property {Boolean} isSelectAllVisible - shows Select all button if true
  * @fires d2l-labs-ou-filter-change
  */
 class OuFilter extends Localizer(MobxLitElement) {
 
 	static get properties() {
 		return {
-			dataManager: { type: Object, attribute: false }
+			dataManager: { type: Object, attribute: false },
+			isSelectAllVisible: { type: Boolean, attribute: 'select-all-ui', reflect: true }
 		};
 	}
 
@@ -72,6 +74,7 @@ class OuFilter extends Localizer(MobxLitElement) {
 	constructor() {
 		super();
 		this.dataManager = new OuFilterDataManager();
+		this.isSelectAllVisible = false;
 	}
 
 	render() {
@@ -81,6 +84,7 @@ class OuFilter extends Localizer(MobxLitElement) {
 				.tree="${this.dataManager.orgUnitTree}"
 				opener-text="${this.localize('orgUnitFilter:nameAllSelected')}"
 				opener-text-selected="${this.localize('orgUnitFilter:nameSomeSelected')}"
+				?select-all-ui="${this.isSelectAllVisible}"
 				@d2l-labs-tree-filter-select="${this._onChange}"
 				@d2l-labs-tree-filter-request-children="${this._onRequestChildren}"
 				@d2l-labs-tree-filter-search="${this._onSearch}"
@@ -89,7 +93,7 @@ class OuFilter extends Localizer(MobxLitElement) {
 	}
 
 	get selected() {
-		return this.shadowRoot?.querySelector('d2l-labs-tree-filter').selected || [];
+		return this.shadowRoot?.querySelector('d2l-labs-tree-filter')?.selected || [];
 	}
 
 	_onChange() {

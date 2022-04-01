@@ -8,6 +8,7 @@ export default {
 	"treeFilter:nodeName": "{orgUnitName} (Id: {id})",
 	"treeFilter:nodeName:root": "root",
 	"treeSelector:filterBy": "Filter By",
+	"treeSelector:selectAllLabel": "Select all",
 	"treeSelector:clearLabel": "Clear",
 	"treeSelector:searchLabel": "Search",
 	"treeSelector:loadMoreLabel": "Load More",

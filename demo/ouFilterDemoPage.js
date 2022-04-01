@@ -4,6 +4,14 @@ import { css, html } from 'lit-element/lit-element.js';
 import { DemoDataManager } from './demoDataManager.js';
 import { MobxLitElement } from '@adobe/lit-mobx';
 
+function parseHash(hash) {
+	return hash.substring(1).split(';').reduce((acc, curr) => {
+		const [key, val] = curr.split('=');
+		acc.set(key, val);
+		return acc;
+	}, new Map());
+}
+
 /* eslint-disable no-console */
 class OuFilterDemoPage extends MobxLitElement {
 
@@ -29,6 +37,16 @@ class OuFilterDemoPage extends MobxLitElement {
 		this.dataManager = new DemoDataManager();
 	}
 
+	connectedCallback() {
+		super.connectedCallback();
+
+		const hashMap = parseHash(window.location.hash);
+
+		if (hashMap.has('dir')) {
+			document.documentElement.setAttribute('dir', hashMap.get('dir'));
+		}
+	}
+
 	firstUpdated() {
 		this.dataManager.loadData();
 	}
@@ -38,11 +56,13 @@ class OuFilterDemoPage extends MobxLitElement {
 			<div>
 				<d2l-labs-ou-filter
 					.dataManager=${this.dataManager}
+					select-all-ui
 					@d2l-labs-ou-filter-change="${this._handleOrgUnitFilterChange}"
 				></d2l-labs-ou-filter>
 				<label for="org-unit-id-search">Test visibility modifiers: show only branches containing org unit ids</label>
 				<d2l-input-search
 					id="org-unit-id-search"
+					label="Demo search input"
 					@d2l-input-search-searched="${this._handleInputSearchChange}">
 				</d2l-input-search>
 			</div>

@@ -216,6 +216,10 @@ export class Tree {
 		this._state.clear();
 	}
 
+	selectAll() {
+		this.setSelected(this.rootId, true);
+	}
+
 	getAncestorIds(id) {
 		if (id === 0) return new Set();
 
@@ -503,6 +507,7 @@ decorate(Tree, {
 	allSelectedCourses: computed,
 	addNodes: action,
 	clearSelection: action,
+	selectAll: action,
 	select: action,
 	setAncestorFilter: action,
 	setLoading: action,
@@ -530,6 +535,7 @@ class TreeFilter extends Localizer(MobxLitElement) {
 			openerTextSelected: { type: String, attribute: 'opener-text-selected' },
 			searchString: { type: String, attribute: 'search-string', reflect: true },
 			isLoadMoreSearch: { type: Boolean, attribute: 'load-more-search', reflect: true },
+			isSelectAllVisible: { type: Boolean, attribute: 'select-all-ui', reflect: true },
 			_isLoadingSearch: { type: Boolean, attribute: false }
 		};
 	}
@@ -556,6 +562,7 @@ class TreeFilter extends Localizer(MobxLitElement) {
 		this.openerTextSelected = 'MISSING NAME';
 		this.searchString = '';
 		this.isLoadMoreSearch = false;
+		this.isSelectAllVisible = false;
 
 		this._needResize = false;
 		this._searchBookmark = null;
@@ -609,8 +616,10 @@ class TreeFilter extends Localizer(MobxLitElement) {
 				name="${openerText}"
 				?search="${this._isSearch}"
 				?selected="${isSelected}"
+				?select-all-ui="${this.isSelectAllVisible}"
 				@d2l-labs-tree-selector-search="${this._onSearch}"
 				@d2l-labs-tree-selector-clear="${this._onClear}"
+				@d2l-labs-tree-selector-select-all="${this._onSelectAll}"
 			>
 				${this._renderSearchResults()}
 				${this._renderSearchLoadingControls()}
@@ -726,6 +735,12 @@ class TreeFilter extends Localizer(MobxLitElement) {
 	_onClear(event) {
 		event.stopPropagation();
 		this.tree.clearSelection();
+		this._fireSelectEvent();
+	}
+
+	_onSelectAll(event) {
+		event.stopPropagation();
+		this.tree.selectAll();
 		this._fireSelectEvent();
 	}
 
