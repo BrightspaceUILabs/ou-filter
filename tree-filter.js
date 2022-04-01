@@ -217,7 +217,7 @@ export class Tree {
 	}
 
 	selectAll() {
-		this.selected = this.ids;
+		this.setSelected(this.rootId, true);
 	}
 
 	getAncestorIds(id) {
