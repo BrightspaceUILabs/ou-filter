@@ -8,6 +8,7 @@ export default {
 	"treeFilter:nodeName": "{orgUnitName} (Id: {id})",
 	"treeFilter:nodeName:root": "根",
 	"treeSelector:filterBy": "筛选条件",
+	"treeSelector:selectAllLabel": "全选",
 	"treeSelector:clearLabel": "清除",
 	"treeSelector:searchLabel": "搜索",
 	"treeSelector:loadMoreLabel": "加载更多",

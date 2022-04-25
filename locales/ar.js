@@ -8,6 +8,7 @@ export default {
 	"treeFilter:nodeName": "{orgUnitName} (المعرّف: {id})",
 	"treeFilter:nodeName:root": "الجذر",
 	"treeSelector:filterBy": "تصفية حسب",
+	"treeSelector:selectAllLabel": "تحديد الكل",
 	"treeSelector:clearLabel": "مسح",
 	"treeSelector:searchLabel": "بحث",
 	"treeSelector:loadMoreLabel": "تحميل المزيد",

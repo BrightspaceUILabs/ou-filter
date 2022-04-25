@@ -8,6 +8,7 @@ export default {
 	"treeFilter:nodeName": "{orgUnitName} (ID : {id})",
 	"treeFilter:nodeName:root": "Racine",
 	"treeSelector:filterBy": "Filtrer par",
+	"treeSelector:selectAllLabel": "Tout sélectionner",
 	"treeSelector:clearLabel": "Effacer",
 	"treeSelector:searchLabel": "Rechercher",
 	"treeSelector:loadMoreLabel": "En voir plus",

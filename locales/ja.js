@@ -8,6 +8,7 @@ export default {
 	"treeFilter:nodeName": "{orgUnitName} (Id: {id})",
 	"treeFilter:nodeName:root": "ルート",
 	"treeSelector:filterBy": "フィルタの条件",
+	"treeSelector:selectAllLabel": "すべてを選択",
 	"treeSelector:clearLabel": "クリア",
 	"treeSelector:searchLabel": "検索",
 	"treeSelector:loadMoreLabel": "さらに読み込む",

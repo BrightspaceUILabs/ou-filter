@@ -8,6 +8,7 @@ export default {
 	"treeFilter:nodeName": "{orgUnitName} (Id: {id})",
 	"treeFilter:nodeName:root": "根目錄",
 	"treeSelector:filterBy": "篩選依據",
+	"treeSelector:selectAllLabel": "全選",
 	"treeSelector:clearLabel": "清除",
 	"treeSelector:searchLabel": "搜尋",
 	"treeSelector:loadMoreLabel": "載入更多",
