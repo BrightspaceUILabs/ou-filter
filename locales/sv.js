@@ -8,6 +8,7 @@ export default {
 	"treeFilter:nodeName": "{orgUnitName} (Id: {id})",
 	"treeFilter:nodeName:root": "rot",
 	"treeSelector:filterBy": "Filtrera efter",
+	"treeSelector:selectAllLabel": "Markera alla",
 	"treeSelector:clearLabel": "Rensa",
 	"treeSelector:searchLabel": "Sökning",
 	"treeSelector:loadMoreLabel": "Ladda mer",

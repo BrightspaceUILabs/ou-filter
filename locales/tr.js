@@ -8,6 +8,7 @@ export default {
 	"treeFilter:nodeName": "{orgUnitName} (Kimlik: {id})",
 	"treeFilter:nodeName:root": "kök",
 	"treeSelector:filterBy": "Filtreleme Ölçütü",
+	"treeSelector:selectAllLabel": "Tümünü seç",
 	"treeSelector:clearLabel": "Temizle",
 	"treeSelector:searchLabel": "Arama",
 	"treeSelector:loadMoreLabel": "Daha Fazla Yükle",

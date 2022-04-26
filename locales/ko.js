@@ -8,6 +8,7 @@ export default {
 	"treeFilter:nodeName": "{orgUnitName} (Id: {id})",
 	"treeFilter:nodeName:root": "루트",
 	"treeSelector:filterBy": "필터링 기준",
+	"treeSelector:selectAllLabel": "모두 선택",
 	"treeSelector:clearLabel": "지우기",
 	"treeSelector:searchLabel": "검색",
 	"treeSelector:loadMoreLabel": "더 많이 로드",

@@ -8,6 +8,7 @@ export default {
 	"treeFilter:nodeName": "{orgUnitName} (Id: {id})",
 	"treeFilter:nodeName:root": "rod",
 	"treeSelector:filterBy": "Filtrér efter",
+	"treeSelector:selectAllLabel": "Vælg alle",
 	"treeSelector:clearLabel": "Ryd",
 	"treeSelector:searchLabel": "Søg",
 	"treeSelector:loadMoreLabel": "Indlæs flere",

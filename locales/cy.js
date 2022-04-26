@@ -8,6 +8,7 @@ export default {
 	"treeFilter:nodeName": "{orgUnitName} (Id: {id})",
 	"treeFilter:nodeName:root": "gwraidd",
 	"treeSelector:filterBy": "Hidlo yn ôl",
+	"treeSelector:selectAllLabel": "Dewis popeth",
 	"treeSelector:clearLabel": "Clirio",
 	"treeSelector:searchLabel": "Chwilio",
 	"treeSelector:loadMoreLabel": "Llwytho Mwy",

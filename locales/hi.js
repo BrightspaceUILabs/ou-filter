@@ -8,6 +8,7 @@ export default {
 	"treeFilter:nodeName": "{orgUnitName} (Id: {id})",
 	"treeFilter:nodeName:root": "रूट",
 	"treeSelector:filterBy": "इसके अनुसार फ़िल्टर करें",
+	"treeSelector:selectAllLabel": "सभी का चयन करें",
 	"treeSelector:clearLabel": "साफ़ करें",
 	"treeSelector:searchLabel": "खोजें",
 	"treeSelector:loadMoreLabel": "अधिक लोड करें",
