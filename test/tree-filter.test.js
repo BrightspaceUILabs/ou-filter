@@ -126,6 +126,7 @@ describe('Tree', () => {
 		it('should clear selection', () => {
 			dynamicTree.clearSelection();
 			expect(dynamicTree.selected).to.be.empty;
+			expect(dynamicTree.initialSelectedIds).to.be.empty;
 		});
 
 		it('should set selected nodes', () => {

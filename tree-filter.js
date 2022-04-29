@@ -214,6 +214,9 @@ export class Tree {
 
 	clearSelection() {
 		this._state.clear();
+		// when we hit Clear button we expect that all selection is cleared
+		// including selection in the dynamic tree with invisible selected nodes
+		this.initialSelectedIds = [];
 	}
 
 	selectAll() {
@@ -503,6 +506,7 @@ decorate(Tree, {
 	_bookmarks: observable,
 	_hasMore: observable,
 	_visibilityModifiers: observable,
+	initialSelectedIds: observable,
 	selected: computed,
 	allSelectedCourses: computed,
 	addNodes: action,
