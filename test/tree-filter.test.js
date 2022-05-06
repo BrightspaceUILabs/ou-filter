@@ -330,6 +330,25 @@ describe('Tree', () => {
 			assertSetsAreEqual(dynamicTree.getAncestorIds(1), new Set([1, 1001, 1003, 6606]));
 			assertSetsAreEqual(dynamicTree.getAncestorIds(112), new Set([112, 1, 1001, 1003, 12, 6606]));
 		});
+
+		it('should update ancestors state when loaded selected nodes', () => {
+			dynamicTree = new Tree({ nodes: nodes.filter(n => !n.Parents?.includes(1)), selectedIds, leafTypes, invisibleTypes, isDynamic: true });
+			expect(dynamicTree.getState(1)).to.equal('none');
+			expect(dynamicTree.getState(2)).to.equal('none');
+			expect(dynamicTree.getState(3)).to.equal('none');
+			expect(dynamicTree.getState(4)).to.equal('explicit');
+
+			dynamicTree.addNodes(1, [
+				{ Id: 111, Name: 'Course 1 / Semester 1', Type: mockOuTypes.courseOffering, Parents: [1, 11] },
+				{ Id: 112, Name: 'Course 1 / Semester 2', Type: mockOuTypes.courseOffering, Parents: [1, 12] },
+			]);
+
+			expect(dynamicTree.getState(1)).to.equal('indeterminate');
+			expect(dynamicTree.getState(2)).to.equal('none');
+			expect(dynamicTree.getState(3)).to.equal('none');
+			expect(dynamicTree.getState(4)).to.equal('explicit');
+		});
+
 	});
 
 	describe('addTree', () => {

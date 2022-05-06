@@ -47,7 +47,7 @@ export class DemoDataManager extends OuFilterDataManager {
 			nodes: lastSearchResults ? [...orgUnits, ...lastSearchResults] : orgUnits,
 			leafTypes: [COURSE_OFFERING],
 			invisibleTypes: [OU_TYPES.SEM],
-			selectedIds: [1],
+			selectedIds: [1, 21],
 			ancestorIds: [],
 			oldTree: this.orgUnitTree,
 			isDynamic: isOrgUnitsTruncated,
