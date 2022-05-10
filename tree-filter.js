@@ -168,6 +168,11 @@ export class Tree {
 		}
 		if (this.getState(parentId) === 'explicit') {
 			newChildren.forEach(x => this._state.set(x.Id, 'explicit'));
+		} else {
+			const initialSelectedIdSet = new Set(this.initialSelectedIds);
+			if (newChildren.some(x => initialSelectedIdSet.has(x.Id))) {
+				this._updateSelected(parentId);
+			}
 		}
 
 		// Ancestors may need updating: if one or more of newChildren was already present (due to
@@ -414,7 +419,9 @@ export class Tree {
 		if (state === 'explicit') return [id];
 
 		if (state === 'indeterminate' || this._isRoot(id)) {
-			return this.getChildIds(id).flatMap(childId => this._getSelected(childId));
+			// when this.getChildIds(id) returns null as one of its child id it causes infinite loop
+			const isNotNullOrUndefined = (id) => id !== undefined && id !== null;
+			return this.getChildIds(id).filter(isNotNullOrUndefined).flatMap(childId => this._getSelected(childId));
 		}
 
 		return [];
