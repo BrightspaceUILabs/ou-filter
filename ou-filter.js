@@ -93,7 +93,7 @@ class OuFilter extends Localizer(MobxLitElement) {
 	}
 
 	get selected() {
-		return this.shadowRoot?.querySelector('d2l-labs-tree-filter')?.selected || [];
+		return this.dataManager.orgUnitTree.selected;
 	}
 
 	_onChange() {
