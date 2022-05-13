@@ -1,6 +1,6 @@
 import { aTimeout, expect, fixture, html, oneEvent } from '@open-wc/testing';
-import { runConstructor } from '@brightspace-ui/core/tools/constructor-test-helper.js';
 import { startsWithSearch, Tree } from '../tree-filter';
+import { runConstructor } from '@brightspace-ui/core/tools/constructor-test-helper.js';
 
 const mockOuTypes = {
 	organization: 0,
