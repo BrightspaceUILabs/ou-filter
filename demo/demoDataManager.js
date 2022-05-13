@@ -1,5 +1,5 @@
 import { action, decorate, observable } from 'mobx';
-import { COURSE_OFFERING, Tree } from '../tree-filter';
+import { COURSE_OFFERING, includesSearch, Tree } from '../tree-filter';
 import { OuFilterDataManager } from '../ou-filter';
 // import { createNaryTree } from './util.js';
 
@@ -19,9 +19,10 @@ const OU_TYPES = {
 /* eslint-disable no-console */
 export class DemoDataManager extends OuFilterDataManager {
 
-	constructor() {
+	constructor(searchFn) {
 		super();
 		this._orgUnitTree = new Tree({});
+		this._searchFn = searchFn;
 	}
 
 	loadData() {
@@ -55,7 +56,8 @@ export class DemoDataManager extends OuFilterDataManager {
 			// tree blink out and then come back as they are loaded again
 			extraChildren: isOrgUnitsTruncated ?
 				fetchCachedChildren() || new Map() :
-				null
+				null,
+			searchFn: this._searchFn ? this._searchFn : includesSearch
 		});
 
 		// for perf testing

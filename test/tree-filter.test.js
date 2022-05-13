@@ -1,6 +1,6 @@
 import { aTimeout, expect, fixture, html, oneEvent } from '@open-wc/testing';
+import { startsWithSearch, Tree } from '../tree-filter';
 import { runConstructor } from '@brightspace-ui/core/tools/constructor-test-helper.js';
-import { Tree } from '../tree-filter';
 
 const mockOuTypes = {
 	organization: 0,
@@ -712,6 +712,16 @@ describe('Tree', () => {
 			it('should return pruned nodes as well', async() => {
 				const tree = new Tree({ nodes: singleCourseOfferingNodes, selectedIds, leafTypes, invisibleTypes, isDynamic: false });
 				expect(tree.getMatchingIds('1')).to.deep.equal([1001, 111, 1]);
+			});
+
+			it('should search nodes that starts with', async() => {
+				const nodes = [
+					...singleCourseOfferingNodes,
+					{ Id: 13, Name: 'New course 2', Type: mockOuTypes.course, Parents: [6606] } // this should not be found
+				];
+				const tree = new Tree({ nodes: nodes, selectedIds, leafTypes, invisibleTypes, isDynamic: false,
+					searchFn: startsWithSearch });
+				expect(tree.getMatchingIds('co')).to.deep.equal([111, 1]);
 			});
 		});
 

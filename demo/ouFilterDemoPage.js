@@ -3,6 +3,7 @@ import '@brightspace-ui/core/components/inputs/input-search.js';
 import { css, html } from 'lit-element/lit-element.js';
 import { DemoDataManager } from './demoDataManager.js';
 import { MobxLitElement } from '@adobe/lit-mobx';
+import { startsWithSearch } from '../tree-filter';
 
 function parseHash(hash) {
 	return hash.substring(1).split(';').reduce((acc, curr) => {
@@ -44,6 +45,10 @@ class OuFilterDemoPage extends MobxLitElement {
 
 		if (hashMap.has('dir')) {
 			document.documentElement.setAttribute('dir', hashMap.get('dir'));
+		}
+
+		if (hashMap.has('search') && hashMap.get('search') === 'startswith') {
+			this.dataManager = new DemoDataManager(startsWithSearch);
 		}
 	}
 

@@ -10,6 +10,12 @@ import { MobxLitElement } from '@adobe/lit-mobx';
 // node array indices
 export const COURSE_OFFERING = 3;
 
+export const includesSearch = (nodeName, searchString) =>
+	nodeName.toLowerCase().includes(searchString.toLowerCase());
+
+export const startsWithSearch = (nodeName, searchString) =>
+	nodeName.toLowerCase().startsWith(searchString.toLowerCase());
+
 /**
  * An object that represents org unit node
  * @typedef {Object} OrgUnitNode
@@ -37,6 +43,7 @@ export class Tree {
 	 * {Items: OrgUnitNode[], PagingInfo: {HasMoreItems: boolean, Bookmark}}; these will be added to the tree before
 	 * any selections are applied and the parents marked as populated. Useful for adding cached lookups to a dynamic tree.
 	 * @param visibilityModifiers - optional kvp where values are functions that map an orgUnitId to a boolean indicating visibility
+	 * @param searchFn - function that filters nodes when a user hit search button. It takes two params nodeName and searchString
 	 */
 	constructor({
 		nodes = [],
@@ -47,7 +54,8 @@ export class Tree {
 		oldTree,
 		isDynamic = false,
 		extraChildren,
-		visibilityModifiers = {}
+		visibilityModifiers = {},
+		searchFn = includesSearch
 	}) {
 		this.leafTypes = leafTypes;
 		this.invisibleTypes = invisibleTypes;
@@ -67,6 +75,7 @@ export class Tree {
 		this._bookmarks = new Map();
 
 		this._visibilityModifiers = visibilityModifiers;
+		this._searchFn = searchFn;
 
 		// fill in children (parents are provided by the caller, and ancestors will be generated on demand)
 		this._updateChildren(this.ids);
@@ -268,7 +277,7 @@ export class Tree {
 	getMatchingIds(searchString) {
 		return this.ids
 			.filter(x => this._isVisible(x))
-			.filter(x => !this._isRoot(x) && this._nameForSort(x).toLowerCase().includes(searchString.toLowerCase()))
+			.filter(x => !this._isRoot(x) && this._searchFn(this._nameForSort(x), searchString))
 			// reverse order by id so the order is consistent and (most likely) newer items are on top
 			.sort((x, y) => y - x);
 	}
