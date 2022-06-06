@@ -63,7 +63,7 @@ export class Tree {
 		this._nodes = new Map(nodes.map(x => [x.Id, x]));
 		this._children = new Map();
 		this._ancestors = new Map();
-		this._state = new Map();
+		this._state = new Map((selectedIds ?? []).map(id => [id, 'explicit']));
 		this._open = oldTree ? new Set(oldTree.open) : new Set();
 		// null for no filter, vs. empty Set() when none match
 		this._visible = null;
