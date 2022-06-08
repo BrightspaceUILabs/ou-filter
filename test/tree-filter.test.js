@@ -37,7 +37,8 @@ describe('Tree', () => {
 		{ Id: 211, Name: 'Course 2 / Semester 1', Type: mockOuTypes.courseOffering, Parents: [2, 11] },
 		{ Id: 312, Name: 'Course 3 / Semester 2', Type: mockOuTypes.courseOffering, Parents: [3, 12] }
 	];
-	const selectedIds = [111, 1003];
+	const notYetLoadedId = 2009;
+	const selectedIds = [111, 1003, notYetLoadedId];
 	const leafTypes = [mockOuTypes.courseOffering];
 	const invisibleTypes = [mockOuTypes.semester];
 
@@ -109,7 +110,7 @@ describe('Tree', () => {
 
 	describe('selected, setSelected, and getState', () => {
 		it('should return expected selection', () => {
-			expect(dynamicTree.selected.sort()).to.deep.equal([1003, 111]);
+			expect(dynamicTree.selected.sort()).to.deep.equal([1003, 111, notYetLoadedId]);
 		});
 
 		it.skip('should return expected selection given multiple parents of some nodes', () => {
@@ -757,6 +758,7 @@ describe('d2l-labs-tree-filter', () => {
 	}
 
 	async function buildElementUnderTest(isDynamic, childHandler) {
+		const notYetLoadedId = 9605;
 		const tree = new Tree({
 			nodes: [
 				{ Id: 1, Name: 'Course 1', Type: 3, Parents: [3, 4] },
@@ -770,7 +772,7 @@ describe('d2l-labs-tree-filter', () => {
 				{ Id: 10, Name: 'Faculty 2', Type: 7, Parents: [6607] },
 				{ Id: 6607, Name: 'Dev', Type: 1, Parents: [0] }
 			],
-			selectedIds: [1, 2, 7],
+			selectedIds: [1, 2, 7, notYetLoadedId],
 			leafTypes: [3],
 			isDynamic
 		});
@@ -870,7 +872,7 @@ describe('d2l-labs-tree-filter', () => {
 			node(7).simulateCheckboxClick();
 			await el.treeUpdateComplete;
 
-			expect(el.selected).to.deep.equal([]);
+			expect(el.selected).to.deep.equal([9605]);
 			expect(treeSelector.name).to.equal('filter with selections');
 		});
 
@@ -938,32 +940,32 @@ describe('d2l-labs-tree-filter', () => {
 
 	describe('selection', () => {
 		it('should return selected nodes', async() => {
-			expect(el.selected.sort()).to.deep.equal([3, 7]);
+			expect(el.selected.sort()).to.deep.equal([3, 7, 9605]);
 		});
 
 		it('should select', async() => {
 			node(9).simulateCheckboxClick();
 			await el.treeUpdateComplete;
-			expect(el.selected.sort()).to.deep.equal([3, 7, 9]);
+			expect(el.selected.sort()).to.deep.equal([3, 7, 9, 9605]);
 		});
 
 		it('should replace descendants in selection when ancestor selected', async() => {
 			node(5).simulateCheckboxClick();
 			await el.treeUpdateComplete;
-			expect(el.selected.sort()).to.deep.equal([5]);
+			expect(el.selected.sort()).to.deep.equal([5, 9605]);
 		});
 
 		it('should deselect', async() => {
 			node(7).simulateCheckboxClick();
 			await el.treeUpdateComplete;
-			expect(el.selected.sort()).to.deep.equal([3]);
+			expect(el.selected.sort()).to.deep.equal([3, 9605]);
 		});
 
 		it('should select parent when all children selected', async() => {
 			node(8).simulateCheckboxClick();
 			node(9).simulateCheckboxClick();
 			await el.treeUpdateComplete;
-			expect(el.selected.sort()).to.deep.equal([5]);
+			expect(el.selected.sort()).to.deep.equal([5, 9605]);
 		});
 
 		it('should select all other children if a node was selected and one child is deselected', async() => {
@@ -975,7 +977,7 @@ describe('d2l-labs-tree-filter', () => {
 			await el.treeUpdateComplete;
 			node(1).simulateCheckboxClick();
 			await el.treeUpdateComplete;
-			expect(el.selected.sort()).to.deep.equal([2, 7, 8, 9]);
+			expect(el.selected.sort()).to.deep.equal([2, 7, 8, 9, 9605]);
 		});
 	});
 
