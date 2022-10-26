@@ -37,7 +37,6 @@
     "@open-wc/testing": "^3",
     "@web/dev-server": "^0.1",
     "@web/test-runner": "^0.13",
-    "@web/test-runner-saucelabs": "^0.6",
     "eslint": "^7",
     "eslint-config-brightspace": "^0.13",
     "eslint-plugin-html": "^6",

@@ -41,9 +41,9 @@ jobs:
         with:
           node-version: 14.x
       - name: Install dependencies
-        run: npm install
-      - name: SauceLabs Tests
-        run: npx web-test-runner --config web-test-runner.sauce.config.js
-        env:
-          SAUCE_USERNAME: Desire2Learn
-          SAUCE_ACCESS_KEY: ${{ secrets.SAUCE_ACCESS_KEY_DESIRE2LEARN }}
+        run: |
+          npm install
+          npm install @web/test-runner-playwright@0.9
+          npx playwright install-deps
+      - name: Unit Tests
+        run: npx web-test-runner --config web-test-runner.config.js --group default --playwright --browsers chromium firefox webkit
