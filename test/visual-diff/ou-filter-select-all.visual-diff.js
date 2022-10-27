@@ -27,6 +27,10 @@ import { VisualDiff } from '@brightspace-ui/visual-diff';
 
 		after(() => browser.close());
 
+		afterEach(async() => {
+			await page.keyboard.press('Escape');
+		});
+
 		async function expandDepartment1Node(page) {
 			const options = { delay: 10 };
 
@@ -60,6 +64,7 @@ import { VisualDiff } from '@brightspace-ui/visual-diff';
 				height: 700,
 				deviceScaleFactor: 2
 			});
+			await expandDepartment1Node(page);
 			const rect = await visualDiff.getRect(page, 'body');
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 		});
