@@ -10,7 +10,7 @@ import { VisualDiff } from '@brightspace-ui/visual-diff';
 		let browser, page;
 
 		before(async() => {
-			browser = await puppeteer.launch({ headless: false }); // { headless: false } - useful for debugging
+			browser = await puppeteer.launch({ headless: true }); // { headless: false } - useful for debugging
 			page = await visualDiff.createPage(browser);
 		});
 
