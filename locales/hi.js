@@ -18,5 +18,5 @@ export default {
 	"treeSelector:dropdownAction": "{name} फ़िल्टर खोलें",
 	"treeSelector:arrowLabel:closed": "{name} को स्तर {level} पर बड़ा करें, {parentName} का चाइल्ड",
 	"treeSelector:arrowLabel:open": "{name} को स्तर {level} पर छोटा करें, {parentName} का चाइल्ड",
-	"treeSelector:node:ariaLabel": "{Name}, {parentName} का चाइल्ड,"
+	"treeSelector:node:ariaLabel": "{name}, {parentName} का चाइल्ड,"
 };
