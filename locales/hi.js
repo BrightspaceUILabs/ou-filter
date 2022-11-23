@@ -1,5 +1,6 @@
 /* eslint quotes: 0 */
 
+
 export default {
 	"orgUnitFilter:nameAllSelected": "संगठन इकाई: सभी",
 	"orgUnitFilter:nameSomeSelected": "संगठन इकाई: चयन लागू किए गए",
