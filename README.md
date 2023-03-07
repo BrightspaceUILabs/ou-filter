@@ -4,20 +4,18 @@
 
 A Lit-element component that renders org unit structure tree. It supports load more and searching functionality.
 
-> Note: this is a ["labs" component](https://github.com/BrightspaceUI/guide/wiki/Component-Tiers). While functional, these tasks are prerequisites to promotion to BrightspaceUI "official" status:
+> Note: this is a ["labs" component](https://daylight.d2l.dev/developing/getting-started/component-tiers/). While functional, these tasks are prerequisites to promotion to BrightspaceUI "official" status:
 >
-> - [ ] [Design organization buy-in](https://github.com/BrightspaceUI/guide/wiki/Before-you-build#working-with-design)
-> - [ ] [design.d2l entry](http://design.d2l/)
-> - [ ] [Architectural sign-off](https://github.com/BrightspaceUI/guide/wiki/Before-you-build#web-component-architecture)
-> - [x] [Continuous integration](https://github.com/BrightspaceUI/guide/wiki/Testing#testing-continuously-with-travis-ci)
-> - [x] [Cross-browser testing](https://github.com/BrightspaceUI/guide/wiki/Testing#cross-browser-testing-with-sauce-labs)
-> - [x] [Unit tests](https://github.com/BrightspaceUI/guide/wiki/Testing#testing-with-polymer-test) (if applicable)
-> - [x] [Accessibility tests](https://github.com/BrightspaceUI/guide/wiki/Testing#automated-accessibility-testing-with-axe)
-> - [x] [Visual diff tests](https://github.com/BrightspaceUI/visual-diff)
-> - [x] [Localization](https://github.com/BrightspaceUI/guide/wiki/Localization) with Serge (if applicable)
+> - [ ] [Design organization buy-in](https://daylight.d2l.dev/developing/creating-component/before-building/#working-with-design)
+> - [ ] [Architectural sign-off](https://daylight.d2l.dev/developing/creating-component/before-building/#web-component-architecture)
+> - [x] [Continuous integration](https://daylight.d2l.dev/developing/testing/tools/#continuous-integration)
+> - [x] [Cross-browser testing](https://daylight.d2l.dev/developing/testing/cross-browser/)
+> - [x] [Unit tests](https://daylight.d2l.dev/developing/testing/tools/) (if applicable)
+> - [x] [Accessibility tests](https://daylight.d2l.dev/developing/testing/accessibility/)
+> - [x] [Visual diff tests](https://daylight.d2l.dev/developing/testing/visual-difference/)
+> - [x] Localization with Serge (if applicable)
 > - [x] Demo page
 > - [x] README documentation
-
 
 ## Screenshot
 
@@ -119,11 +117,6 @@ npm run test:headless
 # then navigate to `http://localhost:9876/debug.html`
 npm run test:headless:watch
 ```
-
-#### Note on Sauce Labs tests
-
-Pull requests run cross-browser tests using Sauce. For troubleshooting,
-see https://wiki.saucelabs.com/pages/viewpage.action?pageId=70072943.
 
 ### Visual Diff Testing
 
