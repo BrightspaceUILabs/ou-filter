@@ -8,6 +8,7 @@ import '@brightspace-ui/core/components/inputs/input-search.js';
 import { css, html, LitElement, nothing } from 'lit-element/lit-element.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { Localizer } from './locales/localizer';
+import { RtlMixin } from '@brightspace-ui/core/mixins/rtl-mixin.js';
 import { selectStyles } from '@brightspace-ui/core/components/inputs/input-select-styles';
 
 /**
@@ -18,7 +19,7 @@ import { selectStyles } from '@brightspace-ui/core/components/inputs/input-selec
  * @fires d2l-labs-tree-selector-clear - user requested that all selections be cleared
  * @fires d2l-labs-tree-selector-select-all - user requested that all nodes be checked
  */
-class TreeSelector extends Localizer(LitElement) {
+class TreeSelector extends Localizer(RtlMixin(LitElement)) {
 
 	static get properties() {
 		return {
@@ -56,12 +57,12 @@ class TreeSelector extends Localizer(LitElement) {
 					margin-left: auto;
 				}
 
-				.d2l-labs-tree-selector-margin-auto[dir="rtl"] {
+				:host([dir="rtl"]) .d2l-labs-tree-selector-margin-auto {
 					margin-left: unset;
 					margin-right: auto;
 				}
 
-				.d2l-labs-tree-selector-margin-button[dir="rtl"] {
+				:host([dir="rtl"]) .d2l-labs-tree-selector-margin-button {
 					margin-left: 6px;
 				}
 
