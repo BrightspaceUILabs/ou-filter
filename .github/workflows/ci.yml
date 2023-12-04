@@ -43,7 +43,7 @@ jobs:
       - name: Install dependencies
         run: |
           npm install
-          npm install @web/test-runner-playwright@0.9
-          npx playwright install-deps
+          npm install @web/test-runner-playwright
+          npx playwright install --with-deps
       - name: Unit Tests
         run: npx web-test-runner --config web-test-runner.config.js --group default --playwright --browsers chromium firefox webkit
