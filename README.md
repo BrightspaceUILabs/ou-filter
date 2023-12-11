@@ -2,7 +2,7 @@
 
 [![ci](https://github.com/BrightspaceUILabs/ou-filter/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/BrightspaceUILabs/ou-filter/actions/workflows/ci.yml)
 
-A Lit-element component that renders org unit structure tree. It supports load more and searching functionality.
+A Lit component that renders org unit structure tree. It supports load more and searching functionality.
 
 > Note: this is a ["labs" component](https://daylight.d2l.dev/developing/getting-started/component-tiers/). While functional, these tasks are prerequisites to promotion to BrightspaceUI "official" status:
 >

@@ -1,6 +1,6 @@
 import '@brightspace-ui/core/components/inputs/input-search.js';
 
-import { css, html } from 'lit-element/lit-element.js';
+import { css, html } from 'lit';
 import { DemoDataManager } from './demoDataManager.js';
 import { MobxLitElement } from '@adobe/lit-mobx';
 import { startsWithSearch } from '../tree-filter';
