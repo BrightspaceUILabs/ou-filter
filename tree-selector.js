@@ -5,7 +5,7 @@ import '@brightspace-ui/core/components/dropdown/dropdown-content.js';
 import '@brightspace-ui/core/components/dropdown/dropdown.js';
 import '@brightspace-ui/core/components/inputs/input-search.js';
 
-import { css, html, LitElement, nothing } from 'lit-element/lit-element.js';
+import { css, html, LitElement, nothing } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { Localizer } from './locales/localizer';
 import { selectStyles } from '@brightspace-ui/core/components/inputs/input-select-styles';

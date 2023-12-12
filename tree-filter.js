@@ -3,7 +3,7 @@ import './tree-selector.js';
 
 import 'array-flat-polyfill';
 import { action, computed, decorate, observable } from 'mobx';
-import { css, html } from 'lit-element/lit-element.js';
+import { css, html } from 'lit';
 import { Localizer } from './locales/localizer';
 import { MobxLitElement } from '@adobe/lit-mobx';
 
