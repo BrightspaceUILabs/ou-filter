@@ -50,10 +50,10 @@
   },
   "dependencies": {
     "@adobe/lit-mobx": "^2.0.0",
-    "@brightspace-ui/core": "^2",
+    "@brightspace-ui/core": "^3",
     "@brightspace-ui/intl": "^3.2.0",
     "array-flat-polyfill": "^1.0.1",
-    "lit": "^2",
+    "lit": "^3",
     "mobx": "^5.15.7"
   }
 }
