@@ -38,13 +38,13 @@ import { VisualDiff } from '@brightspace-ui/visual-diff';
 			await page.keyboard.press('Tab');
 			await page.keyboard.press('Tab');
 			await page.keyboard.press('Tab');
-			await page.keyboard.press('Tab');
 			await page.keyboard.press('Enter', options);
 
 			// expand Department 1
 			await page.keyboard.press('Tab');
 			await page.keyboard.press('Tab');
 			await page.keyboard.press('Enter', options);
+			await new Promise(res => setTimeout(res, 300));
 		}
 
 		it('Desktop', async function() {

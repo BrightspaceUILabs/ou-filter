@@ -16,10 +16,14 @@ describe('ou-filter', () => {
 			height: 700,
 			deviceScaleFactor: 1
 		});
+	});
+
+	beforeEach(async() => {
 		await page.goto(
 			`${visualDiff.getBaseUrl()}/test/visual-diff/d2l-labs-ou-filter.visual-diff.html`,
 			{ waitUntil: ['networkidle0', 'load'] }
 		);
+		await page.reload();
 		await new Promise(res => setTimeout(res, 300));
 		await page.bringToFront();
 	});
@@ -44,11 +48,11 @@ describe('ou-filter', () => {
 		await page.keyboard.press('Tab');
 		await page.keyboard.press('Tab');
 		await page.keyboard.press('Enter', options);
+		await new Promise(res => setTimeout(res, 300));
 	}
 
 	it('Desktop', async function() {
 		await expandDepartment1Node(page);
-		await new Promise(res => setTimeout(res, 300));
 		const rect = await visualDiff.getRect(page, 'body');
 		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 	});
@@ -59,6 +63,7 @@ describe('ou-filter', () => {
 			height: 700,
 			deviceScaleFactor: 1
 		});
+		await expandDepartment1Node(page);
 		const rect = await visualDiff.getRect(page, 'body');
 		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 	});
