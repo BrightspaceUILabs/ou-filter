@@ -1,12 +1,27 @@
 import { css, html } from 'lit';
-import { Localizer } from './locales/localizer';
+import { Localizer } from './locales/localizer.js';
 import { MobxLitElement } from '@adobe/lit-mobx';
-import { Tree } from './tree-filter';
+import { Tree } from './tree-filter.js';
 
 /**
  * Class/interface that satisfies OuFilter API
  */
 export class OuFilterDataManager {
+
+	/**
+	 * Return instance of Tree declared in tree-filter.js
+	 * NB. Implementation of this class/interface MUST make observable the variable that contains the instance of Tree class
+	 */
+	get orgUnitTree() {
+		return new Tree({});
+	}
+
+	/**
+	 * Applies semester filter if provided
+	 */
+	get selectedSemesterIds() {
+		return [];
+	}
 
 	/**
 	 * Fetches children of specified org unit. It's called only when Tree.isDynamic == true.
@@ -30,20 +45,6 @@ export class OuFilterDataManager {
 		return { PagingInfo: {}, Items: [] };
 	}
 
-	/**
-	 * Return instance of Tree declared in tree-filter.js
-	 * NB. Implementation of this class/interface MUST make observable the variable that contains the instance of Tree class
-	 */
-	get orgUnitTree() {
-		return new Tree({});
-	}
-
-	/**
-	 * Applies semester filter if provided
-	 */
-	get selectedSemesterIds() {
-		return [];
-	}
 }
 
 /**
@@ -77,6 +78,10 @@ class OuFilter extends Localizer(MobxLitElement) {
 		this.isSelectAllVisible = false;
 	}
 
+	get selected() {
+		return this.dataManager.orgUnitTree.selected;
+	}
+
 	render() {
 		this.dataManager.orgUnitTree.setAncestorFilter(this.dataManager.selectedSemesterIds);
 		return html`
@@ -90,10 +95,6 @@ class OuFilter extends Localizer(MobxLitElement) {
 				@d2l-labs-tree-filter-search="${this._onSearch}"
 			>
 			</d2l-labs-tree-filter>`;
-	}
-
-	get selected() {
-		return this.dataManager.orgUnitTree.selected;
 	}
 
 	_onChange() {

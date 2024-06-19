@@ -3,7 +3,7 @@ import '@brightspace-ui/core/components/inputs/input-search.js';
 import { css, html } from 'lit';
 import { DemoDataManager } from './demoDataManager.js';
 import { MobxLitElement } from '@adobe/lit-mobx';
-import { startsWithSearch } from '../tree-filter';
+import { startsWithSearch } from '../tree-filter.js';
 
 function parseHash(hash) {
 	return hash.substring(1).split(';').reduce((acc, curr) => {
@@ -74,11 +74,6 @@ class OuFilterDemoPage extends MobxLitElement {
 		`;
 	}
 
-	_handleOrgUnitFilterChange(event) {
-		event.stopPropagation();
-		console.log(event.target.selected);
-	}
-
 	_handleInputSearchChange(event) {
 		const searchInput = event.detail.value;
 		const visibilityModifierKey = 'searchInputFilter';
@@ -97,6 +92,12 @@ class OuFilterDemoPage extends MobxLitElement {
 			(id) => tree.hasDescendantsInList(id, searchedOrgUnitIds)
 		);
 	}
+
+	_handleOrgUnitFilterChange(event) {
+		event.stopPropagation();
+		console.log(event.target.selected);
+	}
+
 }
 
 customElements.define('d2l-labs-oufilter-demo-page', OuFilterDemoPage);
