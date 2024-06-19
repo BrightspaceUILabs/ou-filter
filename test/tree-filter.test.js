@@ -1,6 +1,5 @@
-import { aTimeout, expect, fixture, html, oneEvent } from '@open-wc/testing';
-import { startsWithSearch, Tree } from '../tree-filter';
-import { runConstructor } from '@brightspace-ui/core/tools/constructor-test-helper.js';
+import { aTimeout, expect, fixture, html, oneEvent, runConstructor } from '@brightspace-ui/testing';
+import { startsWithSearch, Tree } from '../tree-filter.js';
 
 const mockOuTypes = {
 	organization: 0,
@@ -733,6 +732,7 @@ describe('Tree', () => {
 				assertSetsAreEqual(expectedVisibleNodes, new Set(dynamicTree.ids.filter((id) => dynamicTree._isVisible(id))));
 
 				dynamicTree.removeVisibilityModifier('mod');
+				// eslint-disable-next-line no-console
 				console.log(dynamicTree._visibilityModifiers);
 				expectedVisibleNodes = new Set([-100, 6606, 1001, 1002, 1003, 1, 2, 3, 4, 111, 112, 211, 312]); // semester nodes are in the "invisible node types" list
 				assertSetsAreEqual(expectedVisibleNodes, new Set(dynamicTree.ids.filter((id) => dynamicTree._isVisible(id))));

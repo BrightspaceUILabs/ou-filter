@@ -1,7 +1,6 @@
-import '../tree-selector';
+import '../tree-selector.js';
 
-import { aTimeout, expect, fixture, html, oneEvent } from '@open-wc/testing';
-import { runConstructor } from '@brightspace-ui/core/tools/constructor-test-helper.js';
+import { aTimeout, expect, fixture, html, oneEvent, runConstructor } from '@brightspace-ui/testing';
 
 function isVisible(searchResults) {
 	return window.getComputedStyle(searchResults).getPropertyValue('display') !== 'none';

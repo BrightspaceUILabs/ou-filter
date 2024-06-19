@@ -1,8 +1,8 @@
 import '@brightspace-ui/core/components/icons/icon.js';
 import '@brightspace-ui/core/components/inputs/input-checkbox';
 
-import { css, html, LitElement } from 'lit';
-import { Localizer } from './locales/localizer';
+import { css, html, LitElement, nothing } from 'lit';
+import { Localizer } from './locales/localizer.js';
 import { RtlMixin } from '@brightspace-ui/core/mixins/rtl-mixin.js';
 
 /**
@@ -117,6 +117,59 @@ class TreeSelectorNode extends Localizer(RtlMixin(LitElement)) {
 		this.shadowRoot?.querySelector('d2l-input-checkbox').simulateClick();
 	}
 
+	get _arrowLabel() {
+		return this.localize(
+			this.isOpen ?
+				'treeSelector:arrowLabel:open' :
+				'treeSelector:arrowLabel:closed',
+			{ name: this.name, level: this.indentLevel, parentName: this.parentName }
+		);
+	}
+
+	get _showIndeterminate() {
+		return this.selectedState === 'indeterminate';
+	}
+
+	get _showSelected() {
+		return this.selectedState === 'explicit';
+	}
+
+	_onArrowClick() {
+		if (!this.isOpenable) return;
+
+		/**
+		 * @event d2l-labs-tree-selector-node-open
+		 */
+		this.dispatchEvent(new CustomEvent(
+			'd2l-labs-tree-selector-node-open',
+			{
+				bubbles: true,
+				composed: false,
+				detail: {
+					id: this.dataId,
+					isOpen: !this.isOpen
+				}
+			}
+		));
+	}
+
+	_onChange(e) {
+		/**
+		 * @event d2l-labs-tree-selector-node-select
+		 */
+		this.dispatchEvent(new CustomEvent(
+			'd2l-labs-tree-selector-node-select',
+			{
+				bubbles: true,
+				composed: false,
+				detail: {
+					id: this.dataId,
+					isSelected: e.target.checked
+				}
+			}
+		));
+	}
+
 	_renderNode() {
 		const label = this.parentName ?
 			this.localize('treeSelector:node:ariaLabel', { name: this.name, parentName: this.parentName }) :
@@ -163,61 +216,8 @@ class TreeSelectorNode extends Localizer(RtlMixin(LitElement)) {
 				<slot name="tree"></slot>
 			</div>`;
 		} else {
-			return html``;
+			return nothing;
 		}
-	}
-
-	get _arrowLabel() {
-		return this.localize(
-			this.isOpen ?
-				'treeSelector:arrowLabel:open' :
-				'treeSelector:arrowLabel:closed',
-			{ name: this.name, level: this.indentLevel, parentName: this.parentName }
-		);
-	}
-
-	_onArrowClick() {
-		if (!this.isOpenable) return;
-
-		/**
-		 * @event d2l-labs-tree-selector-node-open
-		 */
-		this.dispatchEvent(new CustomEvent(
-			'd2l-labs-tree-selector-node-open',
-			{
-				bubbles: true,
-				composed: false,
-				detail: {
-					id: this.dataId,
-					isOpen: !this.isOpen
-				}
-			}
-		));
-	}
-
-	_onChange(e) {
-		/**
-		 * @event d2l-labs-tree-selector-node-select
-		 */
-		this.dispatchEvent(new CustomEvent(
-			'd2l-labs-tree-selector-node-select',
-			{
-				bubbles: true,
-				composed: false,
-				detail: {
-					id: this.dataId,
-					isSelected: e.target.checked
-				}
-			}
-		));
-	}
-
-	get _showIndeterminate() {
-		return this.selectedState === 'indeterminate';
-	}
-
-	get _showSelected() {
-		return this.selectedState === 'explicit';
 	}
 
 	async _waitForTreeUpdateComplete() {

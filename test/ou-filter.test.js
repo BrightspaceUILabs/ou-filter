@@ -1,8 +1,7 @@
-import { aTimeout, expect, fixture, html, oneEvent } from '@open-wc/testing';
-import { OuFilterDataManager } from '../ou-filter';
-import { runConstructor } from '@brightspace-ui/core/tools/constructor-test-helper.js';
-import sinon from 'sinon/pkg/sinon-esm.js';
-import { Tree } from '../tree-filter';
+import { aTimeout, expect, fixture, html, oneEvent, runConstructor } from '@brightspace-ui/testing';
+import { restore, spy } from 'sinon';
+import { OuFilterDataManager } from '../ou-filter.js';
+import { Tree } from '../tree-filter.js';
 
 async function waitForTree(el) {
 	await aTimeout(50);
@@ -29,7 +28,6 @@ class TestOuFilterDataManager extends OuFilterDataManager {
 
 describe('d2l-labs-ou-filter', () => {
 
-	const sandbox = sinon.createSandbox();
 	const data = {
 		orgUnitTree: new Tree({
 			nodes: [
@@ -42,13 +40,12 @@ describe('d2l-labs-ou-filter', () => {
 	};
 	const dataManager = new TestOuFilterDataManager(data);
 
+	let setAncestorFilterSpy;
 	beforeEach(() => {
-		sandbox.spy(data.orgUnitTree, 'setAncestorFilter');
+		setAncestorFilterSpy = spy(data.orgUnitTree, 'setAncestorFilter');
 	});
 
-	afterEach(() => {
-		sandbox.restore();
-	});
+	afterEach(() => restore());
 
 	describe('constructor', () => {
 		it('should construct', () => {
@@ -69,8 +66,8 @@ describe('d2l-labs-ou-filter', () => {
 			await aTimeout(50);
 			const selector = el.shadowRoot.querySelector('d2l-labs-tree-filter');
 			expect(selector.tree).to.equal(data.orgUnitTree);
-			sinon.assert.calledOnce(data.orgUnitTree.setAncestorFilter);
-			sinon.assert.calledWith(data.orgUnitTree.setAncestorFilter, data.selectedSemesterIds);
+			expect(setAncestorFilterSpy).to.be.calledOnce;
+			expect(setAncestorFilterSpy).to.be.calledWith(data.selectedSemesterIds);
 		});
 	});
 

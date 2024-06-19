@@ -1,10 +1,9 @@
 import '@brightspace-ui/core/components/loading-spinner/loading-spinner.js';
 import './tree-selector.js';
 
-import 'array-flat-polyfill';
 import { action, computed, decorate, observable } from 'mobx';
-import { css, html } from 'lit';
-import { Localizer } from './locales/localizer';
+import { css, html, nothing } from 'lit';
+import { Localizer } from './locales/localizer.js';
 import { MobxLitElement } from '@adobe/lit-mobx';
 
 // node array indices
@@ -95,25 +94,6 @@ export class Tree {
 		}
 	}
 
-	get ids() {
-		return [...this._nodes.keys()];
-	}
-
-	get isDynamic() {
-		return !!this._populated;
-	}
-
-	get open() {
-		return [...this._open];
-	}
-
-	get rootId() {
-		if (!this._rootId) {
-			this._rootId = this.ids.find(x => this._isRoot(x));
-		}
-		return this._rootId;
-	}
-
 	get selected() {
 		// if selections are set before any nodes are populated, this getter should still work
 		if (this._nodes.size === 0) {
@@ -132,6 +112,10 @@ export class Tree {
 
 		return [...selected];
 	}
+	set selected(ids) {
+		this.clearSelection();
+		this.select(ids);
+	}
 
 	get allSelectedCourses() {
 		const selected = [...this._state]
@@ -140,9 +124,23 @@ export class Tree {
 		return selected.filter(id => this.getType(id) === 3);
 	}
 
-	set selected(ids) {
-		this.clearSelection();
-		this.select(ids);
+	get ids() {
+		return [...this._nodes.keys()];
+	}
+
+	get isDynamic() {
+		return !!this._populated;
+	}
+
+	get open() {
+		return [...this._open];
+	}
+
+	get rootId() {
+		if (!this._rootId) {
+			this._rootId = this.ids.find(x => this._isRoot(x));
+		}
+		return this._rootId;
 	}
 
 	/**
@@ -240,10 +238,6 @@ export class Tree {
 		this.initialSelectedIds = [];
 	}
 
-	selectAll() {
-		this.setSelected(this.rootId, true);
-	}
-
 	getAncestorIds(id) {
 		if (id === 0) return new Set();
 
@@ -262,6 +256,13 @@ export class Tree {
 		return this._bookmarks.get(id);
 	}
 
+	getChildIds(id) {
+		if (!id) id = this.rootId;
+		if (!id) return [];
+		const children = this._children.get(id);
+		return children ? [...children] : [];
+	}
+
 	getChildIdsForDisplay(id, pruning) {
 		const children = this.getChildIds(id).filter(x => this._isVisible(x));
 
@@ -274,11 +275,20 @@ export class Tree {
 		return children.sort((a, b) => this._nameForSort(a).localeCompare(this._nameForSort(b)));
 	}
 
-	getChildIds(id) {
-		if (!id) id = this.rootId;
-		if (!id) return [];
+	/**
+	 * NB: for the purposes of this function, a node is its own descendant
+	 * @param {Number} id
+	 * @returns {Set<Number>}
+	 */
+	getDescendantIds(id) {
 		const children = this._children.get(id);
-		return children ? [...children] : [];
+		if (!children || !children.size) {
+			return new Set([id]);
+		}
+
+		const descendants = new Set([...children].flatMap(child => [...this.getDescendantIds(child)]));
+		descendants.add(id);
+		return descendants;
 	}
 
 	getMatchingIds(searchString) {
@@ -308,11 +318,6 @@ export class Tree {
 		return (node && node.Type) || 0;
 	}
 
-	isActive(id) {
-		const node = this._nodes.get(id);
-		return (node && node.IsActive) || false;
-	}
-
 	/**
 	 * Checks if a node has ancestors in a given list.
 	 * NB: returns true if an id is itself is in the list to check
@@ -324,22 +329,6 @@ export class Tree {
 		const ancestorsSet = this.getAncestorIds(id);
 
 		return listToCheck.some(potentialAncestor => ancestorsSet.has(potentialAncestor));
-	}
-
-	/**
-	 * NB: for the purposes of this function, a node is its own descendant
-	 * @param {Number} id
-	 * @returns {Set<Number>}
-	 */
-	getDescendantIds(id) {
-		const children = this._children.get(id);
-		if (!children || !children.size) {
-			return new Set([id]);
-		}
-
-		const descendants = new Set([...children].flatMap(child => [...this.getDescendantIds(child)]));
-		descendants.add(id);
-		return descendants;
 	}
 
 	/**
@@ -356,6 +345,11 @@ export class Tree {
 
 	hasMore(id) {
 		return this._hasMore.has(id);
+	}
+
+	isActive(id) {
+		const node = this._nodes.get(id);
+		return (node && node.IsActive) || false;
 	}
 
 	isLoading(id) {
@@ -379,8 +373,16 @@ export class Tree {
 		return !this._populated || this._populated.has(id);
 	}
 
+	removeVisibilityModifier(key) {
+		this._visibilityModifiers = Object.fromEntries(Object.entries(this._visibilityModifiers).filter(kvp => kvp[0] !== key));
+	}
+
 	select(ids) {
 		ids.forEach(x => this.setSelected(x, true));
+	}
+
+	selectAll() {
+		this.setSelected(this.rootId, true);
 	}
 
 	/**
@@ -429,6 +431,12 @@ export class Tree {
 		this.getParentIds(id).forEach(parentId => this._updateSelected(parentId));
 	}
 
+	setVisibilityModifier(key, visibilityModFn) {
+		const modifiersCopy = { ...this._visibilityModifiers };
+		modifiersCopy[key] = visibilityModFn;
+		this._visibilityModifiers = modifiersCopy;
+	}
+
 	_getSelected(id) {
 		const state = this.getState(id);
 
@@ -452,16 +460,6 @@ export class Tree {
 			&& !this.invisibleTypes.includes(this.getType(id));
 
 		return visible && Object.values(this._visibilityModifiers).every(modifier => modifier(id)); // every returns true if the array is empty
-	}
-
-	setVisibilityModifier(key, visibilityModFn) {
-		const modifiersCopy = { ...this._visibilityModifiers };
-		modifiersCopy[key] = visibilityModFn;
-		this._visibilityModifiers = modifiersCopy;
-	}
-
-	removeVisibilityModifier(key) {
-		this._visibilityModifiers = Object.fromEntries(Object.entries(this._visibilityModifiers).filter(kvp => kvp[0] !== key));
 	}
 
 	_nameForSort(id) {
@@ -606,6 +604,36 @@ class TreeFilter extends Localizer(MobxLitElement) {
 		return this.updateComplete.then(() => this.shadowRoot?.querySelector('d2l-labs-tree-selector').treeUpdateComplete || false);
 	}
 
+	render() {
+		// if selections are applied when loading from server but the selected ids were truncated out of the results,
+		// the visible selections in the UI (this.tree.selected) could be empty even though selections are applied.
+		// In that case, we should indicate to the user that selections are applied, even if they can't see them.
+		const isSelected = (this.tree.selected.length || (this.tree.initialSelectedIds && this.tree.initialSelectedIds.length));
+		const openerText = isSelected ? this.openerTextSelected : this.openerText;
+
+		return html`<d2l-labs-tree-selector
+				name="${openerText}"
+				?search="${this._isSearch}"
+				?selected="${isSelected}"
+				?select-all-ui="${this.isSelectAllVisible}"
+				@d2l-labs-tree-selector-search="${this._onSearch}"
+				@d2l-labs-tree-selector-clear="${this._onClear}"
+				@d2l-labs-tree-selector-select-all="${this._onSelectAll}"
+			>
+				${this._renderSearchResults()}
+				${this._renderSearchLoadingControls()}
+				${this._renderChildren(this.tree.rootId)}
+			</d2l-labs-tree-selector>
+		</div>`;
+	}
+
+	async updated() {
+		if (!this._needResize) return;
+
+		await this.resize();
+		this._needResize = false;
+	}
+
 	/**
 	 * Adds the given children to the given parent. See Tree.addNodes().
 	 * @param parent
@@ -632,44 +660,87 @@ class TreeFilter extends Localizer(MobxLitElement) {
 		this._isLoadingSearch = false;
 	}
 
-	render() {
-		// if selections are applied when loading from server but the selected ids were truncated out of the results,
-		// the visible selections in the UI (this.tree.selected) could be empty even though selections are applied.
-		// In that case, we should indicate to the user that selections are applied, even if they can't see them.
-		const isSelected = (this.tree.selected.length || (this.tree.initialSelectedIds && this.tree.initialSelectedIds.length));
-		const openerText = isSelected ? this.openerTextSelected : this.openerText;
-
-		return html`<d2l-labs-tree-selector
-				name="${openerText}"
-				?search="${this._isSearch}"
-				?selected="${isSelected}"
-				?select-all-ui="${this.isSelectAllVisible}"
-				@d2l-labs-tree-selector-search="${this._onSearch}"
-				@d2l-labs-tree-selector-clear="${this._onClear}"
-				@d2l-labs-tree-selector-select-all="${this._onSelectAll}"
-			>
-				${this._renderSearchResults()}
-				${this._renderSearchLoadingControls()}
-				${this._renderChildren(this.tree.rootId)}
-			</d2l-labs-tree-selector>
-		</div>`;
-	}
-
 	async resize() {
 		await this.updateComplete;
 		const treeSelector = this.shadowRoot?.querySelector('d2l-labs-tree-selector');
 		treeSelector && treeSelector.resize();
 	}
 
-	async updated() {
-		if (!this._needResize) return;
-
-		await this.resize();
-		this._needResize = false;
-	}
-
 	get _isSearch() {
 		return this.searchString.length > 0;
+	}
+
+	_fireSearchEvent(searchString, bookmark) {
+		if (!searchString) return;
+
+		this._isLoadingSearch = true;
+
+		/**
+		 * @event d2l-labs-tree-filter-search
+		 */
+		this.dispatchEvent(new CustomEvent(
+			'd2l-labs-tree-filter-search',
+			{
+				bubbles: true,
+				composed: false,
+				detail: { searchString, bookmark }
+			}
+		));
+	}
+
+	_fireSelectEvent() {
+		/**
+		 * @event d2l-labs-tree-filter-select
+		 */
+		this.dispatchEvent(new CustomEvent(
+			'd2l-labs-tree-filter-select',
+			{ bubbles: true, composed: false }
+		));
+	}
+
+	_onClear(event) {
+		event.stopPropagation();
+		this.tree.clearSelection();
+		this._fireSelectEvent();
+	}
+
+	_onOpen(event) {
+		event.stopPropagation();
+		this._needResize = true;
+		this.tree.setOpen(event.detail.id, event.detail.isOpen);
+	}
+
+	_onParentLoadMore(event) {
+		const id = Number(event.target.getAttribute('data-id'));
+		const bookmark = this.tree.getBookmark(id);
+		this._requestChildren(id, bookmark);
+	}
+
+	_onSearch(event) {
+		event.stopPropagation();
+		this._needResize = true;
+		this.searchString = event.detail.value;
+
+		if (this.tree.isDynamic) {
+			this._fireSearchEvent(this.searchString);
+		}
+	}
+
+	_onSearchLoadMore(event) {
+		event.stopPropagation();
+		this._fireSearchEvent(this.searchString, this._searchBookmark);
+	}
+
+	_onSelect(event) {
+		event.stopPropagation();
+		this.tree.setSelected(event.detail.id, event.detail.isSelected);
+		this._fireSelectEvent();
+	}
+
+	_onSelectAll(event) {
+		event.stopPropagation();
+		this.tree.selectAll();
+		this._fireSelectEvent();
 	}
 
 	_renderChildren(id, parentName, indentLevel = 0) {
@@ -723,17 +794,17 @@ class TreeFilter extends Localizer(MobxLitElement) {
 			>${this.localize('treeSelector:loadMoreLabel')}</d2l-button>`;
 		}
 
-		return html``;
+		return nothing;
 	}
 
 	_renderSearchLoadingControls() {
-		if (!this._isSearch) return html``;
+		if (!this._isSearch) return nothing;
 
 		if (this._isLoadingSearch) {
 			return html`<d2l-loading-spinner slot="search-results"></d2l-loading-spinner>`;
 		}
 
-		if (this.isLoadMoreSearch)  {
+		if (this.isLoadMoreSearch) {
 			return html`<d2l-button slot="search-results"
 				@click="${this._onSearchLoadMore}"
 				description="${this.localize('treeSelector:searchLoadMore:ariaLabel')}"
@@ -742,7 +813,7 @@ class TreeFilter extends Localizer(MobxLitElement) {
 	}
 
 	_renderSearchResults() {
-		if (!this._isSearch) return html``;
+		if (!this._isSearch) return nothing;
 
 		return this.tree
 			.getMatchingIds(this.searchString)
@@ -757,79 +828,6 @@ class TreeFilter extends Localizer(MobxLitElement) {
 				>
 				</d2l-labs-tree-selector-node>`;
 			});
-	}
-
-	_onClear(event) {
-		event.stopPropagation();
-		this.tree.clearSelection();
-		this._fireSelectEvent();
-	}
-
-	_onSelectAll(event) {
-		event.stopPropagation();
-		this.tree.selectAll();
-		this._fireSelectEvent();
-	}
-
-	_onOpen(event) {
-		event.stopPropagation();
-		this._needResize = true;
-		this.tree.setOpen(event.detail.id, event.detail.isOpen);
-	}
-
-	_onSearch(event) {
-		event.stopPropagation();
-		this._needResize = true;
-		this.searchString = event.detail.value;
-
-		if (this.tree.isDynamic) {
-			this._fireSearchEvent(this.searchString);
-		}
-	}
-
-	_onSearchLoadMore(event) {
-		event.stopPropagation();
-		this._fireSearchEvent(this.searchString, this._searchBookmark);
-	}
-
-	_fireSearchEvent(searchString, bookmark) {
-		if (!searchString) return;
-
-		this._isLoadingSearch = true;
-
-		/**
-		 * @event d2l-labs-tree-filter-search
-		 */
-		this.dispatchEvent(new CustomEvent(
-			'd2l-labs-tree-filter-search',
-			{
-				bubbles: true,
-				composed: false,
-				detail: { searchString, bookmark }
-			}
-		));
-	}
-
-	_onSelect(event) {
-		event.stopPropagation();
-		this.tree.setSelected(event.detail.id, event.detail.isSelected);
-		this._fireSelectEvent();
-	}
-
-	_fireSelectEvent() {
-		/**
-		 * @event d2l-labs-tree-filter-select
-		 */
-		this.dispatchEvent(new CustomEvent(
-			'd2l-labs-tree-filter-select',
-			{ bubbles: true, composed: false }
-		));
-	}
-
-	_onParentLoadMore(event) {
-		const id = Number(event.target.getAttribute('data-id'));
-		const bookmark = this.tree.getBookmark(id);
-		this._requestChildren(id, bookmark);
 	}
 
 	_requestChildren(id, bookmark) {

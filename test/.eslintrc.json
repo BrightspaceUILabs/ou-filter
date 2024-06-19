@@ -1,6 +1,3 @@
 {
-  "extends": "brightspace/open-wc-testing-config",
-  "rules": {
-    "no-console": ["off"]
-  }
+	"extends": "brightspace/testing-config"
 }

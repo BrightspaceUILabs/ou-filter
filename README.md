@@ -1,7 +1,5 @@
 # d2l-labs-ou-filter
 
-[![ci](https://github.com/BrightspaceUILabs/ou-filter/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/BrightspaceUILabs/ou-filter/actions/workflows/ci.yml)
-
 A Lit component that renders org unit structure tree. It supports load more and searching functionality.
 
 > Note: this is a ["labs" component](https://daylight.d2l.dev/developing/getting-started/component-tiers/). While functional, these tasks are prerequisites to promotion to BrightspaceUI "official" status:
@@ -76,46 +74,29 @@ class FooPage extends MobxLitElement {
 | select-all-ui | Boolean | {empty} | Shows Select all button |
 | d2l-labs-ou-filter-change | Function | {empty} | Event handler that is fired when selection is changed |
 
-## Developing, Testing and Contributing
+## Developing and Contributing
 
 After cloning the repo, run `npm install` to install dependencies.
 
-### Running the demos
-
-To start a [@web/dev-server](https://modern-web.dev/docs/dev-server/overview/) that hosts the demo page and tests:
-
-```shell
-npm start
-```
-
-### Linting
-
-```shell
-# eslint and lit-analyzer
-npm run lint
-
-# eslint only
-npm run lint:eslint
-
-# lit-analyzer only
-npm run lint:lit
-```
-
 ### Testing
 
+To run the full suite of tests:
+
 ```shell
-# lint, unit test and visual-diff test
 npm test
+```
 
-# lint only
-npm run lint
+Alternatively, tests can be selectively run:
 
-# unit tests only
-npm run test:headless
+```shell
+# eslint
+npm run lint:eslint
 
-# debug or run a subset of local unit tests
-# then navigate to `http://localhost:9876/debug.html`
-npm run test:headless:watch
+# stylelint
+npm run lint:style
+
+# unit tests
+npm run test:unit
 ```
 
 ### Visual Diff Testing
@@ -141,6 +122,14 @@ npx mocha './test/**/*.visual-diff.js' -t 10000
 npx mocha './test/**/*.visual-diff.js' -t 10000 -g some-pattern
 # update visual-diff goldens
 npx mocha './test/**/*.visual-diff.js' -t 10000 --golden
+```
+
+### Running the demos
+
+To start a [@web/dev-server](https://modern-web.dev/docs/dev-server/overview/) that hosts the demo page and tests:
+
+```shell
+npm start
 ```
 
 ### Versioning and Releasing

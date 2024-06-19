@@ -10,10 +10,10 @@
 
 			/* eslint-disable no-console */
 			import { action, decorate, observable } from 'mobx';
-			import { COURSE_OFFERING, Tree } from '../../tree-filter';
+			import { COURSE_OFFERING, Tree } from '../../tree-filter.js';
 			import { css, html } from 'lit';
 			import { MobxLitElement } from '@adobe/lit-mobx';
-			import { OuFilterDataManager } from '../../ou-filter';
+			import { OuFilterDataManager } from '../../ou-filter.js';
 
 			function fetchCachedChildren() {
 				return new Map();
@@ -32,6 +32,10 @@
 				constructor() {
 					super();
 					this._orgUnitTree = new Tree({});
+				}
+
+				get orgUnitTree() {
+					return this._orgUnitTree;
 				}
 
 				loadData() {
@@ -70,9 +74,6 @@
 					});
 				}
 
-				get orgUnitTree() {
-					return this._orgUnitTree;
-				}
 			}
 
 			decorate(DemoDataManager, {
@@ -87,9 +88,6 @@
 						css`
 							:host {
 								display: inline-block;
-							}
-							div {
-								padding: 30px;
 							}
 						`
 					];
@@ -118,13 +116,11 @@
 
 				render() {
 					return html`
-						<div>
-							<d2l-labs-ou-filter
-								.dataManager=${this.dataManager}
-								?select-all-ui="${this._isSelectAllButton}"
-								@d2l-labs-ou-filter-change="${this._orgUnitFilterChange}"
-							></d2l-labs-ou-filter>
-						</div>
+						<d2l-labs-ou-filter
+							.dataManager=${this.dataManager}
+							?select-all-ui="${this._isSelectAllButton}"
+							@d2l-labs-ou-filter-change="${this._orgUnitFilterChange}"
+						></d2l-labs-ou-filter>
 					`;
 				}
 
@@ -147,6 +143,8 @@
 		}
 		body {
 			background-color: white;
+			margin: 0;
+			padding: 38px;
 		}
 	</style>
 	<body>

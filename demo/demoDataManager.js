@@ -1,7 +1,6 @@
 import { action, decorate, observable } from 'mobx';
-import { COURSE_OFFERING, includesSearch, Tree } from '../tree-filter';
-import { OuFilterDataManager } from '../ou-filter';
-// import { createNaryTree } from './util.js';
+import { COURSE_OFFERING, includesSearch, Tree } from '../tree-filter.js';
+import { OuFilterDataManager } from '../ou-filter.js';
 
 const orgUnitChildrenCache = new Map();
 function fetchCachedChildren() {
@@ -23,45 +22,6 @@ export class DemoDataManager extends OuFilterDataManager {
 		super();
 		this._orgUnitTree = new Tree({});
 		this._searchFn = searchFn;
-	}
-
-	loadData() {
-		const lastSearchResults = null;
-		const orgUnits = [
-			{ Id: 1, Name: 'Course 1', Type: OU_TYPES.COURSE, Parents: [3, 4], IsActive: false },
-			{ Id: 2, Name: 'Course 2', Type: OU_TYPES.COURSE, Parents: [3, 10], IsActive: true },
-			{ Id: 6, Name: 'Course 3 has a surprisingly long name, but nonetheless this kind of thing is bound to happen sometimes and we do need to design for it. Is that not so?', Type: OU_TYPES.COURSE, Parents: [7, 4], IsActive: true },
-			{ Id: 8, Name: 'ZCourse 4', Type: OU_TYPES.COURSE, Parents: [5], IsActive: false },
-			{ Id: 3, Name: 'Department 1', Type: OU_TYPES.DEPT, Parents: [5], IsActive: false },
-			{ Id: 7, Name: 'Department 2 has a longer name', Type: OU_TYPES.DEPT, Parents: [5], IsActive: false },
-			{ Id: 4, Name: 'Semester 1', Type: OU_TYPES.SEM, Parents: [6606], IsActive: false },
-			{ Id: 10, Name: 'Semester 2', Type: OU_TYPES.SEM, Parents: [6606], IsActive: false },
-			{ Id: 5, Name: 'Faculty 1 - children loaded on first load', Type: OU_TYPES.FAC, Parents: [6606], IsActive: false },
-			{ Id: 9, Name: 'Faculty 2 - children loaded on open', Type: OU_TYPES.FAC, Parents: [6606, 10], IsActive: false },
-			{ Id: 6606, Name: 'Dev', Type: OU_TYPES.ORG, Parents: [0], IsActive: false }
-		];
-		const isOrgUnitsTruncated = true;
-
-		this._orgUnitTree = new Tree({
-			// add in any nodes from the most recent search; otherwise
-			// the search will blink out and come back, and also drop any "load more" results
-			nodes: lastSearchResults ? [...orgUnits, ...lastSearchResults] : orgUnits,
-			leafTypes: [COURSE_OFFERING],
-			invisibleTypes: [OU_TYPES.SEM],
-			selectedIds: [1, 21],
-			ancestorIds: [],
-			oldTree: this.orgUnitTree,
-			isDynamic: isOrgUnitsTruncated,
-			// preload the tree with any children queries we've already run: otherwise parts of the
-			// tree blink out and then come back as they are loaded again
-			extraChildren: isOrgUnitsTruncated ?
-				fetchCachedChildren() || new Map() :
-				null,
-			searchFn: this._searchFn ? this._searchFn : includesSearch
-		});
-
-		// for perf testing
-		// this._orgUnitTree = createNaryTree(5, 5000);
 	}
 
 	get orgUnitTree() {
@@ -113,6 +73,45 @@ export class DemoDataManager extends OuFilterDataManager {
 
 		// return result in 2 sec to show loading spinner
 		return await new Promise(resolve => setTimeout(() => resolve(results), 2000));
+	}
+
+	loadData() {
+		const lastSearchResults = null;
+		const orgUnits = [
+			{ Id: 1, Name: 'Course 1', Type: OU_TYPES.COURSE, Parents: [3, 4], IsActive: false },
+			{ Id: 2, Name: 'Course 2', Type: OU_TYPES.COURSE, Parents: [3, 10], IsActive: true },
+			{ Id: 6, Name: 'Course 3 has a surprisingly long name, but nonetheless this kind of thing is bound to happen sometimes and we do need to design for it. Is that not so?', Type: OU_TYPES.COURSE, Parents: [7, 4], IsActive: true },
+			{ Id: 8, Name: 'ZCourse 4', Type: OU_TYPES.COURSE, Parents: [5], IsActive: false },
+			{ Id: 3, Name: 'Department 1', Type: OU_TYPES.DEPT, Parents: [5], IsActive: false },
+			{ Id: 7, Name: 'Department 2 has a longer name', Type: OU_TYPES.DEPT, Parents: [5], IsActive: false },
+			{ Id: 4, Name: 'Semester 1', Type: OU_TYPES.SEM, Parents: [6606], IsActive: false },
+			{ Id: 10, Name: 'Semester 2', Type: OU_TYPES.SEM, Parents: [6606], IsActive: false },
+			{ Id: 5, Name: 'Faculty 1 - children loaded on first load', Type: OU_TYPES.FAC, Parents: [6606], IsActive: false },
+			{ Id: 9, Name: 'Faculty 2 - children loaded on open', Type: OU_TYPES.FAC, Parents: [6606, 10], IsActive: false },
+			{ Id: 6606, Name: 'Dev', Type: OU_TYPES.ORG, Parents: [0], IsActive: false }
+		];
+		const isOrgUnitsTruncated = true;
+
+		this._orgUnitTree = new Tree({
+			// add in any nodes from the most recent search; otherwise
+			// the search will blink out and come back, and also drop any "load more" results
+			nodes: lastSearchResults ? [...orgUnits, ...lastSearchResults] : orgUnits,
+			leafTypes: [COURSE_OFFERING],
+			invisibleTypes: [OU_TYPES.SEM],
+			selectedIds: [1, 21],
+			ancestorIds: [],
+			oldTree: this.orgUnitTree,
+			isDynamic: isOrgUnitsTruncated,
+			// preload the tree with any children queries we've already run: otherwise parts of the
+			// tree blink out and then come back as they are loaded again
+			extraChildren: isOrgUnitsTruncated ?
+				fetchCachedChildren() || new Map() :
+				null,
+			searchFn: this._searchFn ? this._searchFn : includesSearch
+		});
+
+		// for perf testing
+		// this._orgUnitTree = createNaryTree(5, 5000);
 	}
 
 	// the method called only when Tree.isDynamic === true

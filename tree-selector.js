@@ -7,7 +7,7 @@ import '@brightspace-ui/core/components/inputs/input-search.js';
 
 import { css, html, LitElement, nothing } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
-import { Localizer } from './locales/localizer';
+import { Localizer } from './locales/localizer.js';
 import { selectStyles } from '@brightspace-ui/core/components/inputs/input-select-styles';
 
 /**
@@ -131,6 +131,20 @@ class TreeSelector extends Localizer(LitElement) {
 		`;
 	}
 
+	async resize() {
+		await this.treeUpdateComplete;
+		const content = this.shadowRoot?.querySelector('d2l-dropdown-content');
+		content && await content.resize();
+	}
+
+	simulateSearch(searchString) {
+		this._onSearch({
+			detail: {
+				value: searchString
+			}
+		});
+	}
+
 	get _clearButton() {
 		if (!this.isSelected) return nothing;
 
@@ -164,39 +178,12 @@ class TreeSelector extends Localizer(LitElement) {
 		></d2l-button-subtle>`;
 	}
 
-	simulateSearch(searchString) {
-		this._onSearch({
-			detail: {
-				value: searchString
-			}
-		});
-	}
-
-	async resize() {
-		await this.treeUpdateComplete;
-		const content = this.shadowRoot?.querySelector('d2l-dropdown-content');
-		content && await content.resize();
-	}
-
 	_onClear() {
 		/**
 		 * @event d2l-labs-tree-selector-clear
 		 */
 		this.dispatchEvent(new CustomEvent(
 			'd2l-labs-tree-selector-clear',
-			{
-				bubbles: true,
-				composed: false
-			}
-		));
-	}
-
-	_onSelectAll() {
-		/**
-		 * @event d2l-labs-tree-selector-select-all
-		 */
-		this.dispatchEvent(new CustomEvent(
-			'd2l-labs-tree-selector-select-all',
 			{
 				bubbles: true,
 				composed: false
@@ -214,6 +201,19 @@ class TreeSelector extends Localizer(LitElement) {
 				bubbles: true,
 				composed: false,
 				detail: event.detail
+			}
+		));
+	}
+
+	_onSelectAll() {
+		/**
+		 * @event d2l-labs-tree-selector-select-all
+		 */
+		this.dispatchEvent(new CustomEvent(
+			'd2l-labs-tree-selector-select-all',
+			{
+				bubbles: true,
+				composed: false
 			}
 		));
 	}
