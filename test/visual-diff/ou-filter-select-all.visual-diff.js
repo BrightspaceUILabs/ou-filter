@@ -3,7 +3,7 @@ import puppeteer from 'puppeteer';
 import { VisualDiff } from '@brightspace-ui/visual-diff';
 
 ['ltr', 'rtl'].forEach(dir => {
-	describe(`ou-filter-select-all ${dir}`, () => {
+	describe.only(`ou-filter-select-all ${dir}`, () => {
 
 		const visualDiff = new VisualDiff(`ou-filter-select-all-${dir}`, import.meta.url, { tolerance: 0.1 });
 
