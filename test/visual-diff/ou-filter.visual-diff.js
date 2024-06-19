@@ -48,6 +48,7 @@ describe('ou-filter', () => {
 
 	it('Desktop', async function() {
 		await expandDepartment1Node(page);
+		await new Promise(res => setTimeout(res, 300));
 		const rect = await visualDiff.getRect(page, 'body');
 		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 	});
