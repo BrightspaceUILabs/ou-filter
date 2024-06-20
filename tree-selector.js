@@ -104,7 +104,7 @@ class TreeSelector extends Localizer(LitElement) {
 		return html`
 			<d2l-dropdown>
 				<d2l-dropdown-button-subtle text="${this.name}">
-					<d2l-dropdown-content align="start" no-auto-fit>
+					<d2l-dropdown-content align="start" no-auto-fit class="vdiff-target">
 						<div class="d2l-labs-filter-dropdown-content-header" slot="header">
 							<span>${this.localize('treeSelector:filterBy')}</span>
 

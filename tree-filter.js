@@ -612,6 +612,7 @@ class TreeFilter extends Localizer(MobxLitElement) {
 		const openerText = isSelected ? this.openerTextSelected : this.openerText;
 
 		return html`<d2l-labs-tree-selector
+				class="vdiff-target"
 				name="${openerText}"
 				?search="${this._isSearch}"
 				?selected="${isSelected}"

@@ -86,6 +86,7 @@ class OuFilter extends Localizer(MobxLitElement) {
 		this.dataManager.orgUnitTree.setAncestorFilter(this.dataManager.selectedSemesterIds);
 		return html`
 			<d2l-labs-tree-filter
+				class="vdiff-target"
 				.tree="${this.dataManager.orgUnitTree}"
 				opener-text="${this.localize('orgUnitFilter:nameAllSelected')}"
 				opener-text-selected="${this.localize('orgUnitFilter:nameSomeSelected')}"
