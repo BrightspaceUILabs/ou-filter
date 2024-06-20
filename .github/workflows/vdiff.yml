@@ -1,0 +1,20 @@
+name: vdiff
+on: pull_request
+jobs:
+  vdiff:
+    timeout-minutes: 5
+    runs-on: ubuntu-latest
+    steps:
+      - uses: Brightspace/third-party-actions@actions/checkout
+      - uses: Brightspace/third-party-actions@actions/setup-node
+        with:
+          node-version-file: .nvmrc
+      - name: Install Dependencies
+        run: npm install
+      - name: vdiff Tests
+        uses: BrightspaceUI/actions/vdiff@main
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
