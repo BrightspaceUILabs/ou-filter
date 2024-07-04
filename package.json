@@ -1,6 +1,6 @@
 {
   "name": "@brightspace-ui-labs/ou-filter",
-  "version": "3.0.0",
+  "version": "3.1.0",
   "description": "Org unit tree filter",
   "type": "module",
   "repository": "https://github.com/BrightspaceUILabs/ou-filter.git",
