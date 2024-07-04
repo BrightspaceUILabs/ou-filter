@@ -561,6 +561,7 @@ class TreeFilter extends Localizer(MobxLitElement) {
 			searchString: { type: String, attribute: 'search-string', reflect: true },
 			isLoadMoreSearch: { type: Boolean, attribute: 'load-more-search', reflect: true },
 			isSelectAllVisible: { type: Boolean, attribute: 'select-all-ui', reflect: true },
+			disabled: { type: Boolean, attribute: 'disabled' },
 			_isLoadingSearch: { type: Boolean, attribute: false }
 		};
 	}
@@ -588,6 +589,7 @@ class TreeFilter extends Localizer(MobxLitElement) {
 		this.searchString = '';
 		this.isLoadMoreSearch = false;
 		this.isSelectAllVisible = false;
+		this.disabled = false;
 
 		this._needResize = false;
 		this._searchBookmark = null;
@@ -617,6 +619,7 @@ class TreeFilter extends Localizer(MobxLitElement) {
 				?search="${this._isSearch}"
 				?selected="${isSelected}"
 				?select-all-ui="${this.isSelectAllVisible}"
+				?disabled="${this.disabled}"
 				@d2l-labs-tree-selector-search="${this._onSearch}"
 				@d2l-labs-tree-selector-clear="${this._onClear}"
 				@d2l-labs-tree-selector-select-all="${this._onSelectAll}"
