@@ -112,7 +112,6 @@ describe('ou-filter', () => {
 		const elem = await fixture(
 			html`<d2l-labs-ou-filter disabled .dataManager=${dataManager}></d2l-labs-ou-filter>`
 		);
-		await expandDepartment1Node(elem);
 		await expect(elem).to.be.golden();
 	});
 
@@ -130,7 +129,6 @@ describe('ou-filter', () => {
 			html`<d2l-labs-ou-filter disabled .dataManager=${dataManager}></d2l-labs-ou-filter>`,
 			{ viewport: { width: 320 } }
 		);
-		await expandDepartment1Node(elem);
 		await expect(elem).to.be.golden();
 	});
 
