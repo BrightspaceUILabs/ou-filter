@@ -73,6 +73,7 @@ class FooPage extends MobxLitElement {
 | dataManager | Object | {empty} | Object that extends OuFilterDataManager. It provides and manages data for d2l-labs-ou-filter |
 | select-all-ui | Boolean | {empty} | Shows Select all button |
 | d2l-labs-ou-filter-change | Function | {empty} | Event handler that is fired when selection is changed |
+| disabled | Boolean | {empty} | Render the filter in a disabled state |
 
 ## Developing and Contributing
 
