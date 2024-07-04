@@ -108,12 +108,27 @@ describe('ou-filter', () => {
 		await expect(elem).to.be.golden();
 	});
 
+	it('Desktop - Disabled', async() => {
+		const elem = await fixture(
+			html`<d2l-labs-ou-filter disabled .dataManager=${dataManager}></d2l-labs-ou-filter>`
+		);
+		await expect(elem).to.be.golden();
+	});
+
 	it('Mobile', async() => {
 		const elem = await fixture(
 			html`<d2l-labs-ou-filter .dataManager=${dataManager}></d2l-labs-ou-filter>`,
 			{ viewport: { width: 320 } }
 		);
 		await expandDepartment1Node(elem);
+		await expect(elem).to.be.golden();
+	});
+
+	it('Mobile - Disabled', async() => {
+		const elem = await fixture(
+			html`<d2l-labs-ou-filter disabled .dataManager=${dataManager}></d2l-labs-ou-filter>`,
+			{ viewport: { width: 320 } }
+		);
 		await expect(elem).to.be.golden();
 	});
 

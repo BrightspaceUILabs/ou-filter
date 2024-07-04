@@ -57,7 +57,8 @@ class OuFilter extends Localizer(MobxLitElement) {
 	static get properties() {
 		return {
 			dataManager: { type: Object, attribute: false },
-			isSelectAllVisible: { type: Boolean, attribute: 'select-all-ui', reflect: true }
+			isSelectAllVisible: { type: Boolean, attribute: 'select-all-ui', reflect: true },
+			disabled: { type: Boolean, attribute: 'disabled' }
 		};
 	}
 
@@ -76,6 +77,7 @@ class OuFilter extends Localizer(MobxLitElement) {
 		super();
 		this.dataManager = new OuFilterDataManager();
 		this.isSelectAllVisible = false;
+		this.disabled = false;
 	}
 
 	get selected() {
@@ -91,6 +93,7 @@ class OuFilter extends Localizer(MobxLitElement) {
 				opener-text="${this.localize('orgUnitFilter:nameAllSelected')}"
 				opener-text-selected="${this.localize('orgUnitFilter:nameSomeSelected')}"
 				?select-all-ui="${this.isSelectAllVisible}"
+				?disabled="${this.disabled}"
 				@d2l-labs-tree-filter-select="${this._onChange}"
 				@d2l-labs-tree-filter-request-children="${this._onRequestChildren}"
 				@d2l-labs-tree-filter-search="${this._onSearch}"

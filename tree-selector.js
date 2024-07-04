@@ -23,6 +23,7 @@ class TreeSelector extends Localizer(LitElement) {
 	static get properties() {
 		return {
 			name: { type: String },
+			disabled: { type: Boolean, attribute: 'disabled' },
 			isSelectAllVisible: { type: Boolean, attribute: 'select-all-ui', reflect: true },
 			isSearch: { type: Boolean, attribute: 'search', reflect: true },
 			isSelected: { type: Boolean, attribute: 'selected', reflect: true }
@@ -88,6 +89,7 @@ class TreeSelector extends Localizer(LitElement) {
 		this.name = 'SPECIFY NAME ATTRIBUTE';
 		this._isSearch = false;
 		this.isSelectAllVisible = false;
+		this.disabled = false;
 	}
 
 	/**
@@ -103,7 +105,7 @@ class TreeSelector extends Localizer(LitElement) {
 		// We have a defect logged to improve this in future.
 		return html`
 			<d2l-dropdown>
-				<d2l-dropdown-button-subtle text="${this.name}">
+				<d2l-dropdown-button-subtle text="${this.name}" ?disabled=${this.disabled}>
 					<d2l-dropdown-content align="start" no-auto-fit class="vdiff-target">
 						<div class="d2l-labs-filter-dropdown-content-header" slot="header">
 							<span>${this.localize('treeSelector:filterBy')}</span>
