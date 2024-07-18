@@ -1022,6 +1022,16 @@ describe('d2l-labs-tree-filter', () => {
 			expect(resultNodes.length).to.equal(1);
 			expect([...resultNodes].map(x => x.dataId).sort()).to.deep.equal([9876]);
 		});
+
+		it('should render an empty state when there are no results', async() => {
+			el.searchString = 'asdf';
+			el.addSearchResults([]);
+			await el.treeUpdateComplete;
+
+			const resultNodes = el.shadowRoot.querySelectorAll('d2l-empty-state-simple[slot="search-results"]');
+			expect(resultNodes.length).to.equal(1);
+			expect(resultNodes[0].description).to.equal('No search results');
+		});
 	});
 
 	describe('events', () => {

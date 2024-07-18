@@ -12,6 +12,7 @@ export default {
 	"treeSelector:clearLabel": "Rensa",
 	"treeSelector:searchLabel": "Sökning",
 	"treeSelector:loadMoreLabel": "Ladda mer",
+	"treeSelector:noSearchResults": "Inga sökresultat",
 	"treeSelector:parentLoadMore:ariaLabel": "Läs in fler underordnade organisationsenheter",
 	"treeSelector:searchLoadMore:ariaLabel": "Läs in fler sökresultat",
 	"treeSelector:searchPlaceholder": "Sök ...",
