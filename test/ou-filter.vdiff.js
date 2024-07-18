@@ -72,6 +72,9 @@ async function expandDepartment1Node(elem) {
 	sendKeysElem(openButton, 'press', 'Enter');
 	await oneEvent(elem, 'd2l-dropdown-open');
 
+	// Prevents test flake that sometimes occurs when waiting for the dropdown to open and render
+	await new Promise(resolve => setTimeout(resolve, 200));
+
 	// expand Faculty 1
 	const faculty1Node = treeSelector.querySelector('d2l-labs-tree-selector-node[name="Faculty 1 (Id: 5)"]');
 	await sendKeysElem(
