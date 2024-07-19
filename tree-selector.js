@@ -62,7 +62,6 @@ class TreeSelector extends Localizer(LitElement) {
 					flex-wrap: nowrap;
 					padding-bottom: 26px;
 					padding-top: 4px;
-					width: 334px;
 				}
 				@media screen and (max-width: 400px) {
 					.d2l-labs-tree-selector-search {
