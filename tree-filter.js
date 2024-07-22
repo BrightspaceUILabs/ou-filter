@@ -1,3 +1,4 @@
+import '@brightspace-ui/core/components/empty-state/empty-state-simple.js';
 import '@brightspace-ui/core/components/loading-spinner/loading-spinner.js';
 import './tree-selector.js';
 
@@ -817,11 +818,13 @@ class TreeFilter extends Localizer(MobxLitElement) {
 	}
 
 	_renderSearchResults() {
-		if (!this._isSearch) return nothing;
+		if (!this._isSearch || this._isLoadingSearch) return nothing;
 
-		return this.tree
-			.getMatchingIds(this.searchString)
-			.map(id => {
+		const searchResults = this.tree
+			.getMatchingIds(this.searchString);
+
+		if (searchResults.length > 0) {
+			return searchResults.map(id => {
 				const orgUnitName = this.tree.getName(id);
 				const state = this.tree.getState(id);
 				return html`<d2l-labs-tree-selector-node slot="search-results"
@@ -832,6 +835,13 @@ class TreeFilter extends Localizer(MobxLitElement) {
 				>
 				</d2l-labs-tree-selector-node>`;
 			});
+		}
+
+		return html`<d2l-empty-state-simple
+			slot="search-results"
+			description="${this.localize('treeSelector:noSearchResults')}"
+		>
+		</d2l-empty-state-simple>`;
 	}
 
 	_requestChildren(id, bookmark) {

@@ -12,6 +12,7 @@ export default {
 	"treeSelector:clearLabel": "Clirio",
 	"treeSelector:searchLabel": "Chwilio",
 	"treeSelector:loadMoreLabel": "Llwytho Mwy",
+	"treeSelector:noSearchResults": "Dim canlyniadau chwilio",
 	"treeSelector:parentLoadMore:ariaLabel": "Llwytho mwy o unedau sefydliad plant",
 	"treeSelector:searchLoadMore:ariaLabel": "Llwytho mwy o ganlyniadau chwilio",
 	"treeSelector:searchPlaceholder": "Chwilio...",

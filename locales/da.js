@@ -12,6 +12,7 @@ export default {
 	"treeSelector:clearLabel": "Ryd",
 	"treeSelector:searchLabel": "Søg",
 	"treeSelector:loadMoreLabel": "Indlæs flere",
+	"treeSelector:noSearchResults": "Ingen søgeresultater",
 	"treeSelector:parentLoadMore:ariaLabel": "Indlæs flere underordnede organisationsenheder",
 	"treeSelector:searchLoadMore:ariaLabel": "Indlæs flere søgeresultater",
 	"treeSelector:searchPlaceholder": "Søg ...",

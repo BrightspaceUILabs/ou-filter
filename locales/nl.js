@@ -12,6 +12,7 @@ export default {
 	"treeSelector:clearLabel": "Wissen",
 	"treeSelector:searchLabel": "Zoeken",
 	"treeSelector:loadMoreLabel": "Meer laden",
+	"treeSelector:noSearchResults": "Geen zoekresultaten",
 	"treeSelector:parentLoadMore:ariaLabel": "Meer onderliggende organisatie-eenheden laden",
 	"treeSelector:searchLoadMore:ariaLabel": "Meer zoekresultaten laden",
 	"treeSelector:searchPlaceholder": "Zoeken...",
