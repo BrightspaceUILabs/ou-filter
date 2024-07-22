@@ -12,6 +12,7 @@ export default {
 	"treeSelector:clearLabel": "Effacer",
 	"treeSelector:searchLabel": "Rechercher",
 	"treeSelector:loadMoreLabel": "En télécharger plus",
+	"treeSelector:noSearchResults": "Aucun résultat de recherche",
 	"treeSelector:parentLoadMore:ariaLabel": "Charger plus d'unités organisationnelles enfants",
 	"treeSelector:searchLoadMore:ariaLabel": "Charger plus de résultats de la recherche",
 	"treeSelector:searchPlaceholder": "Recherche en cours…",

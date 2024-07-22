@@ -12,6 +12,7 @@ export default {
 	"treeSelector:clearLabel": "清除",
 	"treeSelector:searchLabel": "搜索",
 	"treeSelector:loadMoreLabel": "加载更多",
+	"treeSelector:noSearchResults": "无搜索结果",
 	"treeSelector:parentLoadMore:ariaLabel": "加载更多子组织单位",
 	"treeSelector:searchLoadMore:ariaLabel": "加载更多搜索结果",
 	"treeSelector:searchPlaceholder": "搜索...",

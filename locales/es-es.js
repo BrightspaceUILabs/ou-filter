@@ -12,6 +12,7 @@ export default {
 	"treeSelector:clearLabel": "Borrar",
 	"treeSelector:searchLabel": "Buscar",
 	"treeSelector:loadMoreLabel": "Cargar más",
+	"treeSelector:noSearchResults": "No hay resultados de búsqueda",
 	"treeSelector:parentLoadMore:ariaLabel": "Cargar más unidades de organización secundarias",
 	"treeSelector:searchLoadMore:ariaLabel": "Cargar más resultados de búsqueda",
 	"treeSelector:searchPlaceholder": "Buscar…",
