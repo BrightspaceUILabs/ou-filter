@@ -134,7 +134,11 @@ class TreeSelector extends Localizer(LitElement) {
 
 	clearSearch() {
 		this.shadowRoot.querySelector('d2l-input-search').value = '';
-		this.simulateSearch('');
+		this._onSearch({
+			detail: {
+				value: ''
+			}
+		});
 	}
 
 	async resize() {
