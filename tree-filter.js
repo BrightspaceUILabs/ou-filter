@@ -665,8 +665,8 @@ class TreeFilter extends Localizer(MobxLitElement) {
 		this._isLoadingSearch = false;
 	}
 
-	clearSearch() {
-		this.shadowRoot.querySelector('d2l-labs-tree-selector').clearSearch();
+	clearSearchAndSelection() {
+		this.shadowRoot.querySelector('d2l-labs-tree-selector').clearSearchAndSelection();
 	}
 
 	async resize() {
