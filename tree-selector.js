@@ -132,13 +132,15 @@ class TreeSelector extends Localizer(LitElement) {
 		`;
 	}
 
-	clearSearch() {
+	clearSearchAndSelection() {
 		this.shadowRoot.querySelector('d2l-input-search').value = '';
 		this._onSearch({
 			detail: {
 				value: ''
 			}
 		});
+
+		this._onClear();
 	}
 
 	async resize() {
