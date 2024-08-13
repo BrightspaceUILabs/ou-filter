@@ -202,7 +202,8 @@ describe('ou-filter', () => {
 		describe(`empty ${dir}`, () => {
 			it('Desktop', async() => {
 				const elem = await fixture(
-					html`<d2l-labs-ou-filter .dataManager=${emptyDataManager}></d2l-labs-ou-filter>`
+					html`<d2l-labs-ou-filter .dataManager=${emptyDataManager}></d2l-labs-ou-filter>`,
+					{ rtl: dir === 'rtl' }
 				);
 				await openFilter(elem);
 				await expect(elem).to.be.golden();
@@ -211,7 +212,10 @@ describe('ou-filter', () => {
 			it('Mobile', async() => {
 				const elem = await fixture(
 					html`<d2l-labs-ou-filter .dataManager=${emptyDataManager}></d2l-labs-ou-filter>`,
-					{ viewport: { width: 320 } }
+					{
+						rtl: dir === 'rtl',
+						viewport: { width: 320 }
+					}
 				);
 				await openFilter(elem);
 				await expect(elem).to.be.golden();
