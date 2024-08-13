@@ -92,8 +92,7 @@ decorate(EmptyDataManager, {
 	loadData: action
 });
 
-async function expandDepartment1Node(elem) {
-
+async function openFilter(elem) {
 	const treeSelector = elem
 		.shadowRoot.querySelector('d2l-labs-tree-filter')
 		.shadowRoot.querySelector('d2l-labs-tree-selector');
@@ -102,6 +101,11 @@ async function expandDepartment1Node(elem) {
 	// open tree
 	sendKeysElem(openButton, 'press', 'Enter');
 	await oneEvent(elem, 'd2l-dropdown-open');
+}
+
+async function expandDepartment1Node(elem) {
+
+	await openFilter(elem);
 
 	// Prevents test flake that sometimes occurs when waiting for the dropdown to open and render
 	await new Promise(resolve => setTimeout(resolve, 200));
@@ -155,6 +159,7 @@ describe('ou-filter', () => {
 		const elem = await fixture(
 			html`<d2l-labs-ou-filter .dataManager=${emptyDataManager}></d2l-labs-ou-filter>`
 		);
+		await openFilter(elem);
 		await expect(elem).to.be.golden();
 	});
 
@@ -180,6 +185,7 @@ describe('ou-filter', () => {
 			html`<d2l-labs-ou-filter .dataManager=${emptyDataManager}></d2l-labs-ou-filter>`,
 			{ viewport: { width: 320 } }
 		);
+		await openFilter(elem);
 		await expect(elem).to.be.golden();
 	});
 
