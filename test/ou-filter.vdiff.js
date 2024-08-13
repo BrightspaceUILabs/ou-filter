@@ -101,11 +101,12 @@ async function openFilter(elem) {
 	// open tree
 	sendKeysElem(openButton, 'press', 'Enter');
 	await oneEvent(elem, 'd2l-dropdown-open');
+	return treeSelector;
 }
 
 async function expandDepartment1Node(elem) {
 
-	await openFilter(elem);
+	const treeSelector = await openFilter(elem);
 
 	// Prevents test flake that sometimes occurs when waiting for the dropdown to open and render
 	await new Promise(resolve => setTimeout(resolve, 200));
