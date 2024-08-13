@@ -13,6 +13,7 @@ export default {
 	"treeSelector:searchLabel": "Zoeken",
 	"treeSelector:loadMoreLabel": "Meer laden",
 	"treeSelector:noSearchResults": "Geen zoekresultaten",
+	"treeSelector:noFiltersAvailable": "Geen beschikbare filters",
 	"treeSelector:parentLoadMore:ariaLabel": "Meer onderliggende organisatie-eenheden laden",
 	"treeSelector:searchLoadMore:ariaLabel": "Meer zoekresultaten laden",
 	"treeSelector:searchPlaceholder": "Zoeken...",

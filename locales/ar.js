@@ -13,6 +13,7 @@ export default {
 	"treeSelector:searchLabel": "بحث",
 	"treeSelector:loadMoreLabel": "تحميل المزيد",
 	"treeSelector:noSearchResults": "ما من نتائج بحث",
+	"treeSelector:noFiltersAvailable": "ما من عوامل تصفية متوفرة",
 	"treeSelector:parentLoadMore:ariaLabel": "تحميل المزيد من الوحدات التنظيمية الفرع",
 	"treeSelector:searchLoadMore:ariaLabel": "تحميل المزيد من نتائج البحث",
 	"treeSelector:searchPlaceholder": "البحث...",

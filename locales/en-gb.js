@@ -13,6 +13,7 @@ export default {
 	"treeSelector:searchLabel": "Search",
 	"treeSelector:loadMoreLabel": "Load More",
 	"treeSelector:noSearchResults": "No search results",
+	"treeSelector:noFiltersAvailable": "No available filters",
 	"treeSelector:parentLoadMore:ariaLabel": "Load more child org units",
 	"treeSelector:searchLoadMore:ariaLabel": "Load more search results",
 	"treeSelector:searchPlaceholder": "Search...",

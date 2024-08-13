@@ -13,6 +13,7 @@ export default {
 	"treeSelector:searchLabel": "खोजें",
 	"treeSelector:loadMoreLabel": "अधिक लोड करें",
 	"treeSelector:noSearchResults": "कोई खोज परिणाम नहीं",
+	"treeSelector:noFiltersAvailable": "कोई उपलब्ध फ़िल्टर्स नहीं",
 	"treeSelector:parentLoadMore:ariaLabel": "और बाल संगठन इकाइयाँ लोड करें",
 	"treeSelector:searchLoadMore:ariaLabel": "और खोज परिणामों को लोड करें",
 	"treeSelector:searchPlaceholder": "खोजें...",

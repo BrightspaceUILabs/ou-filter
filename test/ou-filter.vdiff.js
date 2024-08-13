@@ -61,6 +61,37 @@ decorate(DemoDataManager, {
 	loadData: action
 });
 
+class EmptyDataManager extends OuFilterDataManager {
+	constructor() {
+		super();
+		this._orgUnitTree = new Tree({});
+	}
+
+	get orgUnitTree() {
+		return this._orgUnitTree;
+	}
+
+	loadData() {
+		const semesterTypeId = 25;
+		const isOrgUnitsTruncated = false;
+
+		this._orgUnitTree = new Tree({
+			nodes: [],
+			leafTypes: [COURSE_OFFERING],
+			invisibleTypes: [semesterTypeId],
+			selectedIds: [],
+			ancestorIds: [],
+			oldTree: this.orgUnitTree,
+			isDynamic: isOrgUnitsTruncated,
+			extraChildren: null
+		});
+	}
+}
+decorate(EmptyDataManager, {
+	_orgUnitTree: observable,
+	loadData: action
+});
+
 async function expandDepartment1Node(elem) {
 
 	const treeSelector = elem
@@ -97,10 +128,12 @@ async function expandDepartment1Node(elem) {
 
 describe('ou-filter', () => {
 
-	let dataManager;
+	let dataManager, emptyDataManager;
 	beforeEach(async() => {
 		dataManager = new DemoDataManager();
 		dataManager.loadData();
+		emptyDataManager = new EmptyDataManager();
+		emptyDataManager.loadData();
 	});
 
 	it('Desktop', async() => {
@@ -118,6 +151,13 @@ describe('ou-filter', () => {
 		await expect(elem).to.be.golden();
 	});
 
+	it('Desktop - Empty', async() => {
+		const elem = await fixture(
+			html`<d2l-labs-ou-filter .dataManager=${emptyDataManager}></d2l-labs-ou-filter>`
+		);
+		await expect(elem).to.be.golden();
+	});
+
 	it('Mobile', async() => {
 		const elem = await fixture(
 			html`<d2l-labs-ou-filter .dataManager=${dataManager}></d2l-labs-ou-filter>`,
@@ -130,6 +170,14 @@ describe('ou-filter', () => {
 	it('Mobile - Disabled', async() => {
 		const elem = await fixture(
 			html`<d2l-labs-ou-filter disabled .dataManager=${dataManager}></d2l-labs-ou-filter>`,
+			{ viewport: { width: 320 } }
+		);
+		await expect(elem).to.be.golden();
+	});
+
+	it('Mobile - Empty', async() => {
+		const elem = await fixture(
+			html`<d2l-labs-ou-filter .dataManager=${emptyDataManager}></d2l-labs-ou-filter>`,
 			{ viewport: { width: 320 } }
 		);
 		await expect(elem).to.be.golden();
