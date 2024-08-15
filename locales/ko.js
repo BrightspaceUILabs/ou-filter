@@ -13,6 +13,7 @@ export default {
 	"treeSelector:searchLabel": "검색",
 	"treeSelector:loadMoreLabel": "더 많이 로드",
 	"treeSelector:noSearchResults": "검색 결과 없음",
+	"treeSelector:noFiltersAvailable": "사용 가능한 필터가 없습니다",
 	"treeSelector:parentLoadMore:ariaLabel": "더 많은 하위 구성 단위 로드",
 	"treeSelector:searchLoadMore:ariaLabel": "더 많은 검색 결과 로드",
 	"treeSelector:searchPlaceholder": "검색...",

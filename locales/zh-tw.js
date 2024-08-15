@@ -13,6 +13,7 @@ export default {
 	"treeSelector:searchLabel": "搜尋",
 	"treeSelector:loadMoreLabel": "載入更多",
 	"treeSelector:noSearchResults": "無搜尋結果",
+	"treeSelector:noFiltersAvailable": "沒有可用的篩選條件",
 	"treeSelector:parentLoadMore:ariaLabel": "載入組織子單位",
 	"treeSelector:searchLoadMore:ariaLabel": "載入更多搜尋結果",
 	"treeSelector:searchPlaceholder": "搜尋...",

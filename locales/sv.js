@@ -13,6 +13,7 @@ export default {
 	"treeSelector:searchLabel": "Sökning",
 	"treeSelector:loadMoreLabel": "Ladda mer",
 	"treeSelector:noSearchResults": "Inga sökresultat",
+	"treeSelector:noFiltersAvailable": "Inga tillgängliga filter",
 	"treeSelector:parentLoadMore:ariaLabel": "Läs in fler underordnade organisationsenheter",
 	"treeSelector:searchLoadMore:ariaLabel": "Läs in fler sökresultat",
 	"treeSelector:searchPlaceholder": "Sök ...",

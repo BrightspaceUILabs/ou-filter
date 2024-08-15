@@ -13,6 +13,7 @@ export default {
 	"treeSelector:searchLabel": "Arama",
 	"treeSelector:loadMoreLabel": "Daha Fazla Yükle",
 	"treeSelector:noSearchResults": "Arama sonucu yok",
+	"treeSelector:noFiltersAvailable": "Uygun filtre yok",
 	"treeSelector:parentLoadMore:ariaLabel": "Daha fazla alt org birimi yükle",
 	"treeSelector:searchLoadMore:ariaLabel": "Daha fazla arama sonucu yükle",
 	"treeSelector:searchPlaceholder": "Ara...",

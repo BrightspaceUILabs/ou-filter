@@ -61,8 +61,38 @@ decorate(DemoDataManager, {
 	loadData: action
 });
 
-async function expandDepartment1Node(elem) {
+class EmptyDataManager extends OuFilterDataManager {
+	constructor() {
+		super();
+		this._orgUnitTree = new Tree({});
+	}
 
+	get orgUnitTree() {
+		return this._orgUnitTree;
+	}
+
+	loadData() {
+		const semesterTypeId = 25;
+		const isOrgUnitsTruncated = false;
+
+		this._orgUnitTree = new Tree({
+			nodes: [],
+			leafTypes: [COURSE_OFFERING],
+			invisibleTypes: [semesterTypeId],
+			selectedIds: [],
+			ancestorIds: [],
+			oldTree: this.orgUnitTree,
+			isDynamic: isOrgUnitsTruncated,
+			extraChildren: null
+		});
+	}
+}
+decorate(EmptyDataManager, {
+	_orgUnitTree: observable,
+	loadData: action
+});
+
+async function openFilter(elem) {
 	const treeSelector = elem
 		.shadowRoot.querySelector('d2l-labs-tree-filter')
 		.shadowRoot.querySelector('d2l-labs-tree-selector');
@@ -71,6 +101,12 @@ async function expandDepartment1Node(elem) {
 	// open tree
 	sendKeysElem(openButton, 'press', 'Enter');
 	await oneEvent(elem, 'd2l-dropdown-open');
+	return treeSelector;
+}
+
+async function expandDepartment1Node(elem) {
+
+	const treeSelector = await openFilter(elem);
 
 	// Prevents test flake that sometimes occurs when waiting for the dropdown to open and render
 	await new Promise(resolve => setTimeout(resolve, 200));
@@ -97,10 +133,12 @@ async function expandDepartment1Node(elem) {
 
 describe('ou-filter', () => {
 
-	let dataManager;
+	let dataManager, emptyDataManager;
 	beforeEach(async() => {
 		dataManager = new DemoDataManager();
 		dataManager.loadData();
+		emptyDataManager = new EmptyDataManager();
+		emptyDataManager.loadData();
 	});
 
 	it('Desktop', async() => {
@@ -159,6 +197,29 @@ describe('ou-filter', () => {
 				await expect(elem).to.be.golden();
 			});
 
+		});
+
+		describe(`empty ${dir}`, () => {
+			it('Desktop', async() => {
+				const elem = await fixture(
+					html`<d2l-labs-ou-filter .dataManager=${emptyDataManager}></d2l-labs-ou-filter>`,
+					{ rtl: dir === 'rtl' }
+				);
+				await openFilter(elem);
+				await expect(elem).to.be.golden();
+			});
+
+			it('Mobile', async() => {
+				const elem = await fixture(
+					html`<d2l-labs-ou-filter .dataManager=${emptyDataManager}></d2l-labs-ou-filter>`,
+					{
+						rtl: dir === 'rtl',
+						viewport: { width: 320 }
+					}
+				);
+				await openFilter(elem);
+				await expect(elem).to.be.golden();
+			});
 		});
 	});
 
