@@ -132,15 +132,15 @@ class TreeSelector extends Localizer(LitElement) {
 		`;
 	}
 
-	clearSearchAndSelection() {
+	clearSearchAndSelection(generateEvent = true) {
 		this.shadowRoot.querySelector('d2l-input-search').value = '';
 		this._onSearch({
 			detail: {
 				value: ''
 			}
-		});
+		}, generateEvent);
 
-		this._onClear();
+		this._onClear(generateEvent);
 	}
 
 	async resize() {
@@ -190,7 +190,10 @@ class TreeSelector extends Localizer(LitElement) {
 		></d2l-button-subtle>`;
 	}
 
-	_onClear() {
+	_onClear(generateEvent = true) {
+		if (!generateEvent) {
+			return;
+		}
 		/**
 		 * @event d2l-labs-tree-selector-clear
 		 */
@@ -203,7 +206,10 @@ class TreeSelector extends Localizer(LitElement) {
 		));
 	}
 
-	_onSearch(event) {
+	_onSearch(event, generateEvent = true) {
+		if (!generateEvent) {
+			return;
+		}
 		/**
 		 * @event d2l-labs-tree-selector-search
 		 */
