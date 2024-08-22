@@ -101,8 +101,8 @@ class OuFilter extends Localizer(MobxLitElement) {
 			</d2l-labs-tree-filter>`;
 	}
 
-	clearSearchAndSelection() {
-		this.shadowRoot.querySelector('d2l-labs-tree-filter').clearSearchAndSelection();
+	clearSearchAndSelection(generateEvent = true) {
+		this.shadowRoot.querySelector('d2l-labs-tree-filter').clearSearchAndSelection(generateEvent);
 	}
 
 	_onChange() {
