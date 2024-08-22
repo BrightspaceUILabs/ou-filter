@@ -104,7 +104,7 @@ class OuFilter extends Localizer(MobxLitElement) {
 	/**
 	 * Clears search bar and selection
 	 * @param {boolean?} generateEvent - If set to false, don't fire change event
-	 */ 
+	 */
 	clearSearchAndSelection(generateEvent = true) {
 		this.shadowRoot.querySelector('d2l-labs-tree-filter').clearSearchAndSelection(generateEvent);
 	}
