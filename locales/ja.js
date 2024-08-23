@@ -12,7 +12,7 @@ export default {
 	"treeSelector:clearLabel": "クリア",
 	"treeSelector:searchLabel": "検索",
 	"treeSelector:loadMoreLabel": "さらに読み込む",
-	"treeSelector:noSearchResults": "検索結果なし",
+	"treeSelector:noSearchResults": "検索結果 0 件",
 	"treeSelector:noFiltersAvailable": "使用可能なフィルタはありません",
 	"treeSelector:parentLoadMore:ariaLabel": "子組織単位をさらに読み込む",
 	"treeSelector:searchLoadMore:ariaLabel": "検索結果をさらに読み込む",
