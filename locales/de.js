@@ -12,7 +12,7 @@ export default {
 	"treeSelector:clearLabel": "Löschen",
 	"treeSelector:searchLabel": "Suchen",
 	"treeSelector:loadMoreLabel": "Mehr laden",
-	"treeSelector:noSearchResults": "Kein Suchergebnis",
+	"treeSelector:noSearchResults": "Keine Suchergebnisse",
 	"treeSelector:noFiltersAvailable": "Keine verfügbaren Filter",
 	"treeSelector:parentLoadMore:ariaLabel": "Weitere untergeordnete Organisationseinheiten werden geladen.",
 	"treeSelector:searchLoadMore:ariaLabel": "Weitere Suchergebnisse werden geladen.",
