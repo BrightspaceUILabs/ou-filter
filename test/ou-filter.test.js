@@ -83,15 +83,15 @@ describe('d2l-labs-ou-filter', () => {
 			});
 			const el = await fixture(html`<d2l-labs-ou-filter .dataManager="${noVisibleDataManager}"></d2l-labs-ou-filter>`);
 			await aTimeout(50);
-			const treeSelector = el
-				.shadowRoot.querySelector('d2l-labs-tree-filter')
+			const treeFilter = el.shadowRoot.querySelector('d2l-labs-tree-filter');
+			const treeSelector = treeFilter
 				.shadowRoot.querySelector('d2l-labs-tree-selector');
 			const openButton = treeSelector.shadowRoot.querySelector('d2l-dropdown-button-subtle');
 
 			// open tree
 			sendKeysElem(openButton, 'press', 'Enter');
 			await oneEvent(el, 'd2l-dropdown-open');
-			const treeFilter = el.shadowRoot.querySelector('d2l-labs-tree-filter');
+
 			expect(treeFilter.shadowRoot.querySelector('d2l-empty-state-simple')).to.exist;
 		});
 	});
