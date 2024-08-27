@@ -755,7 +755,7 @@ class TreeFilter extends Localizer(MobxLitElement) {
 	_renderChildren(id, parentName, indentLevel = 0) {
 		parentName = parentName || this.localize('treeFilter:nodeName:root');
 
-		if (id === undefined) {
+		if (id === undefined || this.tree.getChildIdsForDisplay(id).length === 0) {
 			return html`<d2l-empty-state-simple
 				slot="tree"
 				description="${this.localize('treeSelector:noFiltersAvailable')}"

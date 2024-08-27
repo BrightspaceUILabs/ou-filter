@@ -1,4 +1,4 @@
-import { aTimeout, expect, fixture, html, oneEvent, runConstructor } from '@brightspace-ui/testing';
+import { aTimeout, expect, fixture, html, oneEvent, runConstructor, sendKeysElem } from '@brightspace-ui/testing';
 import { restore, spy } from 'sinon';
 import { OuFilterDataManager } from '../ou-filter.js';
 import { Tree } from '../tree-filter.js';
@@ -68,6 +68,31 @@ describe('d2l-labs-ou-filter', () => {
 			expect(selector.tree).to.equal(data.orgUnitTree);
 			expect(setAncestorFilterSpy).to.be.calledOnce;
 			expect(setAncestorFilterSpy).to.be.calledWith(data.selectedSemesterIds);
+		});
+	});
+
+	describe('no visible children', () => {
+		it('should render a tree-filter with the org-unit tree', async() => {
+			const noVisibleDataManager = new TestOuFilterDataManager({
+				...data,
+				orgUnitTree: new Tree({
+					nodes: [
+						{	Id: 1, Name: 'root', Type: 0, Parents: [0] }
+					]
+				}),
+			});
+			const el = await fixture(html`<d2l-labs-ou-filter .dataManager="${noVisibleDataManager}"></d2l-labs-ou-filter>`);
+			await aTimeout(50);
+			const treeSelector = el
+				.shadowRoot.querySelector('d2l-labs-tree-filter')
+				.shadowRoot.querySelector('d2l-labs-tree-selector');
+			const openButton = treeSelector.shadowRoot.querySelector('d2l-dropdown-button-subtle');
+
+			// open tree
+			sendKeysElem(openButton, 'press', 'Enter');
+			await oneEvent(el, 'd2l-dropdown-open');
+			const treeFilter = el.shadowRoot.querySelector('d2l-labs-tree-filter');
+			expect(treeFilter.shadowRoot.querySelector('d2l-empty-state-simple')).to.exist;
 		});
 	});
 
