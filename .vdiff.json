@@ -2,12 +2,12 @@
 	"browsers": [
 		{
 			"name": "Chromium",
-			"version": 131
+			"version": 134
 		}
 	],
 	"system": {
 		"platform": "linux",
-		"release": "6.8.0-1017-azure",
+		"release": "6.8.0-1021-azure",
 		"arch": "x64"
 	}
 }
