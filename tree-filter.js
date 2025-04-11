@@ -755,17 +755,20 @@ class TreeFilter extends Localizer(MobxLitElement) {
 	_renderChildren(id, parentName, indentLevel = 0) {
 		parentName = parentName || this.localize('treeFilter:nodeName:root');
 
-		if (id === undefined || this.tree.getChildIdsForDisplay(id).length === 0) {
-			return html`<d2l-empty-state-simple
-				slot="tree"
-				description="${this.localize('treeSelector:noFiltersAvailable')}"
-			>
-			</d2l-empty-state-simple>`;
+		const emptyState = html`<d2l-empty-state-simple
+			slot="tree"
+			description="${this.localize('treeSelector:noFiltersAvailable')}"
+		></d2l-empty-state-simple>`;
+
+		if (id === undefined) {
+			return emptyState;
 		}
 
 		if (!this.tree.isPopulated(id)) {
 			// request children; in the meantime we can render whatever we have
 			this._requestChildren(id);
+		} else if (this.tree.getChildIdsForDisplay(id).length === 0) {
+			return emptyState;
 		}
 
 		return [
